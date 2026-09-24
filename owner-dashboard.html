@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>ZEE POS - Owner Dashboard</title>
+    <title>ZEE POS - Dashboard</title>
 
 
     <style>
@@ -2644,9 +2644,7 @@
                     Owner
                 </strong>
 
-                <span>
-                    Shop Owner
-                </span>
+                <span id="ownerRoleLabel">Shop Owner</span>
 
             </div>
 
@@ -4376,6 +4374,71 @@
     let employees = [];
 
 
+    // ==========================================
+    // ROLE PERMISSIONS
+    // ==========================================
+
+    const ROLE_PERMISSIONS = {
+        owner: ["dashboard", "employees", "products", "sales", "sales-history", "reports", "shop", "settings"],
+        manager: ["dashboard", "products", "sales", "sales-history", "reports"],
+        cashier: ["dashboard", "sales", "sales-history"]
+    };
+
+    function canAccess(sectionName) {
+        return Boolean(ROLE_PERMISSIONS[currentUserData?.role]?.includes(sectionName));
+    }
+
+    function requirePermission(sectionName, message) {
+        if (!canAccess(sectionName)) {
+            showToast(message || "You do not have permission to use this feature.");
+            return false;
+        }
+        return true;
+    }
+
+    function applyRolePermissions() {
+        const role = currentUserData?.role || "";
+        const permissions = ROLE_PERMISSIONS[role] || [];
+
+        document.querySelectorAll(".nav-btn[data-section]").forEach(button => {
+            button.hidden = !permissions.includes(button.dataset.section);
+        });
+
+        document.querySelectorAll(".page-section[id^=\"section-\"]").forEach(section => {
+            section.hidden = !permissions.includes(section.id.replace("section-", ""));
+        });
+
+        document.querySelectorAll(".quick-btn[data-action]").forEach(button => {
+            button.hidden = !permissions.includes(button.dataset.action);
+        });
+
+        const roleName = role ? role.charAt(0).toUpperCase() + role.slice(1) : "User";
+        const panelRoleLabel = document.getElementById("panelRoleLabel");
+        const ownerRoleLabel = document.getElementById("ownerRoleLabel");
+        if (panelRoleLabel) panelRoleLabel.textContent = `${roleName} Panel`;
+        if (ownerRoleLabel) ownerRoleLabel.textContent = roleName;
+
+        // Employees are Owner-only.
+        const employeeSection = document.getElementById("section-employees");
+        if (employeeSection) {
+            employeeSection.querySelectorAll("button, input, select").forEach(el => {
+                if (el.id !== "employeeSearch") el.hidden = role !== "owner";
+            });
+        }
+
+        // Products can be managed by Owner and Manager.
+        const addProductBtnEl = document.getElementById("addProductBtn");
+        if (addProductBtnEl) addProductBtnEl.hidden = !(role === "owner" || role === "manager");
+
+        // If the current active page is not allowed, open Dashboard.
+        const active = document.querySelector(".nav-btn.active");
+        if (!active || active.hidden) {
+            const firstAllowed = document.querySelector(".nav-btn[data-section]:not([hidden])");
+            if (firstAllowed) openSection(firstAllowed.dataset.section);
+        }
+    }
+
+
 
     // ==========================================
     // TOAST
@@ -4515,7 +4578,7 @@
 
     async function loadEmployeeCount() {
 
-        if (!currentShopId) {
+        if (!currentShopId || currentUserData?.role !== "owner") {
             return;
         }
 
@@ -4532,11 +4595,15 @@
             const employeeQuery =
                 query(
                     usersRef,
-
                     where(
                         "shopId",
                         "==",
                         currentShopId
+                    ),
+                    where(
+                        "role",
+                        "in",
+                        ["cashier", "manager"]
                     )
                 );
 
@@ -4949,15 +5016,10 @@
         // ROLE CHECK
         // ======================================
 
-        if (
-            currentUserData.role !==
-            "owner"
-        ) {
+        const allowedRoles = ["owner", "manager", "cashier"];
 
-            throw new Error(
-                "This page is for Shop Owners only."
-            );
-
+        if (!allowedRoles.includes(currentUserData.role)) {
+            throw new Error("You are not authorized to access the POS.");
         }
 
 
@@ -4998,15 +5060,17 @@
             currentUserData.shopId;
 
 
+        applyRolePermissions();
+
 
         // ======================================
-        // OWNER UI
+        // USER UI
         // ======================================
 
         const name =
             currentUserData.name ||
             currentUserData.email ||
-            "Owner";
+            "User";
 
 
         ownerNameElement.textContent =
@@ -5031,13 +5095,19 @@
 
 
         // ======================================
-        // EMPLOYEE COUNT
+        // ROLE-BASED DATA LOADING
         // ======================================
 
-        await loadEmployeeCount();
-        await loadEmployees();
+        if (currentUserData.role === "owner") {
+            await loadEmployeeCount();
+            await loadEmployees();
+        }
 
+        // Products are read by Owner / Manager / Cashier.
+        // Cashier needs product stock data to complete a sale.
         await loadProducts();
+
+        // All three roles can view Sales History.
         await loadSalesHistory();
 
     }
@@ -5236,7 +5306,7 @@
 
 
     async function loadSalesHistory() {
-        if (!currentShopId) return;
+        if (!currentShopId || !canAccess("sales-history")) return;
 
         salesHistoryBody.innerHTML = `
             <tr><td colspan="6" class="table-message">Loading sales...</td></tr>`;
@@ -5304,6 +5374,7 @@
 
 
     function openProductModal(product = null) {
+        if (!requirePermission("products", "Only the Owner or Manager can manage products.")) return;
         productForm.reset();
         productId.value = product?.id || "";
         productModalTitle.textContent = product ? "Edit Product" : "Add Product";
@@ -5333,6 +5404,7 @@
 
     async function saveProduct(event) {
         event.preventDefault();
+        if (!requirePermission("products", "Only the Owner or Manager can manage products.")) return;
 
         if (!currentShopId || !currentUser) {
             showToast("Your shop session is not ready.");
@@ -5414,6 +5486,7 @@
 
 
     async function deleteProduct(product) {
+        if (!requirePermission("products", "Only the Owner or Manager can manage products.")) return;
         const name = product.name || "this product";
         if (!window.confirm(`Delete "${name}"?\n\nThis action cannot be undone.`)) return;
 
@@ -5430,7 +5503,10 @@
     }
 
 
-    addProductBtn.addEventListener("click", () => openProductModal());
+    addProductBtn.addEventListener("click", () => {
+        if (!requirePermission("products", "Only the Owner or Manager can manage products.")) return;
+        openProductModal();
+    });
     closeProductModal.addEventListener("click", closeProductModalFn);
     cancelProductBtn.addEventListener("click", closeProductModalFn);
     productModalBackdrop.addEventListener("click", closeProductModalFn);
@@ -5445,6 +5521,7 @@
         if (!product) return;
 
         if (button.dataset.productAction === "edit") {
+            if (!requirePermission("products", "Only the Owner or Manager can manage products.")) return;
             openProductModal(product);
         } else if (button.dataset.productAction === "delete") {
             deleteProduct(product);
@@ -5619,6 +5696,7 @@
 
 
     async function completeSale() {
+        if (!requirePermission("sales", "You do not have permission to make sales.")) return;
         if (!currentShopId || !currentUser || !cart.length) return;
 
         const total = cartSubtotal();
@@ -5917,10 +5995,16 @@
     }
 
     async function loadEmployees() {
-        if (!currentShopId) return;
+        if (!currentShopId || currentUserData?.role !== "owner") return;
         employeesTableBody.innerHTML = `<tr><td colspan="5" class="table-message">Loading employees...</td></tr>`;
         try {
-            const snapshot = await getDocs(query(collection(db, "users"), where("shopId", "==", currentShopId)));
+            const snapshot = await getDocs(
+                query(
+                    collection(db, "users"),
+                    where("shopId", "==", currentShopId),
+                    where("role", "in", ["cashier", "manager"])
+                )
+            );
             employees = [];
             snapshot.forEach(docSnap => {
                 const data = docSnap.data();
@@ -5938,6 +6022,7 @@
     }
 
     function openEmployeeModal(employee = null) {
+        if (!requirePermission("employees", "Only the Owner can manage employees.")) return;
         employeeForm.reset();
         employeeId.value = employee?.id || "";
         employeeModalTitle.textContent = employee ? "Edit Employee" : "Add Employee";
@@ -5959,7 +6044,10 @@
         employeeEmailInput.disabled = false;
     }
 
-    addEmployeeBtn.addEventListener("click", () => openEmployeeModal());
+    addEmployeeBtn.addEventListener("click", () => {
+        if (!requirePermission("employees", "Only the Owner can manage employees.")) return;
+        openEmployeeModal();
+    });
     closeEmployeeModal.addEventListener("click", closeEmployeeModalFn);
     cancelEmployeeBtn.addEventListener("click", closeEmployeeModalFn);
     document.getElementById("employeeModalBackdrop").addEventListener("click", closeEmployeeModalFn);
@@ -5967,6 +6055,7 @@
 
     employeeForm.addEventListener("submit", async event => {
         event.preventDefault();
+        if (!requirePermission("employees", "Only the Owner can manage employees.")) return;
         if (!currentShopId) return showToast("Shop information is not ready yet.");
         const id = employeeId.value.trim();
         const name = employeeNameInput.value.trim();
@@ -6002,6 +6091,7 @@
     });
 
     employeesTableBody.addEventListener("click", async event => {
+        if (!requirePermission("employees", "Only the Owner can manage employees.")) return;
         const button = event.target.closest("button[data-employee-action]");
         if (!button) return;
         const id = button.dataset.employeeId;
@@ -6136,6 +6226,11 @@
     function openSection(
         sectionName
     ) {
+
+        if (currentUserData && !canAccess(sectionName)) {
+            showToast("You do not have permission to open this section.");
+            return;
+        }
 
 
         navButtons.forEach(
