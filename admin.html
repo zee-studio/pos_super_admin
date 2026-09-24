@@ -1,0 +1,5095 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="theme-color"
+        content="#080a0f"
+    >
+
+    <title>ZEE POS — Admin Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        :root {
+            --bg: #080a0f;
+            --sidebar: #0d1016;
+            --surface: #11151d;
+            --surface-2: #171c25;
+            --border: rgba(255,255,255,.08);
+            --text: #f5f7fa;
+            --muted: #8d94a1;
+            --primary: #ff7a00;
+            --primary-hover: #ff8d22;
+            --success: #35c982;
+            --danger: #ff5757;
+            --warning: #ffc04d;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            border: 0;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            padding: 22px 14px;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 10px 25px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            color: white;
+            background: linear-gradient(135deg,#ff9b42,#ff7a00,#b70000);
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .brand-info strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        .brand-info span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .nav-title {
+            padding: 15px 11px 8px;
+            color: #5f6671;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 12px;
+            color: #9299a5;
+            background: transparent;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: background .2s ease,color .2s ease;
+        }
+
+        .nav-item:hover {
+            color: white;
+            background: rgba(255,255,255,.05);
+        }
+
+        .nav-item.active {
+            color: white;
+            background: rgba(255,122,0,.12);
+        }
+
+        .nav-icon {
+            width: 19px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #242a34;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .admin-profile strong {
+            display: block;
+            font-size: 11px;
+        }
+
+        .admin-profile span {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .main {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+        }
+
+        .topbar {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            background: rgba(8,10,15,.8);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .mobile-menu {
+            display: none;
+            width: 38px;
+            height: 38px;
+            margin-right: 10px;
+            color: white;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .page-title h1 {
+            font-size: 19px;
+            letter-spacing: -.4px;
+        }
+
+        .page-title p {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification {
+            position: relative;
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            color: #a0a7b2;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4,minmax(0,1fr));
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .stat-icon {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            color: var(--primary);
+            background: rgba(255,122,0,.09);
+            border-radius: 9px;
+        }
+
+        .stat-number {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -.8px;
+        }
+
+        .stat-change {
+            margin-top: 6px;
+            color: var(--success);
+            font-size: 10px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 15px;
+        }
+
+        .section-header p {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 40px;
+            padding: 0 15px;
+            color: white;
+            background: linear-gradient(135deg,#ff922f,#ff7a00);
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255,122,0,.16);
+            transition: transform .2s ease,filter .2s ease;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
+        }
+
+        .primary-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .table-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 14px 18px;
+            color: #737a86;
+            background: rgba(255,255,255,.018);
+            font-size: 10px;
+            font-weight: 700;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .shop-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .shop-logo {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 9px;
+            background: #202631;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .shop-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .shop-name {
+            font-weight: 600;
+        }
+
+        .shop-owner {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .status::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .status.active {
+            color: #76e2ad;
+            background: rgba(53,201,130,.08);
+        }
+
+        .status.active::before {
+            background: var(--success);
+        }
+
+        .status.suspended {
+            color: #ffd078;
+            background: rgba(255,192,77,.08);
+        }
+
+        .status.suspended::before {
+            background: var(--warning);
+        }
+
+        .status.expired {
+            color: #ff9999;
+            background: rgba(255,87,87,.08);
+        }
+
+        .status.expired::before {
+            background: var(--danger);
+        }
+
+        .theme-preview {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .theme-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,.1);
+        }
+
+        .action-button {
+            padding: 7px 10px;
+            color: #9ba2ae;
+            background: #1a1f28;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            font-size: 9px;
+            cursor: pointer;
+        }
+
+        .action-button:hover {
+            color: white;
+            background: #222832;
+        }
+
+        .table-message {
+            padding: 35px 20px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .empty-section {
+            padding: 70px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 55px;
+            height: 55px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 15px;
+            color: var(--primary);
+            background: rgba(255,122,0,.08);
+            border-radius: 14px;
+            font-size: 22px;
+        }
+
+        .empty-section h2 {
+            font-size: 15px;
+        }
+
+        .empty-section p {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0,0,0,.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 500;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 570px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #11151d;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 30px 100px rgba(0,0,0,.55);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 17px;
+        }
+
+        .close-button {
+            width: 34px;
+            height: 34px;
+            color: #9da4af;
+            background: #1a1f28;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-section {
+            margin-bottom: 24px;
+        }
+
+        .form-section-title {
+            margin-bottom: 13px;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 13px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #969da8;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 43px;
+            padding: 0 12px;
+            color: white;
+            background: #0b0e14;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(255,122,0,.55);
+            box-shadow: 0 0 0 3px rgba(255,122,0,.07);
+        }
+
+        input[type="color"] {
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        input:disabled,
+        select:disabled {
+            opacity: .65;
+            cursor: not-allowed;
+        }
+
+        .logo-upload {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background: #0b0e14;
+            border: 1px dashed rgba(255,255,255,.14);
+            border-radius: 9px;
+        }
+
+        .logo-preview {
+            width: 54px;
+            height: 54px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background: #202631;
+            border-radius: 10px;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-text strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 10px;
+        }
+
+        .upload-text span {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 9px;
+            padding: 17px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .secondary-button {
+            min-height: 40px;
+            padding: 0 15px;
+            color: #a4abb6;
+            background: #1a1f28;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .secondary-button:hover {
+            color: white;
+        }
+
+        .manage-actions {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 10px;
+        }
+
+        .manage-action {
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 14px;
+            color: #c5cad2;
+            background: #171c25;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .manage-action:hover {
+            color: white;
+            background: #202630;
+        }
+
+        .manage-action.danger {
+            color: #ff8d8d;
+        }
+
+        .manage-action.success {
+            color: #76e2ad;
+        }
+
+        .manage-action.warning {
+            color: #ffd078;
+        }
+
+        .manage-action-icon {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            background: #222832;
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        .manage-shop-info {
+            padding: 14px;
+            margin-bottom: 16px;
+            background: #0b0e14;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .manage-shop-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .manage-shop-owner {
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            max-width: 320px;
+            padding: 13px 16px;
+            color: white;
+            background: #191e27;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 15px 50px rgba(0,0,0,.4);
+            font-size: 11px;
+            transform: translateY(30px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .25s ease,opacity .25s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: rgba(53,201,130,.3);
+        }
+
+        .toast.error {
+            border-color: rgba(255,87,87,.3);
+        }
+
+        @media (max-width:1050px) {
+            .stats {
+                grid-template-columns: repeat(2,minmax(0,1fr));
+            }
+        }
+
+        @media (max-width:800px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform .25s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 17px;
+            }
+
+            .content {
+                padding: 20px 17px;
+            }
+        }
+
+        @media (max-width:560px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-number {
+                font-size: 21px;
+            }
+
+            .section-header {
+                align-items: flex-end;
+            }
+
+            .section-header p {
+                display: none;
+            }
+
+            .primary-button {
+                min-height: 37px;
+                padding: 0 11px;
+            }
+
+            .modal {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .modal-box {
+                max-height: 94vh;
+                border-radius: 18px 18px 0 0;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .manage-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .toast {
+                right: 15px;
+                left: 15px;
+                bottom: 15px;
+                max-width: none;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">Z</div>
+
+            <div class="brand-info">
+                <strong>ZEE POS</strong>
+                <span>SUPER ADMIN</span>
+            </div>
+        </div>
+
+        <div class="nav-title">Management</div>
+
+        <nav class="nav">
+
+            <button
+                class="nav-item active"
+                type="button"
+                data-section="dashboard"
+                data-title="Dashboard"
+                data-description="Manage your ZEE POS platform"
+            >
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="shops"
+                data-title="Shops"
+                data-description="Manage all registered businesses"
+            >
+                <span class="nav-icon">⌂</span>
+                Shops
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="users"
+                data-title="Users"
+                data-description="Manage ZEE POS users"
+            >
+                <span class="nav-icon">♙</span>
+                Users
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="subscriptions"
+                data-title="Subscriptions"
+                data-description="Manage shop subscriptions and plans"
+            >
+                <span class="nav-icon">◈</span>
+                Subscriptions
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="payments"
+                data-title="Payments"
+                data-description="Manage platform payments"
+            >
+                <span class="nav-icon">▤</span>
+                Payments
+            </button>
+
+        </nav>
+
+        <div class="nav-title">System</div>
+
+        <nav class="nav">
+
+            <button
+                class="nav-item"
+                type="button"
+                data-section="settings"
+                data-title="Settings"
+                data-description="Manage ZEE POS system settings"
+            >
+                <span class="nav-icon">⚙</span>
+                Settings
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="admin-profile">
+
+                <div class="avatar">ZA</div>
+
+                <div>
+                    <strong>Super Admin</strong>
+                    <span>System Administrator</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div style="display:flex;align-items:center;">
+
+                <button
+                    class="mobile-menu"
+                    id="mobileMenu"
+                    type="button"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+                <div class="page-title">
+
+                    <h1 id="pageTitle">
+                        Dashboard
+                    </h1>
+
+                    <p id="pageDescription">
+                        Manage your ZEE POS platform
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="top-actions">
+
+                <button
+                    class="notification"
+                    type="button"
+                    id="notificationButton"
+                    aria-label="Notifications"
+                >
+                    ♢
+                    <span class="notification-dot"></span>
+                </button>
+
+            </div>
+
+        </header>
+
+        <div class="content">
+
+            <section
+                class="page-section active"
+                id="dashboardSection"
+            >
+
+                <section class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-label">Total Shops</span>
+                            <span class="stat-icon">⌂</span>
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="totalShops"
+                        >0</div>
+
+                        <div class="stat-change">
+                            Registered shops
+                        </div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-label">Active Shops</span>
+                            <span class="stat-icon">✓</span>
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="activeShops"
+                        >0</div>
+
+                        <div class="stat-change">
+                            Currently active
+                        </div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-label">Subscriptions</span>
+                            <span class="stat-icon">◈</span>
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="subscriptions"
+                        >0</div>
+
+                        <div class="stat-change">
+                            Active plans
+                        </div>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <span class="stat-label">Monthly Revenue</span>
+                            <span class="stat-icon">₭</span>
+                        </div>
+
+                        <div
+                            class="stat-number"
+                            id="monthlyRevenue"
+                        >0</div>
+
+                        <div class="stat-change">
+                            Subscription revenue
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section>
+
+                    <div class="section-header">
+
+                        <div>
+                            <h2>Overview</h2>
+
+                            <p>
+                                ZEE POS platform overview
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="empty-section">
+
+                        <div class="empty-icon">▦</div>
+
+                        <h2>Dashboard</h2>
+
+                        <p>
+                            Use the Management menu to manage Shops,
+                            Users, Subscriptions and Payments.
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+            <section
+                class="page-section"
+                id="shopsSection"
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Shops</h2>
+
+                        <p>
+                            Manage all registered businesses
+                        </p>
+                    </div>
+
+                    <button
+                        class="primary-button"
+                        id="addShopButton"
+                        type="button"
+                    >
+                        <span>+</span>
+                        Add New Shop
+                    </button>
+
+                </div>
+
+                <div class="table-container">
+
+                    <div class="table-scroll">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+                                    <th>SHOP</th>
+                                    <th>STATUS</th>
+                                    <th>THEME</th>
+                                    <th>PLAN</th>
+                                    <th>EXPIRES</th>
+                                    <th>ACTION</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="shopsTable">
+
+                                <tr>
+
+                                    <td
+                                        colspan="6"
+                                        class="table-message"
+                                    >
+                                        Loading shops...
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section
+                class="page-section"
+                id="usersSection"
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Users</h2>
+
+                        <p>Manage ZEE POS users</p>
+                    </div>
+
+                </div>
+
+                <div class="empty-section">
+
+                    <div class="empty-icon">♙</div>
+
+                    <h2>User Management</h2>
+
+                    <p>
+                        User management will be connected
+                        to Firestore in the next step.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section
+                class="page-section"
+                id="subscriptionsSection"
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Subscriptions</h2>
+
+                        <p>
+                            Manage shop subscriptions and plans
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="empty-section">
+
+                    <div class="empty-icon">◈</div>
+
+                    <h2>Subscription Management</h2>
+
+                    <p>
+                        Subscription management will be connected
+                        to Firestore in the next step.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section
+                class="page-section"
+                id="paymentsSection"
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Payments</h2>
+
+                        <p>Manage platform payments</p>
+                    </div>
+
+                </div>
+
+                <div class="empty-section">
+
+                    <div class="empty-icon">▤</div>
+
+                    <h2>Payment Management</h2>
+
+                    <p>
+                        Payment management will be connected
+                        to Firestore in the next step.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section
+                class="page-section"
+                id="settingsSection"
+            >
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Settings</h2>
+
+                        <p>
+                            Manage ZEE POS system settings
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="empty-section">
+
+                    <div class="empty-icon">⚙</div>
+
+                    <h2>System Settings</h2>
+
+                    <p>
+                        System settings will be added here.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =============================================================
+     SHOP FORM MODAL
+============================================================== -->
+
+<div
+    class="modal"
+    id="shopModal"
+    aria-hidden="true"
+>
+
+    <div
+        class="modal-box"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+    >
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Create New Shop
+            </h2>
+
+            <button
+                class="close-button"
+                id="closeModal"
+                type="button"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="shopForm">
+
+            <div class="modal-body">
+
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        Shop Information
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="shopName">
+                                Shop Name *
+                            </label>
+
+                            <input
+                                id="shopName"
+                                type="text"
+                                placeholder="e.g. MINI MARK"
+                                maxlength="100"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="ownerName">
+                                Owner Name *
+                            </label>
+
+                            <input
+                                id="ownerName"
+                                type="text"
+                                placeholder="Owner name"
+                                maxlength="100"
+                                required
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="phone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                id="phone"
+                                type="tel"
+                                inputmode="tel"
+                                placeholder="09xxxxxxxxx"
+                                maxlength="30"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="currency">
+                                Currency
+                            </label>
+
+                            <select id="currency">
+
+                                <option value="MMK">
+                                    Myanmar Kyat (MMK)
+                                </option>
+
+                                <option value="USD">
+                                    US Dollar (USD)
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full">
+
+                            <label for="address">
+                                Shop Address
+                            </label>
+
+                            <input
+                                id="address"
+                                type="text"
+                                placeholder="Shop address"
+                                maxlength="250"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     OWNER ACCOUNT
+                ================================================== -->
+
+                <div
+                    class="form-section"
+                    id="ownerAccountSection"
+                >
+
+                    <div class="form-section-title">
+                        Owner Account
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group full">
+
+                            <label for="ownerEmail">
+                                Owner Login Email *
+                            </label>
+
+                            <input
+                                id="ownerEmail"
+                                type="email"
+                                placeholder="owner@example.com"
+                                maxlength="150"
+                                autocomplete="off"
+                            >
+
+                        </div>
+
+                        <div class="form-group full">
+
+                            <label for="ownerPassword">
+                                Owner Login Password *
+                            </label>
+
+                            <input
+                                id="ownerPassword"
+                                type="password"
+                                placeholder="Minimum 6 characters"
+                                minlength="6"
+                                maxlength="100"
+                                autocomplete="new-password"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        Brand & Appearance
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="primaryColor">
+                                Primary Color
+                            </label>
+
+                            <input
+                                id="primaryColor"
+                                type="color"
+                                value="#ff7a00"
+                            >
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="secondaryColor">
+                                Secondary Color
+                            </label>
+
+                            <input
+                                id="secondaryColor"
+                                type="color"
+                                value="#111111"
+                            >
+
+                        </div>
+
+                        <div class="form-group full">
+
+                            <label>
+                                Shop Logo
+                            </label>
+
+                            <div class="logo-upload">
+
+                                <div
+                                    class="logo-preview"
+                                    id="logoPreview"
+                                >
+                                    <span>LOGO</span>
+                                </div>
+
+                                <div class="upload-text">
+
+                                    <strong>
+                                        Upload shop logo
+                                    </strong>
+
+                                    <span>
+                                        PNG, JPG or WEBP
+                                    </span>
+
+                                    <input
+                                        id="logoInput"
+                                        type="file"
+                                        accept="image/png,image/jpeg,image/webp"
+                                        style="
+                                            margin-top:8px;
+                                            height:auto;
+                                            padding:0;
+                                            border:0;
+                                            background:transparent;
+                                        "
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        Subscription
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="plan">
+                                Plan
+                            </label>
+
+                            <select id="plan">
+
+                                <option value="1 Month">
+                                    1 Month
+                                </option>
+
+                                <option value="3 Months">
+                                    3 Months
+                                </option>
+
+                                <option value="6 Months">
+                                    6 Months
+                                </option>
+
+                                <option value="1 Year">
+                                    1 Year
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="startDate">
+                                Start Date
+                            </label>
+
+                            <input
+                                id="startDate"
+                                type="date"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="secondary-button"
+                    id="cancelModal"
+                    type="button"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    class="primary-button"
+                    id="createShopButton"
+                    type="submit"
+                >
+                    Create Shop
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =============================================================
+     SHOP MANAGEMENT MODAL
+============================================================== -->
+
+<div
+    class="modal"
+    id="manageModal"
+    aria-hidden="true"
+>
+
+    <div
+        class="modal-box"
+        role="dialog"
+        aria-modal="true"
+    >
+
+        <div class="modal-header">
+
+            <h2>
+                Shop Management
+            </h2>
+
+            <button
+                class="close-button"
+                id="closeManageModal"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+
+            <div
+                class="manage-shop-info"
+                id="manageShopInfo"
+            >
+                Shop
+            </div>
+
+            <div class="manage-actions">
+
+                <button
+                    class="manage-action"
+                    type="button"
+                    id="viewShopButton"
+                >
+                    <span class="manage-action-icon">◉</span>
+
+                    <span>
+                        View Shop
+                    </span>
+                </button>
+
+                <button
+                    class="manage-action"
+                    type="button"
+                    id="editShopButton"
+                >
+                    <span class="manage-action-icon">✎</span>
+
+                    <span>
+                        Edit Shop
+                    </span>
+                </button>
+
+                <button
+                    class="manage-action success"
+                    type="button"
+                    id="activateShopButton"
+                >
+                    <span class="manage-action-icon">✓</span>
+
+                    <span>
+                        Activate
+                    </span>
+                </button>
+
+                <button
+                    class="manage-action warning"
+                    type="button"
+                    id="suspendShopButton"
+                >
+                    <span class="manage-action-icon">!</span>
+
+                    <span>
+                        Suspend
+                    </span>
+                </button>
+
+                <button
+                    class="manage-action danger"
+                    type="button"
+                    id="deleteShopButton"
+                >
+                    <span class="manage-action-icon">×</span>
+
+                    <span>
+                        Delete Shop
+                    </span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="secondary-button"
+                id="manageCancelButton"
+                type="button"
+            >
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+></div>
+
+
+<script type="module">
+
+    /* =========================================================
+       FIREBASE
+    ========================================================= */
+
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+        createUserWithEmailAndPassword,
+        deleteUser
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    import {
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs,
+        query,
+        orderBy,
+        serverTimestamp,
+        doc,
+        updateDoc,
+        deleteDoc,
+        setDoc
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyDucU3FiUUiBS50P9FSrKPxXSAja3FI-MU",
+
+        authDomain:
+            "zee-pos.firebaseapp.com",
+
+        projectId:
+            "zee-pos",
+
+        storageBucket:
+            "zee-pos.firebasestorage.app",
+
+        messagingSenderId:
+            "508353450616",
+
+        appId:
+            "1:508353450616:web:9cb13fa3256e8637ef938d"
+
+    };
+
+
+    const app =
+        initializeApp(firebaseConfig);
+
+
+    const auth =
+        getAuth(app);
+
+
+    const db =
+        getFirestore(app);
+
+
+    /*
+     * IMPORTANT
+     *
+     * We use a SECOND Firebase Auth instance
+     * for creating the Owner account.
+     *
+     * If we use the main auth instance,
+     * createUserWithEmailAndPassword()
+     * would switch the current Super Admin
+     * login to the newly created Owner.
+     *
+     * Secondary Auth keeps Super Admin logged in.
+     */
+
+    const ownerAuthApp =
+        initializeApp(
+            firebaseConfig,
+            "OwnerAccountCreationApp"
+        );
+
+
+    const ownerAuth =
+        getAuth(ownerAuthApp);
+
+
+    /* =========================================================
+       SUPER ADMIN
+    ========================================================= */
+
+    const SUPER_ADMIN_UID =
+        "ZgYPNQmMRLX0xYUpnTUi3yift8v1";
+
+
+    /* =========================================================
+       DOM
+    ========================================================= */
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+
+    const mobileMenu =
+        document.getElementById("mobileMenu");
+
+
+    const pageTitle =
+        document.getElementById("pageTitle");
+
+
+    const pageDescription =
+        document.getElementById("pageDescription");
+
+
+    const navItems =
+        document.querySelectorAll(".nav-item");
+
+
+    const pageSections =
+        document.querySelectorAll(".page-section");
+
+
+    const shopModal =
+        document.getElementById("shopModal");
+
+
+    const manageModal =
+        document.getElementById("manageModal");
+
+
+    const addShopButton =
+        document.getElementById("addShopButton");
+
+
+    const closeModal =
+        document.getElementById("closeModal");
+
+
+    const cancelModal =
+        document.getElementById("cancelModal");
+
+
+    const closeManageModal =
+        document.getElementById("closeManageModal");
+
+
+    const manageCancelButton =
+        document.getElementById("manageCancelButton");
+
+
+    const shopForm =
+        document.getElementById("shopForm");
+
+
+    const shopsTable =
+        document.getElementById("shopsTable");
+
+
+    const totalShops =
+        document.getElementById("totalShops");
+
+
+    const activeShops =
+        document.getElementById("activeShops");
+
+
+    const subscriptions =
+        document.getElementById("subscriptions");
+
+
+    const monthlyRevenue =
+        document.getElementById("monthlyRevenue");
+
+
+    const toast =
+        document.getElementById("toast");
+
+
+    const logoInput =
+        document.getElementById("logoInput");
+
+
+    const logoPreview =
+        document.getElementById("logoPreview");
+
+
+    const createShopButton =
+        document.getElementById("createShopButton");
+
+
+    const modalTitle =
+        document.getElementById("modalTitle");
+
+
+    /* =========================================================
+       OWNER ACCOUNT DOM
+    ========================================================= */
+
+    const ownerAccountSection =
+        document.getElementById(
+            "ownerAccountSection"
+        );
+
+
+    const ownerEmailInput =
+        document.getElementById(
+            "ownerEmail"
+        );
+
+
+    const ownerPasswordInput =
+        document.getElementById(
+            "ownerPassword"
+        );
+
+
+    /* =========================================================
+       MANAGEMENT STATE
+    ========================================================= */
+
+    let selectedShopId = null;
+
+    let selectedShopData = null;
+
+    let shopModalMode = "create";
+
+
+    /* =========================================================
+       AUTH GUARD
+    ========================================================= */
+
+    onAuthStateChanged(
+        auth,
+        async user => {
+
+            if (!user) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+            }
+
+
+            if (
+                user.uid !==
+                SUPER_ADMIN_UID
+            ) {
+
+                await signOut(auth);
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return;
+            }
+
+
+            console.log(
+                "Super Admin authenticated:",
+                user.email
+            );
+
+
+            await loadShops();
+
+        }
+    );
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    navItems.forEach(item => {
+
+        item.addEventListener(
+            "click",
+            () => {
+
+                const section =
+                    item.dataset.section;
+
+                const title =
+                    item.dataset.title;
+
+                const description =
+                    item.dataset.description;
+
+
+                navItems.forEach(nav => {
+
+                    nav.classList.remove(
+                        "active"
+                    );
+
+                });
+
+
+                item.classList.add(
+                    "active"
+                );
+
+
+                pageSections.forEach(
+                    page => {
+
+                        page.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                const target =
+                    document.getElementById(
+                        `${section}Section`
+                    );
+
+
+                if (target) {
+
+                    target.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                pageTitle.textContent =
+                    title;
+
+
+                pageDescription.textContent =
+                    description;
+
+
+                if (
+                    window.innerWidth <= 800
+                ) {
+
+                    sidebar.classList.remove(
+                        "open"
+                    );
+
+                }
+
+
+                if (
+                    section === "shops"
+                ) {
+
+                    loadShops();
+
+                }
+
+            }
+        );
+
+    });
+
+
+    /* =========================================================
+       MOBILE MENU
+    ========================================================= */
+
+    mobileMenu.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+    /* =========================================================
+       NOTIFICATION
+    ========================================================= */
+
+    document
+        .getElementById("notificationButton")
+        .addEventListener(
+            "click",
+            () => {
+
+                showToast(
+                    "No new notifications.",
+                    "success"
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       OPEN CREATE SHOP MODAL
+    ========================================================= */
+
+    addShopButton.addEventListener(
+        "click",
+        openCreateShopModal
+    );
+
+
+    function openCreateShopModal() {
+
+        shopModalMode =
+            "create";
+
+
+        selectedShopId =
+            null;
+
+
+        selectedShopData =
+            null;
+
+
+        modalTitle.textContent =
+            "Create New Shop";
+
+
+        createShopButton.textContent =
+            "Create Shop";
+
+
+        createShopButton.style.display =
+            "inline-flex";
+
+
+        enableShopForm();
+
+
+        shopForm.reset();
+
+
+        resetLogoPreview();
+
+
+        setTodayDate();
+
+
+        /*
+         * Owner account is required ONLY
+         * when creating a new shop.
+         */
+
+        ownerAccountSection.style.display =
+            "block";
+
+
+        ownerEmailInput.required =
+            true;
+
+
+        ownerPasswordInput.required =
+            true;
+
+
+        ownerEmailInput.disabled =
+            false;
+
+
+        ownerPasswordInput.disabled =
+            false;
+
+
+        shopModal.classList.add(
+            "open"
+        );
+
+
+        shopModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+
+        setTimeout(
+            () => {
+
+                document
+                    .getElementById("shopName")
+                    .focus();
+
+            },
+            100
+        );
+
+    }
+
+
+    /* =========================================================
+       CLOSE SHOP MODAL
+    ========================================================= */
+
+    function closeShopFormModal() {
+
+        shopModal.classList.remove(
+            "open"
+        );
+
+
+        shopModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    closeModal.addEventListener(
+        "click",
+        closeShopFormModal
+    );
+
+
+    cancelModal.addEventListener(
+        "click",
+        closeShopFormModal
+    );
+
+
+    shopModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                shopModal
+            ) {
+
+                closeShopFormModal();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       MANAGEMENT MODAL
+    ========================================================= */
+
+    function openManageModal(
+        shopId,
+        shop
+    ) {
+
+        selectedShopId =
+            shopId;
+
+
+        selectedShopData =
+            shop;
+
+
+        const info =
+            document.getElementById(
+                "manageShopInfo"
+            );
+
+
+        info.innerHTML = `
+
+            <div class="manage-shop-name">
+                ${escapeHtml(
+                    shop.shopName ||
+                    "Unnamed Shop"
+                )}
+            </div>
+
+            <div class="manage-shop-owner">
+                Owner:
+                ${escapeHtml(
+                    shop.ownerName ||
+                    "No owner"
+                )}
+            </div>
+
+        `;
+
+
+        manageModal.classList.add(
+            "open"
+        );
+
+
+        manageModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeManageShopModal() {
+
+        manageModal.classList.remove(
+            "open"
+        );
+
+
+        manageModal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        selectedShopId =
+            null;
+
+
+        selectedShopData =
+            null;
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    closeManageModal.addEventListener(
+        "click",
+        closeManageShopModal
+    );
+
+
+    manageCancelButton.addEventListener(
+        "click",
+        closeManageShopModal
+    );
+
+
+    manageModal.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target ===
+                manageModal
+            ) {
+
+                closeManageShopModal();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       VIEW SHOP
+    ========================================================= */
+
+    document
+        .getElementById("viewShopButton")
+        .addEventListener(
+            "click",
+            () => {
+
+                if (
+                    !selectedShopId ||
+                    !selectedShopData
+                ) {
+
+                    return;
+
+                }
+
+
+                const shop =
+                    selectedShopData;
+
+
+                closeManageShopModal();
+
+
+                openViewShopModal(
+                    shop
+                );
+
+            }
+        );
+
+
+    function openViewShopModal(
+        shop
+    ) {
+
+        shopModalMode =
+            "view";
+
+
+        modalTitle.textContent =
+            "View Shop";
+
+
+        createShopButton.style.display =
+            "none";
+
+
+        /*
+         * Owner login fields are not
+         * editable/viewed here.
+         */
+
+        ownerAccountSection.style.display =
+            "none";
+
+
+        ownerEmailInput.required =
+            false;
+
+
+        ownerPasswordInput.required =
+            false;
+
+
+        fillShopForm(
+            shop
+        );
+
+
+        disableShopForm();
+
+
+        shopModal.classList.add(
+            "open"
+        );
+
+
+        shopModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =========================================================
+       EDIT SHOP
+    ========================================================= */
+
+    document
+        .getElementById("editShopButton")
+        .addEventListener(
+            "click",
+            () => {
+
+                if (
+                    !selectedShopId ||
+                    !selectedShopData
+                ) {
+
+                    return;
+
+                }
+
+
+                const shop =
+                    selectedShopData;
+
+
+                const shopId =
+                    selectedShopId;
+
+
+                closeManageShopModal();
+
+
+                openEditShopModal(
+                    shopId,
+                    shop
+                );
+
+            }
+        );
+
+
+    function openEditShopModal(
+        shopId,
+        shop
+    ) {
+
+        selectedShopId =
+            shopId;
+
+
+        selectedShopData =
+            shop;
+
+
+        shopModalMode =
+            "edit";
+
+
+        modalTitle.textContent =
+            "Edit Shop";
+
+
+        createShopButton.textContent =
+            "Save Changes";
+
+
+        createShopButton.style.display =
+            "inline-flex";
+
+
+        enableShopForm();
+
+
+        /*
+         * Owner email/password are NOT
+         * changed from Shop Edit.
+         */
+
+        ownerAccountSection.style.display =
+            "none";
+
+
+        ownerEmailInput.required =
+            false;
+
+
+        ownerPasswordInput.required =
+            false;
+
+
+        fillShopForm(
+            shop
+        );
+
+
+        shopModal.classList.add(
+            "open"
+        );
+
+
+        shopModal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    /* =========================================================
+       FILL FORM
+    ========================================================= */
+
+    function fillShopForm(
+        shop
+    ) {
+
+        document.getElementById(
+            "shopName"
+        ).value =
+            shop.shopName ||
+            "";
+
+
+        document.getElementById(
+            "ownerName"
+        ).value =
+            shop.ownerName ||
+            "";
+
+
+        document.getElementById(
+            "phone"
+        ).value =
+            shop.phone ||
+            "";
+
+
+        document.getElementById(
+            "currency"
+        ).value =
+            shop.currency ||
+            "MMK";
+
+
+        document.getElementById(
+            "address"
+        ).value =
+            shop.address ||
+            "";
+
+
+        document.getElementById(
+            "primaryColor"
+        ).value =
+            shop.primaryColor ||
+            "#ff7a00";
+
+
+        document.getElementById(
+            "secondaryColor"
+        ).value =
+            shop.secondaryColor ||
+            "#111111";
+
+
+        document.getElementById(
+            "plan"
+        ).value =
+            shop.plan ||
+            "1 Month";
+
+
+        document.getElementById(
+            "startDate"
+        ).value =
+            shop.startDate ||
+            "";
+
+
+        ownerEmailInput.value =
+            shop.ownerEmail ||
+            "";
+
+
+        ownerPasswordInput.value =
+            "";
+
+
+        resetLogoPreview();
+
+    }
+
+
+    /* =========================================================
+       FORM ENABLE
+    ========================================================= */
+
+    function disableShopForm() {
+
+        const fields =
+            shopForm.querySelectorAll(
+                "input, select"
+            );
+
+
+        fields.forEach(
+            field => {
+
+                field.disabled =
+                    true;
+
+            }
+        );
+
+
+        logoInput.disabled =
+            true;
+
+    }
+
+
+    function enableShopForm() {
+
+        const fields =
+            shopForm.querySelectorAll(
+                "input, select"
+            );
+
+
+        fields.forEach(
+            field => {
+
+                field.disabled =
+                    false;
+
+            }
+        );
+
+
+        logoInput.disabled =
+            false;
+
+    }
+
+
+    /* =========================================================
+       SHOP FORM SUBMIT
+    ========================================================= */
+
+    shopForm.addEventListener(
+        "submit",
+        async event => {
+
+            event.preventDefault();
+
+
+            if (
+                shopModalMode ===
+                "view"
+            ) {
+
+                return;
+
+            }
+
+
+            if (!auth.currentUser) {
+
+                showToast(
+                    "Your login session has expired.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                auth.currentUser.uid !==
+                SUPER_ADMIN_UID
+            ) {
+
+                showToast(
+                    "You are not authorized.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            const shopName =
+                document.getElementById(
+                    "shopName"
+                ).value.trim();
+
+
+            const ownerName =
+                document.getElementById(
+                    "ownerName"
+                ).value.trim();
+
+
+            const phone =
+                document.getElementById(
+                    "phone"
+                ).value.trim();
+
+
+            const currency =
+                document.getElementById(
+                    "currency"
+                ).value;
+
+
+            const address =
+                document.getElementById(
+                    "address"
+                ).value.trim();
+
+
+            const primaryColor =
+                document.getElementById(
+                    "primaryColor"
+                ).value;
+
+
+            const secondaryColor =
+                document.getElementById(
+                    "secondaryColor"
+                ).value;
+
+
+            const plan =
+                document.getElementById(
+                    "plan"
+                ).value;
+
+
+            const startDate =
+                document.getElementById(
+                    "startDate"
+                ).value;
+
+
+            /*
+             * Owner fields are only required
+             * for CREATE mode.
+             */
+
+            const ownerEmail =
+                ownerEmailInput.value.trim()
+                    .toLowerCase();
+
+
+            const ownerPassword =
+                ownerPasswordInput.value;
+
+
+            if (
+                !shopName ||
+                !ownerName
+            ) {
+
+                showToast(
+                    "Shop name and owner name are required.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!startDate) {
+
+                showToast(
+                    "Please select a start date.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                shopModalMode ===
+                "create"
+            ) {
+
+                if (!ownerEmail) {
+
+                    showToast(
+                        "Owner login email is required.",
+                        "error"
+                    );
+
+                    ownerEmailInput.focus();
+
+                    return;
+
+                }
+
+
+                if (
+                    !isValidEmail(
+                        ownerEmail
+                    )
+                ) {
+
+                    showToast(
+                        "Please enter a valid owner email.",
+                        "error"
+                    );
+
+                    ownerEmailInput.focus();
+
+                    return;
+
+                }
+
+
+                if (
+                    !ownerPassword ||
+                    ownerPassword.length < 6
+                ) {
+
+                    showToast(
+                        "Owner password must be at least 6 characters.",
+                        "error"
+                    );
+
+                    ownerPasswordInput.focus();
+
+                    return;
+
+                }
+
+            }
+
+
+            const initials =
+                getInitials(
+                    shopName
+                );
+
+
+            const expiryDate =
+                calculateExpiryDate(
+                    startDate,
+                    plan
+                );
+
+
+            try {
+
+                createShopButton.disabled =
+                    true;
+
+
+                /*
+                 * =================================================
+                 * EDIT
+                 * =================================================
+                 */
+
+                if (
+                    shopModalMode ===
+                    "edit"
+                ) {
+
+                    createShopButton.textContent =
+                        "Saving...";
+
+
+                    if (!selectedShopId) {
+
+                        throw new Error(
+                            "Shop ID is missing."
+                        );
+
+                    }
+
+
+                    const shopRef =
+                        doc(
+                            db,
+                            "shops",
+                            selectedShopId
+                        );
+
+
+                    const updateData = {
+
+                        shopName,
+
+                        ownerName,
+
+                        phone,
+
+                        currency,
+
+                        address,
+
+                        primaryColor,
+
+                        secondaryColor,
+
+                        plan,
+
+                        startDate,
+
+                        expiryDate,
+
+                        initials
+
+                    };
+
+
+                    await updateDoc(
+                        shopRef,
+                        updateData
+                    );
+
+
+                    /*
+                     * Update Owner profile name
+                     * if this shop already has an owner.
+                     */
+
+                    if (
+                        selectedShopData &&
+                        selectedShopData.ownerUid
+                    ) {
+
+                        try {
+
+                            await updateDoc(
+                                doc(
+                                    db,
+                                    "users",
+                                    selectedShopData.ownerUid
+                                ),
+                                {
+                                    name:
+                                        ownerName
+                                }
+                            );
+
+                        } catch (
+                            ownerProfileError
+                        ) {
+
+                            /*
+                             * Do not fail the entire
+                             * Shop update if the profile
+                             * does not exist yet.
+                             */
+
+                            console.warn(
+                                "Owner profile update skipped:",
+                                ownerProfileError
+                            );
+
+                        }
+
+                    }
+
+
+                    showToast(
+                        `${shopName} has been updated successfully.`,
+                        "success"
+                    );
+
+                }
+
+
+                /*
+                 * =================================================
+                 * CREATE SHOP + OWNER
+                 * =================================================
+                 */
+
+                else {
+
+                    createShopButton.textContent =
+                        "Creating...";
+
+
+                    let ownerCredential =
+                        null;
+
+
+                    let createdShopId =
+                        null;
+
+
+                    let ownerProfileCreated =
+                        false;
+
+
+                    try {
+
+                        /*
+                         * STEP 1
+                         *
+                         * Create Owner Firebase Auth
+                         * account using secondary Auth.
+                         */
+
+                        ownerCredential =
+                            await createUserWithEmailAndPassword(
+                                ownerAuth,
+                                ownerEmail,
+                                ownerPassword
+                            );
+
+
+                        const ownerUid =
+                            ownerCredential.user.uid;
+
+
+                        /*
+                         * STEP 2
+                         *
+                         * Create Shop document.
+                         */
+
+                        const shopData = {
+
+                            shopName,
+
+                            ownerName,
+
+                            ownerUid,
+
+                            ownerEmail,
+
+                            phone,
+
+                            currency,
+
+                            address,
+
+                            primaryColor,
+
+                            secondaryColor,
+
+                            plan,
+
+                            startDate,
+
+                            expiryDate,
+
+                            status:
+                                "active",
+
+                            initials,
+
+                            createdBy:
+                                auth.currentUser.uid,
+
+                            createdAt:
+                                serverTimestamp()
+
+                        };
+
+
+                        const shopReference =
+                            await addDoc(
+                                collection(
+                                    db,
+                                    "shops"
+                                ),
+                                shopData
+                            );
+
+
+                        createdShopId =
+                            shopReference.id;
+
+
+                        /*
+                         * STEP 3
+                         *
+                         * Create Owner profile.
+                         */
+
+                        await setDoc(
+                            doc(
+                                db,
+                                "users",
+                                ownerUid
+                            ),
+                            {
+
+                                uid:
+                                    ownerUid,
+
+                                name:
+                                    ownerName,
+
+                                email:
+                                    ownerEmail,
+
+                                shopId:
+                                    createdShopId,
+
+                                role:
+                                    "owner",
+
+                                status:
+                                    "active",
+
+                                createdBy:
+                                    auth.currentUser.uid,
+
+                                createdAt:
+                                    serverTimestamp()
+
+                            }
+                        );
+
+
+                        ownerProfileCreated =
+                            true;
+
+
+                        /*
+                         * STEP 4
+                         *
+                         * Sign out secondary Auth.
+                         *
+                         * Main Super Admin Auth
+                         * remains logged in.
+                         */
+
+                        await signOut(
+                            ownerAuth
+                        );
+
+
+                        showToast(
+                            `${shopName} and Owner account created successfully.`,
+                            "success"
+                        );
+
+                    } catch (
+                        createError
+                    ) {
+
+                        console.error(
+                            "Shop + Owner creation error:",
+                            createError
+                        );
+
+
+                        /*
+                         * =================================================
+                         * ROLLBACK
+                         * =================================================
+                         *
+                         * If something fails after creating
+                         * Owner Auth / Shop / User profile,
+                         * try to remove the created records.
+                         */
+
+
+                        /*
+                         * Delete users/{ownerUid}
+                         */
+
+                        if (
+                            ownerCredential &&
+                            ownerCredential.user &&
+                            ownerProfileCreated
+                        ) {
+
+                            try {
+
+                                await deleteDoc(
+                                    doc(
+                                        db,
+                                        "users",
+                                        ownerCredential
+                                            .user
+                                            .uid
+                                    )
+                                );
+
+                            } catch (
+                                rollbackUserError
+                            ) {
+
+                                console.error(
+                                    "Rollback user profile error:",
+                                    rollbackUserError
+                                );
+
+                            }
+
+                        }
+
+
+                        /*
+                         * Delete shops/{shopId}
+                         */
+
+                        if (
+                            createdShopId
+                        ) {
+
+                            try {
+
+                                await deleteDoc(
+                                    doc(
+                                        db,
+                                        "shops",
+                                        createdShopId
+                                    )
+                                );
+
+                            } catch (
+                                rollbackShopError
+                            ) {
+
+                                console.error(
+                                    "Rollback shop error:",
+                                    rollbackShopError
+                                );
+
+                            }
+
+                        }
+
+
+                        /*
+                         * Delete Firebase Auth owner.
+                         *
+                         * Because the secondary Auth
+                         * user is currently signed in,
+                         * client-side deleteUser() can
+                         * delete that newly created account.
+                         */
+
+                        try {
+
+                            if (
+                                ownerAuth.currentUser
+                            ) {
+
+                                await deleteUser(
+                                    ownerAuth.currentUser
+                                );
+
+                            }
+
+                        } catch (
+                            rollbackAuthError
+                        ) {
+
+                            console.error(
+                                "Rollback Owner Auth error:",
+                                rollbackAuthError
+                            );
+
+                        }
+
+
+                        /*
+                         * Important:
+                         * The main Super Admin Auth
+                         * remains untouched.
+                         */
+
+                        throw createError;
+
+                    }
+
+                }
+
+
+                closeShopFormModal();
+
+
+                shopForm.reset();
+
+
+                resetLogoPreview();
+
+
+                selectedShopId =
+                    null;
+
+
+                selectedShopData =
+                    null;
+
+
+                await loadShops();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Shop save error:",
+                    error
+                );
+
+
+                showToast(
+                    getShopSaveErrorMessage(
+                        error
+                    ),
+                    "error"
+                );
+
+
+            } finally {
+
+                createShopButton.disabled =
+                    false;
+
+
+                if (
+                    shopModalMode ===
+                    "edit"
+                ) {
+
+                    createShopButton.textContent =
+                        "Save Changes";
+
+                } else {
+
+                    createShopButton.textContent =
+                        "Create Shop";
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       ACTIVE
+    ========================================================= */
+
+    document
+        .getElementById(
+            "activateShopButton"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    !selectedShopId
+                ) {
+
+                    return;
+
+                }
+
+
+                await changeShopStatus(
+                    selectedShopId,
+                    "active"
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       SUSPEND
+    ========================================================= */
+
+    document
+        .getElementById(
+            "suspendShopButton"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    !selectedShopId
+                ) {
+
+                    return;
+
+                }
+
+
+                await changeShopStatus(
+                    selectedShopId,
+                    "suspended"
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       CHANGE STATUS
+    ========================================================= */
+
+    async function changeShopStatus(
+        shopId,
+        status
+    ) {
+
+        if (!auth.currentUser) {
+
+            showToast(
+                "Your login session has expired.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            auth.currentUser.uid !==
+            SUPER_ADMIN_UID
+        ) {
+
+            showToast(
+                "You are not authorized.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            const shopRef =
+                doc(
+                    db,
+                    "shops",
+                    shopId
+                );
+
+
+            await updateDoc(
+                shopRef,
+                {
+                    status: status
+                }
+            );
+
+
+            closeManageShopModal();
+
+
+            showToast(
+                status === "active"
+                    ? "Shop activated successfully."
+                    : "Shop suspended successfully.",
+                "success"
+            );
+
+
+            await loadShops();
+
+
+        } catch (error) {
+
+            console.error(
+                "Status update error:",
+                error
+            );
+
+
+            showToast(
+                getFirestoreErrorMessage(
+                    error
+                ),
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       DELETE SHOP
+    ========================================================= */
+
+    document
+        .getElementById(
+            "deleteShopButton"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                if (
+                    !selectedShopId ||
+                    !selectedShopData
+                ) {
+
+                    return;
+
+                }
+
+
+                const shopName =
+                    selectedShopData.shopName ||
+                    "this shop";
+
+
+                const confirmed =
+                    window.confirm(
+                        `Are you sure you want to delete "${shopName}"?\n\nThis action cannot be undone.`
+                    );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                await deleteShop(
+                    selectedShopId
+                );
+
+            }
+        );
+
+
+    async function deleteShop(
+        shopId
+    ) {
+
+        if (!auth.currentUser) {
+
+            showToast(
+                "Your login session has expired.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (
+            auth.currentUser.uid !==
+            SUPER_ADMIN_UID
+        ) {
+
+            showToast(
+                "You are not authorized.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            /*
+             * Delete shop document.
+             */
+
+            await deleteDoc(
+                doc(
+                    db,
+                    "shops",
+                    shopId
+                )
+            );
+
+
+            /*
+             * If the Shop has an Owner profile,
+             * remove users/{ownerUid} as well.
+             *
+             * Firebase Auth account cannot be
+             * deleted here because the Super Admin
+             * is not signed into that Owner account.
+             *
+             * Later this can be handled securely
+             * using Admin SDK / Cloud Functions.
+             */
+
+            if (
+                selectedShopData &&
+                selectedShopData.ownerUid
+            ) {
+
+                try {
+
+                    await deleteDoc(
+                        doc(
+                            db,
+                            "users",
+                            selectedShopData.ownerUid
+                        )
+                    );
+
+                } catch (
+                    userDeleteError
+                ) {
+
+                    console.warn(
+                        "Owner profile delete warning:",
+                        userDeleteError
+                    );
+
+                }
+
+            }
+
+
+            closeManageShopModal();
+
+
+            showToast(
+                "Shop deleted successfully.",
+                "success"
+            );
+
+
+            await loadShops();
+
+
+        } catch (error) {
+
+            console.error(
+                "Delete shop error:",
+                error
+            );
+
+
+            showToast(
+                getFirestoreErrorMessage(
+                    error
+                ),
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LOAD SHOPS
+    ========================================================= */
+
+    async function loadShops() {
+
+        shopsTable.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="table-message"
+                >
+                    Loading shops...
+                </td>
+
+            </tr>
+
+        `;
+
+
+        try {
+
+            const shopsQuery =
+                query(
+                    collection(
+                        db,
+                        "shops"
+                    ),
+                    orderBy(
+                        "createdAt",
+                        "desc"
+                    )
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    shopsQuery
+                );
+
+
+            shopsTable.innerHTML =
+                "";
+
+
+            let activeCount =
+                0;
+
+
+            let subscriptionCount =
+                0;
+
+
+            if (
+                snapshot.empty
+            ) {
+
+                shopsTable.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="table-message"
+                        >
+                            No shops have been created yet.
+                        </td>
+
+                    </tr>
+
+                `;
+
+
+                updateStats(
+                    0,
+                    0,
+                    0
+                );
+
+
+                return;
+
+            }
+
+
+            snapshot.forEach(
+                docSnapshot => {
+
+                    const shop =
+                        docSnapshot.data();
+
+
+                    const status =
+                        getShopStatus(
+                            shop
+                        );
+
+
+                    if (
+                        status ===
+                        "active"
+                    ) {
+
+                        activeCount++;
+
+                    }
+
+
+                    if (
+                        shop.plan
+                    ) {
+
+                        subscriptionCount++;
+
+                    }
+
+
+                    const row =
+                        createShopRow(
+                            docSnapshot.id,
+                            shop,
+                            status
+                        );
+
+
+                    shopsTable.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            updateStats(
+                snapshot.size,
+                activeCount,
+                subscriptionCount
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Load shops error:",
+                error
+            );
+
+
+            shopsTable.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="table-message"
+                    >
+                        Unable to load shops.
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            showToast(
+                getFirestoreErrorMessage(
+                    error
+                ),
+                "error"
+            );
+
+        }
+
+    }
+
+
+    /* =========================================================
+       CREATE SHOP ROW
+    ========================================================= */
+
+    function createShopRow(
+        shopId,
+        shop,
+        status
+    ) {
+
+        const row =
+            document.createElement(
+                "tr"
+            );
+
+
+        const shopCell =
+            document.createElement(
+                "td"
+            );
+
+
+        const shopWrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        shopWrapper.className =
+            "shop-cell";
+
+
+        const logo =
+            document.createElement(
+                "div"
+            );
+
+
+        logo.className =
+            "shop-logo";
+
+
+        logo.style.color =
+            shop.primaryColor ||
+            "#ff7a00";
+
+
+        logo.textContent =
+            shop.initials ||
+            getInitials(
+                shop.shopName
+            );
+
+
+        const info =
+            document.createElement(
+                "div"
+            );
+
+
+        const name =
+            document.createElement(
+                "div"
+            );
+
+
+        name.className =
+            "shop-name";
+
+
+        name.textContent =
+            shop.shopName ||
+            "Unnamed Shop";
+
+
+        const owner =
+            document.createElement(
+                "div"
+            );
+
+
+        owner.className =
+            "shop-owner";
+
+
+        owner.textContent =
+            shop.ownerName ||
+            "No owner";
+
+
+        info.appendChild(
+            name
+        );
+
+
+        info.appendChild(
+            owner
+        );
+
+
+        shopWrapper.appendChild(
+            logo
+        );
+
+
+        shopWrapper.appendChild(
+            info
+        );
+
+
+        shopCell.appendChild(
+            shopWrapper
+        );
+
+
+        const statusCell =
+            document.createElement(
+                "td"
+            );
+
+
+        const statusElement =
+            document.createElement(
+                "span"
+            );
+
+
+        statusElement.className =
+            `status ${status}`;
+
+
+        if (
+            status ===
+            "active"
+        ) {
+
+            statusElement.textContent =
+                "Active";
+
+        } else if (
+            status ===
+            "suspended"
+        ) {
+
+            statusElement.textContent =
+                "Suspended";
+
+        } else {
+
+            statusElement.textContent =
+                "Expired";
+
+        }
+
+
+        statusCell.appendChild(
+            statusElement
+        );
+
+
+        const themeCell =
+            document.createElement(
+                "td"
+            );
+
+
+        const themePreview =
+            document.createElement(
+                "div"
+            );
+
+
+        themePreview.className =
+            "theme-preview";
+
+
+        const primary =
+            document.createElement(
+                "span"
+            );
+
+
+        primary.className =
+            "theme-color";
+
+
+        primary.style.background =
+            shop.primaryColor ||
+            "#ff7a00";
+
+
+        const secondary =
+            document.createElement(
+                "span"
+            );
+
+
+        secondary.className =
+            "theme-color";
+
+
+        secondary.style.background =
+            shop.secondaryColor ||
+            "#111111";
+
+
+        themePreview.appendChild(
+            primary
+        );
+
+
+        themePreview.appendChild(
+            secondary
+        );
+
+
+        themeCell.appendChild(
+            themePreview
+        );
+
+
+        const planCell =
+            document.createElement(
+                "td"
+            );
+
+
+        planCell.textContent =
+            shop.plan ||
+            "-";
+
+
+        const expiryCell =
+            document.createElement(
+                "td"
+            );
+
+
+        expiryCell.textContent =
+            formatDate(
+                shop.expiryDate
+            );
+
+
+        const actionCell =
+            document.createElement(
+                "td"
+            );
+
+
+        const manageButton =
+            document.createElement(
+                "button"
+            );
+
+
+        manageButton.className =
+            "action-button";
+
+
+        manageButton.type =
+            "button";
+
+
+        manageButton.textContent =
+            "Manage";
+
+
+        manageButton.addEventListener(
+            "click",
+            () => {
+
+                openManageModal(
+                    shopId,
+                    shop
+                );
+
+            }
+        );
+
+
+        actionCell.appendChild(
+            manageButton
+        );
+
+
+        row.appendChild(
+            shopCell
+        );
+
+
+        row.appendChild(
+            statusCell
+        );
+
+
+        row.appendChild(
+            themeCell
+        );
+
+
+        row.appendChild(
+            planCell
+        );
+
+
+        row.appendChild(
+            expiryCell
+        );
+
+
+        row.appendChild(
+            actionCell
+        );
+
+
+        return row;
+
+    }
+
+
+    /* =========================================================
+       STATS
+    ========================================================= */
+
+    function updateStats(
+        total,
+        active,
+        subscriptionTotal
+    ) {
+
+        totalShops.textContent =
+            total;
+
+
+        activeShops.textContent =
+            active;
+
+
+        subscriptions.textContent =
+            subscriptionTotal;
+
+
+        monthlyRevenue.textContent =
+            "0";
+
+    }
+
+
+    /* =========================================================
+       SHOP STATUS
+    ========================================================= */
+
+    function getShopStatus(
+        shop
+    ) {
+
+        if (
+            shop.status ===
+            "suspended"
+        ) {
+
+            return "suspended";
+
+        }
+
+
+        if (!shop.expiryDate) {
+
+            return "active";
+
+        }
+
+
+        const expiry =
+            new Date(
+                `${shop.expiryDate}T23:59:59`
+            );
+
+
+        if (
+            Number.isNaN(
+                expiry.getTime()
+            )
+        ) {
+
+            return "active";
+
+        }
+
+
+        return new Date() <= expiry
+            ? "active"
+            : "expired";
+
+    }
+
+
+    /* =========================================================
+       CALCULATE EXPIRY
+    ========================================================= */
+
+    function calculateExpiryDate(
+        startDate,
+        plan
+    ) {
+
+        const date =
+            new Date(
+                `${startDate}T00:00:00`
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return startDate;
+
+        }
+
+
+        if (
+            plan ===
+            "1 Month"
+        ) {
+
+            date.setMonth(
+                date.getMonth() + 1
+            );
+
+        } else if (
+            plan ===
+            "3 Months"
+        ) {
+
+            date.setMonth(
+                date.getMonth() + 3
+            );
+
+        } else if (
+            plan ===
+            "6 Months"
+        ) {
+
+            date.setMonth(
+                date.getMonth() + 6
+            );
+
+        } else if (
+            plan ===
+            "1 Year"
+        ) {
+
+            date.setFullYear(
+                date.getFullYear() + 1
+            );
+
+        }
+
+
+        return [
+
+            date.getFullYear(),
+
+            String(
+                date.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            ),
+
+            String(
+                date.getDate()
+            ).padStart(
+                2,
+                "0"
+            )
+
+        ].join("-");
+
+    }
+
+
+    /* =========================================================
+       FORMAT DATE
+    ========================================================= */
+
+    function formatDate(
+        dateString
+    ) {
+
+        if (!dateString) {
+
+            return "—";
+
+        }
+
+
+        const date =
+            new Date(
+                `${dateString}T00:00:00`
+            );
+
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+
+            return "—";
+
+        }
+
+
+        return date.toLocaleDateString(
+            "en-GB",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       GET INITIALS
+    ========================================================= */
+
+    function getInitials(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+            .split(" ")
+            .filter(Boolean)
+            .slice(0,2)
+            .map(
+                word =>
+                    word[0]
+            )
+            .join("")
+            .toUpperCase();
+
+    }
+
+
+    /* =========================================================
+       LOGO PREVIEW
+    ========================================================= */
+
+    logoInput.addEventListener(
+        "change",
+        () => {
+
+            const file =
+                logoInput.files[0];
+
+
+            if (!file) {
+
+                return;
+
+            }
+
+
+            if (
+                ![
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp"
+                ].includes(
+                    file.type
+                )
+            ) {
+
+                showToast(
+                    "Please select PNG, JPG or WEBP.",
+                    "error"
+                );
+
+
+                logoInput.value =
+                    "";
+
+
+                return;
+
+            }
+
+
+            if (
+                file.size >
+                2 * 1024 * 1024
+            ) {
+
+                showToast(
+                    "Logo must be smaller than 2MB.",
+                    "error"
+                );
+
+
+                logoInput.value =
+                    "";
+
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                event => {
+
+                    logoPreview.innerHTML =
+                        "";
+
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    img.src =
+                        event.target.result;
+
+
+                    img.alt =
+                        "Shop logo preview";
+
+
+                    logoPreview.appendChild(
+                        img
+                    );
+
+                };
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+
+    function resetLogoPreview() {
+
+        logoPreview.innerHTML =
+            "<span>LOGO</span>";
+
+
+        logoInput.value =
+            "";
+
+    }
+
+
+    /* =========================================================
+       SET TODAY
+    ========================================================= */
+
+    function setTodayDate() {
+
+        const today =
+            new Date();
+
+
+        const year =
+            today.getFullYear();
+
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        document.getElementById(
+            "startDate"
+        ).value =
+            `${year}-${month}-${day}`;
+
+    }
+
+
+    /* =========================================================
+       VALIDATE EMAIL
+    ========================================================= */
+
+    function isValidEmail(
+        email
+    ) {
+
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            .test(
+                email
+            );
+
+    }
+
+
+    /* =========================================================
+       SHOP SAVE ERROR
+    ========================================================= */
+
+    function getShopSaveErrorMessage(
+        error
+    ) {
+
+        console.error(
+            error
+        );
+
+
+        if (
+            error.code ===
+            "auth/email-already-in-use"
+        ) {
+
+            return "This owner email is already registered.";
+
+        }
+
+
+        if (
+            error.code ===
+            "auth/invalid-email"
+        ) {
+
+            return "Please enter a valid owner email.";
+
+        }
+
+
+        if (
+            error.code ===
+            "auth/weak-password"
+        ) {
+
+            return "Owner password must be at least 6 characters.";
+
+        }
+
+
+        if (
+            error.code ===
+            "auth/network-request-failed"
+        ) {
+
+            return "Network error. Please check your internet connection.";
+
+        }
+
+
+        return getFirestoreErrorMessage(
+            error
+        );
+
+    }
+
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* =========================================================
+       FIRESTORE ERROR
+    ========================================================= */
+
+    function getFirestoreErrorMessage(
+        error
+    ) {
+
+        console.error(
+            error
+        );
+
+
+        if (
+            error.code ===
+            "permission-denied"
+        ) {
+
+            return "Permission denied. Please check your Firestore Security Rules.";
+
+        }
+
+
+        if (
+            error.code ===
+            "failed-precondition"
+        ) {
+
+            return "Firestore needs an index or configuration is incomplete.";
+
+        }
+
+
+        if (
+            error.code ===
+            "unavailable"
+        ) {
+
+            return "Firebase is temporarily unavailable. Please try again.";
+
+        }
+
+
+        if (
+            error.code ===
+            "unauthenticated"
+        ) {
+
+            return "Your login session has expired.";
+
+        }
+
+
+        return (
+            error.message ||
+            "Something went wrong. Please try again."
+        );
+
+    }
+
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
+    let toastTimer;
+
+
+    function showToast(
+        message,
+        type = "success"
+    ) {
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toast.textContent =
+            message;
+
+
+        toast.classList.remove(
+            "success",
+            "error"
+        );
+
+
+        toast.classList.add(
+            "show",
+            type
+        );
+
+
+        toastTimer =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                3500
+            );
+
+    }
+
+
+    /* =========================================================
+       ESCAPE KEY
+    ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key !==
+                "Escape"
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                shopModal.classList.contains(
+                    "open"
+                )
+            ) {
+
+                closeShopFormModal();
+
+            }
+
+
+            if (
+                manageModal.classList.contains(
+                    "open"
+                )
+            ) {
+
+                closeManageShopModal();
+
+            }
+
+        }
+    );
+
+
+    /* =========================================================
+       INITIAL DATE
+    ========================================================= */
+
+    setTodayDate();
+
+</script>
+
+</body>
+</html>
+```

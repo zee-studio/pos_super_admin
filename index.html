@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta
+    name="description"
+    content="ZEE POS — Modern point of sale management for shops and businesses."
+>
+
+<meta name="theme-color" content="#0b0d12">
+
+<title>ZEE POS — Point of Sale</title>
+
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+    /* =========================================================
+       ZEE POS
+       Base Styles
+    ========================================================= */
+
+    :root {
+        --bg: #080a0f;
+        --surface: #10131a;
+        --surface-2: #151922;
+        --border: rgba(255, 255, 255, 0.09);
+        --text: #f7f8fa;
+        --muted: #969ca8;
+        --primary: #ff7a00;
+        --primary-hover: #ff8f2b;
+        --danger: #ff4d4d;
+
+        --radius-lg: 24px;
+        --radius-md: 14px;
+        --radius-sm: 10px;
+
+        --shadow:
+            0 25px 70px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        min-height: 100vh;
+
+        background:
+            radial-gradient(
+                circle at 15% 15%,
+                rgba(255, 122, 0, 0.12),
+                transparent 32%
+            ),
+            radial-gradient(
+                circle at 85% 80%,
+                rgba(183, 0, 0, 0.10),
+                transparent 30%
+            ),
+            var(--bg);
+
+        color: var(--text);
+        font-family: "Inter", sans-serif;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding:
+            max(20px, env(safe-area-inset-top))
+            max(20px, env(safe-area-inset-right))
+            max(20px, env(safe-area-inset-bottom))
+            max(20px, env(safe-area-inset-left));
+    }
+
+    button,
+    input {
+        font: inherit;
+    }
+
+    button {
+        border: 0;
+    }
+
+    /* =========================================================
+       Background Decoration
+    ========================================================= */
+
+    .background-glow {
+        position: fixed;
+
+        width: 420px;
+        height: 420px;
+
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.18;
+
+        pointer-events: none;
+    }
+
+    .glow-one {
+        background: #ff7a00;
+        top: -220px;
+        left: -180px;
+    }
+
+    .glow-two {
+        background: #b70000;
+        bottom: -240px;
+        right: -180px;
+    }
+
+    /* =========================================================
+       Main Container
+    ========================================================= */
+
+    .app {
+        position: relative;
+
+        width: 100%;
+        max-width: 1120px;
+
+        display: grid;
+        grid-template-columns: 1fr 420px;
+
+        background: rgba(16, 19, 26, 0.78);
+
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+
+        box-shadow: var(--shadow);
+
+        backdrop-filter: blur(22px);
+        -webkit-backdrop-filter: blur(22px);
+
+        overflow: hidden;
+    }
+
+    /* =========================================================
+       Brand Panel
+    ========================================================= */
+
+    .brand-panel {
+        position: relative;
+
+        min-height: 680px;
+        padding: 60px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        border-right: 1px solid var(--border);
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+    }
+
+    .brand-mark {
+        width: 44px;
+        height: 44px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 13px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ff9b42,
+                #ff7a00 45%,
+                #b70000
+            );
+
+        color: white;
+
+        font-size: 20px;
+        font-weight: 800;
+
+        box-shadow:
+            0 10px 30px rgba(255, 122, 0, 0.25);
+    }
+
+    .brand-name {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .brand-content {
+        max-width: 570px;
+    }
+
+    .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        margin-bottom: 20px;
+
+        color: #ff9b42;
+
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+
+        text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: var(--primary);
+
+        box-shadow:
+            0 0 0 5px rgba(255, 122, 0, 0.10);
+    }
+
+    .brand-content h1 {
+        max-width: 600px;
+
+        font-size: clamp(38px, 5vw, 64px);
+        line-height: 1.02;
+
+        letter-spacing: -3px;
+
+        margin-bottom: 24px;
+    }
+
+    .brand-content h1 span {
+        color: var(--primary);
+    }
+
+    .brand-content p {
+        max-width: 500px;
+
+        color: var(--muted);
+
+        font-size: 16px;
+        line-height: 1.75;
+    }
+
+    .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 12px;
+        margin-top: 36px;
+    }
+
+    .feature {
+        padding: 16px;
+
+        background: rgba(255, 255, 255, 0.035);
+
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+    }
+
+    .feature-icon {
+        margin-bottom: 12px;
+        font-size: 20px;
+    }
+
+    .feature strong {
+        display: block;
+
+        margin-bottom: 5px;
+
+        font-size: 13px;
+    }
+
+    .feature span {
+        color: var(--muted);
+
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .copyright {
+        color: #656b76;
+        font-size: 12px;
+    }
+
+    /* =========================================================
+       Login Panel
+    ========================================================= */
+
+    .login-panel {
+        min-height: 680px;
+
+        padding: 50px 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-box {
+        width: 100%;
+        max-width: 330px;
+    }
+
+    .login-header {
+        margin-bottom: 32px;
+    }
+
+    .login-header h2 {
+        margin-bottom: 9px;
+
+        font-size: 28px;
+        letter-spacing: -1px;
+    }
+
+    .login-header p {
+        color: var(--muted);
+
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    /* =========================================================
+       Form
+    ========================================================= */
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-label {
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #dfe2e7;
+
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+
+        top: 50%;
+        left: 15px;
+
+        transform: translateY(-50%);
+
+        color: #727985;
+
+        font-size: 15px;
+
+        pointer-events: none;
+    }
+
+    .form-input {
+        width: 100%;
+        height: 50px;
+
+        padding: 0 15px 0 43px;
+
+        color: var(--text);
+
+        background: #0b0e14;
+
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .form-input::placeholder {
+        color: #555b66;
+    }
+
+    .form-input:hover {
+        background: #0d1016;
+    }
+
+    .form-input:focus {
+        border-color: rgba(255, 122, 0, 0.65);
+
+        box-shadow:
+            0 0 0 4px rgba(255, 122, 0, 0.08);
+    }
+
+    .password-toggle {
+        position: absolute;
+
+        top: 50%;
+        right: 13px;
+
+        transform: translateY(-50%);
+
+        color: #737984;
+        background: transparent;
+
+        cursor: pointer;
+
+        padding: 6px;
+    }
+
+    .password-toggle:hover {
+        color: white;
+    }
+
+    .form-input.password {
+        padding-right: 45px;
+    }
+
+    .form-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin: 3px 0 24px;
+    }
+
+    .remember {
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+
+        color: var(--muted);
+
+        font-size: 12px;
+
+        cursor: pointer;
+    }
+
+    .remember input {
+        accent-color: var(--primary);
+    }
+
+    .forgot {
+        color: #ff963d;
+
+        font-size: 12px;
+
+        text-decoration: none;
+    }
+
+    .forgot:hover {
+        text-decoration: underline;
+    }
+
+    /* =========================================================
+       Login Button
+    ========================================================= */
+
+    .login-button {
+        width: 100%;
+        min-height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 9px;
+
+        color: white;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ff922f,
+                #ff7a00
+            );
+
+        border-radius: var(--radius-sm);
+
+        font-size: 14px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 12px 30px rgba(255, 122, 0, 0.18);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            filter 0.2s ease;
+    }
+
+    .login-button:hover {
+        transform: translateY(-1px);
+
+        filter: brightness(1.05);
+
+        box-shadow:
+            0 16px 35px rgba(255, 122, 0, 0.24);
+    }
+
+    .login-button:active {
+        transform: translateY(0);
+    }
+
+    .login-button:disabled {
+        opacity: 0.7;
+
+        cursor: not-allowed;
+
+        transform: none;
+    }
+
+    .login-arrow {
+        font-size: 16px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* =========================================================
+       Loading Spinner
+    ========================================================= */
+
+    .spinner {
+        width: 16px;
+        height: 16px;
+
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: white;
+
+        border-radius: 50%;
+
+        animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* =========================================================
+       Status Message
+    ========================================================= */
+
+    .message {
+        display: none;
+
+        margin-top: 16px;
+
+        padding: 12px 14px;
+
+        border-radius: var(--radius-sm);
+
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .message.error {
+        display: block;
+
+        color: #ffb1b1;
+
+        background: rgba(255, 77, 77, 0.08);
+
+        border: 1px solid rgba(255, 77, 77, 0.16);
+    }
+
+    .message.success {
+        display: block;
+
+        color: #a7e9c2;
+
+        background: rgba(50, 200, 120, 0.08);
+
+        border: 1px solid rgba(50, 200, 120, 0.16);
+    }
+
+    /* =========================================================
+       Mobile
+    ========================================================= */
+
+    @media (max-width: 900px) {
+        .app {
+            grid-template-columns: 1fr;
+            max-width: 500px;
+        }
+
+        .brand-panel {
+            min-height: auto;
+
+            padding: 36px 32px 30px;
+
+            border-right: 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-content {
+            margin-top: 55px;
+        }
+
+        .brand-content h1 {
+            font-size: 42px;
+            letter-spacing: -2px;
+        }
+
+        .features {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .copyright {
+            margin-top: 35px;
+        }
+
+        .login-panel {
+            min-height: auto;
+
+            padding: 38px 32px 42px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            align-items: flex-start;
+            padding-top: 14px;
+        }
+
+        .app {
+            border-radius: 20px;
+        }
+
+        .brand-panel {
+            padding: 27px 22px 24px;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+
+            font-size: 18px;
+        }
+
+        .brand-name {
+            font-size: 18px;
+        }
+
+        .brand-content {
+            margin-top: 42px;
+        }
+
+        .brand-content h1 {
+            font-size: 36px;
+            letter-spacing: -1.8px;
+        }
+
+        .brand-content p {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .features {
+            gap: 8px;
+        }
+
+        .feature {
+            padding: 12px;
+        }
+
+        .feature-icon {
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .feature strong {
+            font-size: 11px;
+        }
+
+        .feature span {
+            display: none;
+        }
+
+        .login-panel {
+            padding: 32px 22px 36px;
+        }
+
+        .login-header h2 {
+            font-size: 25px;
+        }
+    }
+
+    /* =========================================================
+       Reduced Motion
+    ========================================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            scroll-behavior: auto !important;
+            transition: none !important;
+            animation: none !important;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+
+
+<!-- Decorative Background -->
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<!-- =========================================================
+     ZEE POS Application
+========================================================== -->
+
+<main class="app">
+
+    <!-- =====================================================
+         Brand / Information
+    ====================================================== -->
+
+    <section class="brand-panel">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                Z
+            </div>
+
+            <div class="brand-name">
+                ZEE POS
+            </div>
+
+        </div>
+
+
+        <div class="brand-content">
+
+            <div class="eyebrow">
+
+                <span class="eyebrow-dot"></span>
+
+                Modern Retail Management
+
+            </div>
+
+
+            <h1>
+                Your shop.
+                <span>Your system.</span>
+            </h1>
+
+
+            <p>
+                A simple and powerful point-of-sale system
+                designed to help shops manage products,
+                sales, stock, and daily business operations
+                from one place.
+            </p>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ▦
+                    </div>
+
+                    <strong>
+                        POS
+                    </strong>
+
+                    <span>
+                        Fast checkout
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ◈
+                    </div>
+
+                    <strong>
+                        Stock
+                    </strong>
+
+                    <span>
+                        Easy inventory
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ↗
+                    </div>
+
+                    <strong>
+                        Reports
+                    </strong>
+
+                    <span>
+                        Track sales
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="copyright">
+
+            © <span id="year"></span>
+            ZEE POS. All rights reserved.
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         Login
+    ====================================================== -->
+
+    <section class="login-panel">
+
+        <div class="login-box">
+
+            <div class="login-header">
+
+                <h2>
+                    Welcome back
+                </h2>
+
+                <p>
+                    Sign in to continue to your POS system.
+                </p>
+
+            </div>
+
+
+            <form
+                id="loginForm"
+                novalidate
+            >
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="email"
+                    >
+                        Email
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            @
+                        </span>
+
+
+                        <input
+                            id="email"
+                            class="form-input"
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="username"
+                            inputmode="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="password"
+                    >
+                        Password
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            •
+                        </span>
+
+
+                        <input
+                            id="password"
+                            class="form-input password"
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="form-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+
+                    <a
+                        href="#"
+                        class="forgot"
+                        id="forgotPassword"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- Login Button -->
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                >
+
+                    <span id="loginText">
+                        Sign in
+                    </span>
+
+                    <span
+                        class="login-arrow"
+                        id="loginArrow"
+                        aria-hidden="true"
+                    >
+                        →
+                    </span>
+
+                </button>
+
+
+                <!-- Message -->
+
+                <div
+                    id="message"
+                    class="message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     Firebase Authentication
+========================================================== -->
+
+<script type="module">
+
+    import {
+        initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+    import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        sendPasswordResetEmail,
+        signOut,
+        setPersistence,
+        browserLocalPersistence,
+        browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDucU3FiUUiBS50P9FSrKPxXSAja3FI-MU",
+        authDomain: "zee-pos.firebaseapp.com",
+        projectId: "zee-pos",
+        storageBucket: "zee-pos.firebasestorage.app",
+        messagingSenderId: "508353450616",
+        appId: "1:508353450616:web:9cb13fa3256e8637ef938d"
+    };
+
+
+    // ==========================================
+    // SUPER ADMIN UID
+    // ==========================================
+
+    const SUPER_ADMIN_UID =
+        "ZgYPNQmMRLX0xYUpnTUi3yift8v1";
+
+
+    // ==========================================
+    // INITIALIZE FIREBASE
+    // ==========================================
+
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+
+    // ==========================================
+    // DOM
+    // ==========================================
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const emailInput =
+        document.getElementById("email");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const passwordToggle =
+        document.getElementById("passwordToggle");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const loginText =
+        document.getElementById("loginText");
+
+    const loginArrow =
+        document.getElementById("loginArrow");
+
+    const message =
+        document.getElementById("message");
+
+    const forgotPassword =
+        document.getElementById("forgotPassword");
+
+    const rememberCheckbox =
+        document.getElementById("remember");
+
+    const year =
+        document.getElementById("year");
+
+
+    // ==========================================
+    // YEAR
+    // ==========================================
+
+    if (year) {
+        year.textContent =
+            new Date().getFullYear();
+    }
+
+
+    // ==========================================
+    // PASSWORD SHOW / HIDE
+    // ==========================================
+
+    if (passwordToggle) {
+
+        passwordToggle.addEventListener(
+            "click",
+            () => {
+
+                const isPassword =
+                    passwordInput.type === "password";
+
+                passwordInput.type =
+                    isPassword
+                        ? "text"
+                        : "password";
+
+                passwordToggle.textContent =
+                    isPassword
+                        ? "Hide"
+                        : "Show";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    isPassword
+                        ? "Hide password"
+                        : "Show password"
+                );
+            }
+        );
+    }
+
+
+    // ==========================================
+    // MESSAGE
+    // ==========================================
+
+    function showMessage(text, type = "error") {
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+    }
+
+
+    function clearMessage() {
+
+        message.textContent = "";
+
+        message.className = "message";
+    }
+
+
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    function setLoading(loading) {
+
+        loginButton.disabled = loading;
+
+        if (loading) {
+
+            loginText.textContent =
+                "Signing in";
+
+            loginArrow.innerHTML =
+                '<span class="spinner"></span>';
+
+        } else {
+
+            loginText.textContent =
+                "Sign in";
+
+            loginArrow.textContent =
+                "→";
+        }
+    }
+
+
+    // ==========================================
+    // FIREBASE ERROR
+    // ==========================================
+
+    function getFirebaseErrorMessage(errorCode) {
+
+        switch (errorCode) {
+
+            case "auth/invalid-credential":
+                return "Email or password is incorrect.";
+
+            case "auth/invalid-email":
+                return "Please enter a valid email address.";
+
+            case "auth/user-disabled":
+                return "This account has been disabled.";
+
+            case "auth/user-not-found":
+                return "No account was found with this email.";
+
+            case "auth/wrong-password":
+                return "Incorrect password.";
+
+            case "auth/too-many-requests":
+                return "Too many login attempts. Please try again later.";
+
+            case "auth/network-request-failed":
+                return "Network error. Please check your internet connection.";
+
+            default:
+                return "Unable to sign in. Please try again.";
+        }
+    }
+
+
+    // ==========================================
+    // CHECK CURRENT AUTH
+    //
+    // IMPORTANT:
+    // Only Super Admin can enter admin.html
+    // Owner is NOT redirected to admin.html.
+    // ==========================================
+
+    onAuthStateChanged(auth, (user) => {
+
+        if (!user) {
+            return;
+        }
+
+        if (user.uid === SUPER_ADMIN_UID) {
+
+            // Only Super Admin goes to admin
+            window.location.replace("admin.html");
+
+        } else {
+
+            // Any non-admin account must NOT enter admin
+            // We do not redirect to admin.
+            console.log(
+                "Non-admin user detected on Super Admin login page."
+            );
+        }
+    });
+
+
+    // ==========================================
+    // SUPER ADMIN LOGIN
+    // ==========================================
+
+    loginForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+
+            // ======================================
+            // VALIDATION
+            // ======================================
+
+            if (!email) {
+
+                showMessage(
+                    "Please enter your email.",
+                    "error"
+                );
+
+                emailInput.focus();
+
+                return;
+            }
+
+
+            if (!password) {
+
+                showMessage(
+                    "Please enter your password.",
+                    "error"
+                );
+
+                passwordInput.focus();
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
+
+                passwordInput.focus();
+
+                return;
+            }
+
+
+            setLoading(true);
+
+
+            try {
+
+                // ==================================
+                // PERSISTENCE
+                // ==================================
+
+                await setPersistence(
+                    auth,
+                    rememberCheckbox.checked
+                        ? browserLocalPersistence
+                        : browserSessionPersistence
+                );
+
+
+                // ==================================
+                // FIREBASE LOGIN
+                // ==================================
+
+                const credential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+                // ==================================
+                // VERY IMPORTANT
+                //
+                // CHECK SUPER ADMIN UID
+                // ==================================
+
+                if (
+                    user.uid !==
+                    SUPER_ADMIN_UID
+                ) {
+
+                    await signOut(auth);
+
+                    showMessage(
+                        "This is the Super Admin login. Please use Owner Login.",
+                        "error"
+                    );
+
+                    setLoading(false);
+
+                    return;
+                }
+
+
+                // ==================================
+                // SUCCESS
+                // ==================================
+
+                showMessage(
+                    "Super Admin login successful. Opening dashboard...",
+                    "success"
+                );
+
+
+                // Use replace instead of href
+                // so browser history does not create
+                // login/dashboard looping.
+                setTimeout(() => {
+
+                    window.location.replace(
+                        "admin.html"
+                    );
+
+                }, 400);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Super Admin Login Error:",
+                    error
+                );
+
+
+                showMessage(
+                    getFirebaseErrorMessage(
+                        error.code
+                    ),
+                    "error"
+                );
+
+
+                setLoading(false);
+            }
+        }
+    );
+
+
+    // ==========================================
+    // FORGOT PASSWORD
+    // ==========================================
+
+    forgotPassword.addEventListener(
+        "click",
+        async (event) => {
+
+            event.preventDefault();
+
+            clearMessage();
+
+            const email =
+                emailInput.value.trim();
+
+
+            if (!email) {
+
+                showMessage(
+                    "Enter your email first, then click Forgot password.",
+                    "error"
+                );
+
+                emailInput.focus();
+
+                return;
+            }
+
+
+            try {
+
+                await sendPasswordResetEmail(
+                    auth,
+                    email
+                );
+
+
+                showMessage(
+                    "Password reset email sent. Please check your inbox.",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Password Reset Error:",
+                    error
+                );
+
+
+                showMessage(
+                    getFirebaseErrorMessage(
+                        error.code
+                    ),
+                    "error"
+                );
+            }
+        }
+    );
+
+
+    // ==========================================
+    // CLEAR ERROR WHEN TYPING
+    // ==========================================
+
+    emailInput.addEventListener(
+        "input",
+        clearMessage
+    );
+
+    passwordInput.addEventListener(
+        "input",
+        clearMessage
+    );
+
+</script>
+
+
+</body>
+</html>

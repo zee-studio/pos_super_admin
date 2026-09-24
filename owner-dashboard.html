@@ -1,0 +1,6314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ZEE POS - Owner Dashboard</title>
+
+
+    <style>
+
+        /* ==========================================
+           RESET
+        ========================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* ==========================================
+           DARK MODE VARIABLES
+        ========================================== */
+
+        :root {
+
+            --orange: #ff7e00;
+            --red: #b70000;
+
+            --bg: #080808;
+
+            --card: #111111;
+
+            --card2: #151515;
+
+            --border: #292929;
+
+            --text: #ffffff;
+
+            --muted: #888888;
+
+            --green: #20c77a;
+
+            --sidebar-bg: rgba(15,15,15,.96);
+
+            --hover-bg: #191919;
+
+            --line: #202020;
+
+            --button-bg: #141414;
+
+            --mobile-menu-bg: #151515;
+
+            --top-box-bg: #111111;
+
+            --empty-bg: rgba(17,17,17,.9);
+
+        }
+
+
+        /* ==========================================
+           LIGHT MODE VARIABLES
+        ========================================== */
+
+        body.light-mode {
+
+            --bg: #f5f6f8;
+
+            --card: #ffffff;
+
+            --card2: #f1f2f4;
+
+            --border: #dddddd;
+
+            --text: #171717;
+
+            --muted: #777777;
+
+            --sidebar-bg: rgba(255,255,255,.97);
+
+            --hover-bg: #eeeeee;
+
+            --line: #e5e5e5;
+
+            --button-bg: #f5f5f5;
+
+            --mobile-menu-bg: #ffffff;
+
+            --top-box-bg: #ffffff;
+
+            --empty-bg: #ffffff;
+
+        }
+
+
+        /* ==========================================
+           BODY
+        ========================================== */
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(255,126,0,.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(183,0,0,.08),
+                    transparent 30%
+                ),
+                var(--bg);
+
+            color: var(--text);
+
+            transition:
+                background .25s ease,
+                color .25s ease;
+
+        }
+
+
+        /* ==========================================
+           SIDEBAR
+        ========================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+
+            top: 0;
+
+            width: 250px;
+
+            height: 100vh;
+
+            background: var(--sidebar-bg);
+
+            border-right: 1px solid var(--border);
+
+            padding: 22px 15px;
+
+            z-index: 100;
+
+            display: flex;
+
+            flex-direction: column;
+
+            transition:
+                background .25s ease,
+                border-color .25s ease,
+                transform .25s ease;
+
+        }
+
+
+        /* ==========================================
+           BRAND
+        ========================================== */
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 0 10px 25px;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .brand-logo {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--orange),
+                    var(--red)
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 20px;
+
+            font-weight: 900;
+
+            color: #fff;
+
+        }
+
+
+        .brand-text strong {
+
+            display: block;
+
+            font-size: 18px;
+
+            color: var(--text);
+
+        }
+
+
+        .brand-text span {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* ==========================================
+           MENU TITLE
+        ========================================== */
+
+        .menu-title {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            margin: 25px 10px 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        /* ==========================================
+           NAV BUTTON
+        ========================================== */
+
+        .nav-btn {
+
+            width: 100%;
+
+            border: 0;
+
+            background: transparent;
+
+            color: var(--muted);
+
+            padding: 13px 12px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            margin-bottom: 4px;
+
+            font-size: 14px;
+
+            transition: .2s;
+
+        }
+
+
+        .nav-btn:hover {
+
+            background: var(--hover-bg);
+
+            color: var(--text);
+
+        }
+
+
+        .nav-btn.active {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(255,126,0,.16),
+                    rgba(183,0,0,.06)
+                );
+
+            color: var(--text);
+
+            border: 1px solid rgba(255,126,0,.12);
+
+        }
+
+
+        .nav-icon {
+
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 16px;
+
+        }
+
+
+        /* ==========================================
+           SIDEBAR BOTTOM
+        ========================================== */
+
+        .sidebar-bottom {
+
+            margin-top: auto;
+
+        }
+
+
+        .logout-btn {
+
+            width: 100%;
+
+            border: 1px solid var(--border);
+
+            background: var(--card);
+
+            color: var(--muted);
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+        }
+
+
+        .logout-btn:hover {
+
+            color: var(--text);
+
+            border-color: #888;
+
+        }
+
+
+        /* ==========================================
+           MAIN
+        ========================================== */
+
+        .main {
+
+            margin-left: 250px;
+
+            min-height: 100vh;
+
+            padding: 28px;
+
+        }
+
+
+        /* ==========================================
+           TOPBAR
+        ========================================== */
+
+        .topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .topbar-left {
+
+            display: flex;
+
+            align-items: center;
+
+        }
+
+
+        .page-title h1 {
+
+            font-size: 27px;
+
+            margin-bottom: 5px;
+
+            color: var(--text);
+
+        }
+
+
+        .page-title p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* ==========================================
+           OWNER BOX
+        ========================================== */
+
+        .owner-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 9px 12px;
+
+            background: var(--top-box-bg);
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            transition:
+                background .25s ease,
+                border-color .25s ease;
+
+        }
+
+
+        /* ==========================================
+           THEME BUTTON
+        ========================================== */
+
+        .theme-toggle {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 10px;
+
+            border: 1px solid var(--border);
+
+            background: var(--card2);
+
+            color: var(--text);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+            font-size: 17px;
+
+            transition: .2s;
+
+        }
+
+
+        .theme-toggle:hover {
+
+            border-color: var(--orange);
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .avatar {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--orange),
+                    var(--red)
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: 800;
+
+            color: #fff;
+
+        }
+
+
+        .owner-info strong {
+
+            display: block;
+
+            font-size: 13px;
+
+            color: var(--text);
+
+        }
+
+
+        .owner-info span {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* ==========================================
+           PAGE SECTIONS
+        ========================================== */
+
+        .page-section {
+
+            display: none;
+
+        }
+
+
+        .page-section.active {
+
+            display: block;
+
+        }
+
+
+        /* ==========================================
+           STAT CARDS
+        ========================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .stat-card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            transition:
+                background .25s ease,
+                border-color .25s ease;
+
+        }
+
+
+        .stat-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 17px;
+
+        }
+
+
+        .stat-label {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        .stat-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(255,126,0,.10);
+
+            color: var(--orange);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .stat-number {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            color: var(--text);
+
+        }
+
+
+        /* ==========================================
+           CONTENT CARDS
+        ========================================== */
+
+        .grid-2 {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 18px;
+
+        }
+
+
+        .card {
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 22px;
+
+            transition:
+                background .25s ease,
+                border-color .25s ease;
+
+        }
+
+
+        .card-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .card-header h2 {
+
+            font-size: 17px;
+
+            color: var(--text);
+
+        }
+
+
+        .card-header span {
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        /* ==========================================
+           SHOP INFO
+        ========================================== */
+
+        .shop-logo {
+
+            width: 70px;
+
+            height: 70px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--orange),
+                    var(--red)
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+            margin-bottom: 18px;
+
+            color: #fff;
+
+        }
+
+
+        .shop-name {
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            margin-bottom: 5px;
+
+            color: var(--text);
+
+        }
+
+
+        .shop-owner {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        .shop-details {
+
+            margin-top: 22px;
+
+            display: grid;
+
+            gap: 12px;
+
+        }
+
+
+        .detail-row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid var(--line);
+
+            font-size: 13px;
+
+        }
+
+
+        .detail-row span:first-child {
+
+            color: var(--muted);
+
+        }
+
+
+        .detail-row span:last-child {
+
+            color: var(--text);
+
+            text-align: right;
+
+        }
+
+
+        /* ==========================================
+           STATUS
+        ========================================== */
+
+        .status {
+
+            display: inline-flex;
+
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(32,199,122,.10);
+
+            color: #5ee5a2;
+
+            font-size: 11px;
+
+        }
+
+
+        /* ==========================================
+           QUICK ACTIONS
+        ========================================== */
+
+        .quick-actions {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+
+        }
+
+
+        .quick-btn {
+
+            min-height: 100px;
+
+            background: var(--card2);
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            color: var(--text);
+
+            cursor: pointer;
+
+            text-align: left;
+
+            padding: 16px;
+
+            transition: .2s;
+
+        }
+
+
+        .quick-btn:hover {
+
+            border-color:
+                rgba(255,126,0,.35);
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .quick-btn .q-icon {
+
+            font-size: 22px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .quick-btn strong {
+
+            display: block;
+
+            font-size: 13px;
+
+            margin-bottom: 4px;
+
+            color: var(--text);
+
+        }
+
+
+        .quick-btn span {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+
+        /* ==========================================
+           EMPLOYEES V2
+        ========================================== */
+
+        .employees-page {
+            display: grid;
+            gap: 18px;
+        }
+
+        .employees-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .employees-search-wrap {
+            position: relative;
+            flex: 1;
+            max-width: 520px;
+        }
+
+        .employees-search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .employees-search {
+            width: 100%;
+            height: 46px;
+            padding: 0 15px 0 40px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            background: var(--card);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .employees-search:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,126,0,.08);
+        }
+
+        .employees-list-card {
+            overflow: hidden;
+        }
+
+        .employees-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .employees-table th,
+        .employees-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .employees-table th {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .employee-cell {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .employee-avatar {
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--orange), var(--red));
+        }
+
+        .employee-name {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .employee-email {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .employee-role,
+        .employee-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .employee-role {
+            background: rgba(255,126,0,.10);
+            color: var(--orange);
+        }
+
+        .employee-status.active {
+            background: rgba(32,199,122,.10);
+            color: #5ee5a2;
+        }
+
+        .employee-status.inactive {
+            background: rgba(255,255,255,.06);
+            color: var(--muted);
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .employee-table-action {
+            border: 1px solid var(--border);
+            background: var(--card2);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .employee-table-action:hover {
+            border-color: var(--orange);
+        }
+
+        /* Add / Edit Employee Modal */
+        .employee-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 12000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .employee-modal.show {
+            display: flex;
+        }
+
+        .employee-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,.72);
+            backdrop-filter: blur(5px);
+        }
+
+        .employee-modal-box {
+            position: relative;
+            width: min(560px, 100%);
+            max-height: 92vh;
+            overflow-y: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 28px 80px rgba(0,0,0,.48);
+        }
+
+        .employee-modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .employee-modal-header h2 {
+            color: var(--text);
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .employee-modal-header p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .employee-modal-close {
+            width: 35px;
+            height: 35px;
+            flex: 0 0 35px;
+            border: 1px solid var(--border);
+            background: var(--card2);
+            color: var(--text);
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 21px;
+            line-height: 1;
+        }
+
+        .employee-modal-close:hover {
+            border-color: var(--orange);
+        }
+
+        .employee-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .employee-form-field {
+            display: grid;
+            gap: 7px;
+        }
+
+        .employee-form-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .employee-form-field label {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .employee-form-field input,
+        .employee-form-field select {
+            width: 100%;
+            height: 45px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: var(--card2);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .employee-form-field input:focus,
+        .employee-form-field select:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,126,0,.08);
+        }
+
+        .employee-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 17px;
+            border-top: 1px solid var(--line);
+        }
+
+        @media (max-width: 700px) {
+            .employees-toolbar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .employees-search-wrap {
+                max-width: none;
+            }
+
+            .employees-toolbar .primary-btn {
+                width: 100%;
+            }
+
+            .employee-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .employee-form-field.full {
+                grid-column: auto;
+            }
+
+            .employee-modal-box {
+                padding: 19px;
+            }
+        }
+
+        /* ==========================================
+           PRODUCTS
+        ========================================== */
+
+        .products-toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .product-search-wrap {
+            position: relative;
+            flex: 1;
+            max-width: 560px;
+        }
+
+        .product-search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .product-search {
+            width: 100%;
+            height: 46px;
+            padding: 0 15px 0 40px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            background: var(--card);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .product-search:focus, .form-field input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,126,0,.08);
+        }
+
+        .primary-btn, .secondary-btn {
+            border: 0;
+            min-height: 44px;
+            padding: 0 17px;
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .primary-btn {
+            color: #fff;
+            background: linear-gradient(135deg, var(--orange), var(--red));
+            box-shadow: 0 8px 20px rgba(183,0,0,.14);
+        }
+
+        .primary-btn:hover { transform: translateY(-1px); }
+        .primary-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+        .secondary-btn {
+            color: var(--text);
+            background: var(--card2);
+            border: 1px solid var(--border);
+        }
+
+        .secondary-btn:hover { border-color: var(--orange); }
+
+        .products-card { overflow: hidden; }
+        .table-wrap { width: 100%; overflow-x: auto; }
+        .products-table { width: 100%; border-collapse: collapse; min-width: 820px; }
+        .products-table th, .products-table td {
+            padding: 13px 12px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .products-table th { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+        .products-table td { color: var(--text); }
+        .product-name-cell { font-weight: 700; }
+        .product-muted { color: var(--muted) !important; }
+        .stock-ok, .stock-low, .stock-out { display: inline-flex; padding: 5px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+        .stock-ok { background: rgba(32,199,122,.10); color: #5ee5a2; }
+        .stock-low { background: rgba(255,180,0,.10); color: #ffc45c; }
+        .stock-out { background: rgba(255,70,70,.10); color: #ff8c8c; }
+        .table-message { text-align: center !important; color: var(--muted) !important; padding: 42px !important; }
+        .row-actions { display: flex; gap: 7px; }
+        .table-action { border: 1px solid var(--border); background: var(--card2); color: var(--text); border-radius: 8px; padding: 7px 9px; cursor: pointer; font-size: 11px; }
+        .table-action:hover { border-color: var(--orange); }
+        .table-action.delete:hover { border-color: #ff6666; color: #ff8c8c; }
+
+        .product-modal { position: fixed; inset: 0; z-index: 11000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .product-modal.show { display: flex; }
+        .product-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.72); backdrop-filter: blur(4px); }
+        .product-modal-box { position: relative; width: min(620px, 100%); max-height: 92vh; overflow-y: auto; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; box-shadow: 0 25px 70px rgba(0,0,0,.45); }
+        .product-modal-header { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+        .product-modal-header h2 { color: var(--text); font-size: 19px; margin-bottom: 5px; }
+        .product-modal-header p { color: var(--muted); font-size: 12px; }
+        .modal-close { width: 34px; height: 34px; border: 1px solid var(--border); background: var(--card2); color: var(--text); border-radius: 9px; cursor: pointer; font-size: 22px; line-height: 1; }
+        .product-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .form-field { display: grid; gap: 7px; }
+        .form-field-full { grid-column: 1 / -1; }
+        .form-field span { color: var(--muted); font-size: 11px; font-weight: 700; }
+        .form-field input { width: 100%; height: 44px; padding: 0 12px; border: 1px solid var(--border); border-radius: 10px; outline: none; background: var(--card2); color: var(--text); font-size: 13px; }
+        .product-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; padding-top: 17px; border-top: 1px solid var(--line); }
+
+        @media (max-width: 700px) {
+            .products-toolbar { align-items: stretch; flex-direction: column; }
+            .product-search-wrap { max-width: none; }
+            .products-toolbar .primary-btn { width: 100%; }
+            .product-form-grid { grid-template-columns: 1fr; }
+            .form-field-full { grid-column: auto; }
+        }
+
+
+        /* ==========================================
+           SALES / POS
+        ========================================== */
+
+        .sales-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .sales-products-card,
+        .sales-cart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .sales-toolbar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .sales-search-wrap {
+            position: relative;
+            flex: 1;
+        }
+
+        .sales-search-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        .sales-search {
+            width: 100%;
+            height: 45px;
+            padding: 0 13px 0 39px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            outline: none;
+            background: var(--card2);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .sales-search:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,126,0,.08);
+        }
+
+        .sales-product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            max-height: 620px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .sale-product-card {
+            min-height: 132px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            background: var(--card2);
+            color: var(--text);
+            text-align: left;
+            cursor: pointer;
+            transition: .18s;
+        }
+
+        .sale-product-card:hover:not(:disabled) {
+            border-color: rgba(255,126,0,.45);
+            transform: translateY(-1px);
+        }
+
+        .sale-product-card:disabled {
+            opacity: .48;
+            cursor: not-allowed;
+        }
+
+        .sale-product-name {
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.35;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .sale-product-category {
+            color: var(--muted);
+            font-size: 10px;
+            margin-bottom: 13px;
+        }
+
+        .sale-product-bottom {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .sale-product-price {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--orange);
+        }
+
+        .sale-product-stock {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .sales-cart-card {
+            position: sticky;
+            top: 18px;
+        }
+
+        .sales-cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .sales-cart-header h2 {
+            font-size: 17px;
+            color: var(--text);
+        }
+
+        .sales-cart-count {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .cart-list {
+            display: grid;
+            gap: 9px;
+            max-height: 330px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+
+        .cart-empty {
+            min-height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 12px;
+        }
+
+        .cart-item {
+            border: 1px solid var(--border);
+            background: var(--card2);
+            border-radius: 11px;
+            padding: 11px;
+        }
+
+        .cart-item-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 9px;
+        }
+
+        .cart-item-name {
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .cart-item-price {
+            color: var(--muted);
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .cart-item-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .cart-qty {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cart-qty button {
+            width: 29px;
+            height: 28px;
+            border: 0;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .cart-qty button:hover {
+            background: var(--hover-bg);
+        }
+
+        .cart-qty span {
+            min-width: 29px;
+            text-align: center;
+            color: var(--text);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .cart-item-total {
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .cart-remove {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 15px;
+            padding: 2px 0 0 5px;
+        }
+
+        .cart-remove:hover {
+            color: #ff8c8c;
+        }
+
+        .sale-summary {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--line);
+            display: grid;
+            gap: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .summary-row strong {
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .summary-total {
+            padding-top: 11px;
+            border-top: 1px solid var(--line);
+        }
+
+        .summary-total span {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .payment-box {
+            margin-top: 16px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .payment-box label {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .payment-box input {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: var(--card2);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        .payment-box input:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(255,126,0,.08);
+        }
+
+        .change-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .change-row strong {
+            color: #5ee5a2;
+        }
+
+        .change-row.insufficient strong {
+            color: #ff8c8c;
+        }
+
+        .complete-sale-btn {
+            width: 100%;
+            min-height: 47px;
+            margin-top: 15px;
+        }
+
+        .sales-clear-btn {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .sales-clear-btn:hover {
+            color: #ff8c8c;
+        }
+
+        .sales-message {
+            grid-column: 1 / -1;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 1px dashed var(--border);
+            border-radius: 13px;
+            color: var(--muted);
+            font-size: 12px;
+            padding: 20px;
+        }
+
+        @media (max-width: 1100px) {
+            .sales-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sales-cart-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sales-product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                max-height: none;
+            }
+
+            .sales-products-card,
+            .sales-cart-card {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .sales-product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* ==========================================
+           EMPTY PAGE
+        ========================================== */
+
+        .empty-card {
+
+            min-height: 350px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            background: var(--empty-bg);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            transition:
+                background .25s ease,
+                border-color .25s ease;
+
+        }
+
+
+        .empty-icon {
+
+            font-size: 45px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .empty-card h2 {
+
+            margin-bottom: 8px;
+
+            color: var(--text);
+
+        }
+
+
+        .empty-card p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* ==========================================
+           LOADING
+        ========================================== */
+
+        .loading {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: var(--bg);
+
+            z-index: 9999;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+        }
+
+
+        .loader-logo {
+
+            width: 65px;
+
+            height: 65px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--orange),
+                    var(--red)
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            font-weight: 900;
+
+            color: #fff;
+
+        }
+
+
+        .loading-text {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+        /* ==========================================
+           TOAST
+        ========================================== */
+
+        .toast {
+
+            position: fixed;
+
+            right: 25px;
+
+            bottom: 25px;
+
+            min-width: 260px;
+
+            padding: 14px 16px;
+
+            background: var(--card2);
+
+            color: var(--text);
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.4);
+
+            transform:
+                translateY(120px);
+
+            opacity: 0;
+
+            transition: .3s;
+
+            z-index: 10000;
+
+            font-size: 13px;
+
+        }
+
+
+        .toast.show {
+
+            transform:
+                translateY(0);
+
+            opacity: 1;
+
+        }
+
+
+        /* ==========================================
+           MOBILE MENU
+        ========================================== */
+
+        .mobile-menu {
+
+            display: none;
+
+        }
+
+
+        /* ==========================================
+           MOBILE MENU BUTTON
+        ========================================== */
+
+        .mobile-menu {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 10px;
+
+            background: var(--mobile-menu-bg);
+
+            border: 1px solid var(--border);
+
+            color: var(--text);
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+            margin-right: 12px;
+
+        }
+
+
+        /* ==========================================
+           RESPONSIVE 1000
+        ========================================== */
+
+        @media (max-width: 1000px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .grid-2 {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           RESPONSIVE 700
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+
+                transform:
+                    translateX(-100%);
+
+            }
+
+
+            .sidebar.open {
+
+                transform:
+                    translateX(0);
+
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 18px;
+
+            }
+
+
+            .mobile-menu {
+
+                display: flex;
+
+            }
+
+
+            .topbar {
+
+                align-items:
+                    flex-start;
+
+            }
+
+
+            .topbar-left {
+
+                display: flex;
+
+                align-items:
+                    flex-start;
+
+            }
+
+
+            .owner-box {
+
+                padding: 7px;
+
+            }
+
+
+            .owner-info {
+
+                display: none;
+
+            }
+
+
+            .stats {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 10px;
+
+            }
+
+
+            .stat-card {
+
+                padding: 15px;
+
+            }
+
+
+            .stat-number {
+
+                font-size: 20px;
+
+            }
+
+        }
+
+
+        /* ==========================================
+           RESPONSIVE 450
+        ========================================== */
+
+        @media (max-width: 450px) {
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .quick-actions {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .theme-toggle {
+
+                width: 36px;
+
+                height: 36px;
+
+            }
+
+
+            .avatar {
+
+                width: 36px;
+
+                height: 36px;
+
+            }
+
+        }
+
+
+    /* ==========================================
+       SALES HISTORY / RECEIPT
+    ========================================== */
+
+    .sales-history-card {
+        margin-top: 24px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .sales-history-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
+        flex-wrap: wrap;
+    }
+
+    .sales-history-search {
+        width: min(420px, 100%);
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--input-bg);
+        color: var(--text);
+        outline: none;
+    }
+
+    .sales-history-table-wrap {
+        overflow-x: auto;
+    }
+
+    .sales-history-table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+    }
+
+    .sales-history-table th,
+    .sales-history-table td {
+        padding: 14px 18px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        white-space: nowrap;
+    }
+
+    .sales-history-table th {
+        font-size: 12px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .sale-id-cell {
+        font-weight: 700;
+    }
+
+    .sale-muted {
+        color: var(--muted);
+    }
+
+    .receipt-btn {
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 9px;
+        cursor: pointer;
+        font-weight: 700;
+    }
+
+    .receipt-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    .receipt-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 3000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .receipt-modal.show {
+        display: flex;
+    }
+
+    .receipt-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.72);
+        backdrop-filter: blur(5px);
+    }
+
+    .receipt-modal-box {
+        position: relative;
+        width: min(440px, 100%);
+        max-height: 92vh;
+        overflow: auto;
+        background: #fff;
+        color: #111;
+        border-radius: 16px;
+        box-shadow: 0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .receipt-modal-actions {
+        display: flex;
+        gap: 10px;
+        padding: 14px 18px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f8fafc;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+
+    .receipt-action-btn {
+        flex: 1;
+        min-height: 42px;
+        border: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 800;
+    }
+
+    .receipt-action-btn.print {
+        background: #111827;
+        color: #fff;
+    }
+
+    .receipt-action-btn.close {
+        background: #e5e7eb;
+        color: #111827;
+    }
+
+    .receipt-paper {
+        padding: 28px 26px 30px;
+        font-family: Arial, sans-serif;
+    }
+
+    .receipt-shop {
+        text-align: center;
+        padding-bottom: 18px;
+        border-bottom: 1px dashed #9ca3af;
+    }
+
+    .receipt-shop h2 {
+        margin: 0 0 6px;
+        font-size: 22px;
+    }
+
+    .receipt-shop p,
+    .receipt-meta p {
+        margin: 3px 0;
+        font-size: 12px;
+        color: #4b5563;
+    }
+
+    .receipt-meta {
+        padding: 14px 0;
+        border-bottom: 1px dashed #9ca3af;
+    }
+
+    .receipt-items {
+        padding: 12px 0;
+        border-bottom: 1px dashed #9ca3af;
+    }
+
+    .receipt-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        padding: 7px 0;
+        font-size: 13px;
+    }
+
+    .receipt-item-name {
+        font-weight: 700;
+    }
+
+    .receipt-item-detail {
+        color: #6b7280;
+        font-size: 11px;
+        margin-top: 2px;
+    }
+
+    .receipt-total {
+        padding-top: 14px;
+    }
+
+    .receipt-total-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 5px 0;
+        font-size: 13px;
+    }
+
+    .receipt-total-row.grand {
+        font-size: 18px;
+        font-weight: 900;
+        padding-top: 10px;
+    }
+
+    .receipt-footer {
+        text-align: center;
+        padding-top: 20px;
+        font-size: 11px;
+        color: #6b7280;
+    }
+
+    @media (max-width: 700px) {
+        .sales-history-toolbar {
+            align-items: stretch;
+        }
+        .sales-history-search {
+            width: 100%;
+        }
+        .receipt-paper {
+            padding: 22px 18px 24px;
+        }
+    }
+
+    @media print {
+        body * {
+            visibility: hidden !important;
+        }
+        #receiptModal,
+        #receiptModal * {
+            visibility: visible !important;
+        }
+        #receiptModal {
+            position: static !important;
+            display: block !important;
+            padding: 0 !important;
+        }
+        .receipt-backdrop,
+        .receipt-modal-actions {
+            display: none !important;
+        }
+        .receipt-modal-box {
+            width: 100% !important;
+            max-height: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+        .receipt-paper {
+            padding: 0 !important;
+        }
+    }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     LOADING SCREEN
+========================================== -->
+
+<div
+    class="loading"
+    id="loadingScreen"
+>
+
+    <div class="loader-logo">
+        Z
+    </div>
+
+    <div class="loading-text">
+        Loading your shop...
+    </div>
+
+</div>
+
+
+
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
+
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            Z
+        </div>
+
+        <div class="brand-text">
+
+            <strong>
+                ZEE POS
+            </strong>
+
+            <span>
+                Owner Panel
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="menu-title">
+        Management
+    </div>
+
+
+
+    <button
+        class="nav-btn active"
+        data-section="dashboard"
+    >
+
+        <span class="nav-icon">
+            ⌂
+        </span>
+
+        Dashboard
+
+    </button>
+
+
+
+    <button
+        class="nav-btn"
+        data-section="employees"
+    >
+
+        <span class="nav-icon">
+            👥
+        </span>
+
+        Employees
+
+    </button>
+
+
+
+    <button
+        class="nav-btn"
+        data-section="products"
+    >
+
+        <span class="nav-icon">
+            ▣
+        </span>
+
+        Products
+
+    </button>
+
+
+
+    <button
+        class="nav-btn"
+        data-section="sales"
+    >
+
+        <span class="nav-icon">
+            ◉
+        </span>
+
+        Sales
+
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="sales-history"
+    >
+
+        <span class="nav-icon">
+            ▤
+        </span>
+
+        Sales History
+
+    </button>
+
+
+
+    <button
+        class="nav-btn"
+        data-section="reports"
+    >
+
+        <span class="nav-icon">
+            ▤
+        </span>
+
+        Reports
+
+    </button>
+
+
+
+    <div class="menu-title">
+        Shop
+    </div>
+
+
+
+    <button
+        class="nav-btn"
+        data-section="shop"
+    >
+
+        <span class="nav-icon">
+            🏪
+        </span>
+
+        My Shop
+
+    </button>
+
+
+
+    <button
+        class="nav-btn"
+        data-section="settings"
+    >
+
+        <span class="nav-icon">
+            ⚙
+        </span>
+
+        Settings
+
+    </button>
+
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ==========================================
+     MAIN
+========================================== -->
+
+<main class="main">
+
+
+    <!-- ======================================
+         TOP BAR
+    ====================================== -->
+
+    <div class="topbar">
+
+
+        <div class="topbar-left">
+
+
+            <button
+                class="mobile-menu"
+                id="mobileMenu"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <div class="page-title">
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p id="pageSubtitle">
+                    Manage your shop from one place.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="owner-box">
+
+
+            <!-- THEME TOGGLE -->
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                type="button"
+                title="Switch to Light Mode"
+            >
+                ☀️
+            </button>
+
+
+            <div
+                class="avatar"
+                id="ownerAvatar"
+            >
+                O
+            </div>
+
+
+            <div class="owner-info">
+
+                <strong id="ownerName">
+                    Owner
+                </strong>
+
+                <span>
+                    Shop Owner
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================
+         DASHBOARD
+    ====================================== -->
+
+    <section
+        class="page-section active"
+        id="section-dashboard"
+    >
+
+
+        <div class="stats">
+
+
+            <!-- EMPLOYEES -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Employees
+                    </span>
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="employeeCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+
+            <!-- PRODUCTS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Products
+                    </span>
+
+                    <div class="stat-icon">
+                        ▣
+                    </div>
+
+                </div>
+
+                <div class="stat-number" id="productCount">
+                    0
+                </div>
+
+            </div>
+
+
+
+            <!-- SALES -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Today's Sales
+                    </span>
+
+                    <div class="stat-icon">
+                        ◉
+                    </div>
+
+                </div>
+
+                <div class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+
+
+            <!-- SHOP STATUS -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Shop Status
+                    </span>
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="shopStatus"
+                >
+                    Active
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="grid-2">
+
+
+            <!-- ==================================
+                 SHOP CARD
+            ================================== -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        My Shop
+                    </h2>
+
+                    <span>
+                        Shop Information
+                    </span>
+
+                </div>
+
+
+
+                <div
+                    class="shop-logo"
+                    id="shopLogo"
+                >
+                    Z
+                </div>
+
+
+
+                <div
+                    class="shop-name"
+                    id="shopName"
+                >
+                    Loading...
+                </div>
+
+
+
+                <div
+                    class="shop-owner"
+                    id="shopOwner"
+                >
+                    Loading...
+                </div>
+
+
+
+                <div class="shop-details">
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Phone
+                        </span>
+
+                        <span id="shopPhone">
+                            -
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Currency
+                        </span>
+
+                        <span id="shopCurrency">
+                            -
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Plan
+                        </span>
+
+                        <span id="shopPlan">
+                            -
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Expiry
+                        </span>
+
+                        <span id="shopExpiry">
+                            -
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <span>
+
+                            <span
+                                class="status"
+                                id="shopStatusBadge"
+                            >
+                                Active
+                            </span>
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 QUICK ACTIONS
+            ================================== -->
+
+            <div class="card">
+
+
+                <div class="card-header">
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                    <span>
+                        Get started
+                    </span>
+
+                </div>
+
+
+
+                <div class="quick-actions">
+
+
+                    <button
+                        class="quick-btn"
+                        data-action="employees"
+                        type="button"
+                    >
+
+                        <div class="q-icon">
+                            👥
+                        </div>
+
+                        <strong>
+                            Add Employee
+                        </strong>
+
+                        <span>
+                            Create Manager, Cashier or Staff
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        class="quick-btn"
+                        data-action="products"
+                        type="button"
+                    >
+
+                        <div class="q-icon">
+                            ▣
+                        </div>
+
+                        <strong>
+                            Add Product
+                        </strong>
+
+                        <span>
+                            Manage your products
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        class="quick-btn"
+                        data-action="sales"
+                        type="button"
+                    >
+
+                        <div class="q-icon">
+                            ◉
+                        </div>
+
+                        <strong>
+                            Open POS
+                        </strong>
+
+                        <span>
+                            Start a new sale
+                        </span>
+
+                    </button>
+
+
+
+                    <button
+                        class="quick-btn"
+                        data-action="shop"
+                        type="button"
+                    >
+
+                        <div class="q-icon">
+                            🏪
+                        </div>
+
+                        <strong>
+                            Shop Settings
+                        </strong>
+
+                        <span>
+                            View your shop information
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         EMPLOYEES
+    ====================================== -->
+
+    <section class="page-section" id="section-employees">
+        <div class="employees-page">
+
+            <div class="employees-toolbar">
+                <div class="employees-search-wrap">
+                    <span class="employees-search-icon">⌕</span>
+                    <input
+                        id="employeeSearch"
+                        class="employees-search"
+                        type="search"
+                        placeholder="Search employee name or email..."
+                        autocomplete="off"
+                    >
+                </div>
+
+                <button
+                    class="primary-btn"
+                    id="addEmployeeBtn"
+                    type="button"
+                >
+                    + Add Employee
+                </button>
+            </div>
+
+            <div class="card employees-list-card">
+                <div class="card-header">
+                    <div>
+                        <h2>Employees</h2>
+                        <span>Manage your shop staff</span>
+                    </div>
+                    <span id="employeeListInfo">0 employees</span>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="employees-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="employeesTableBody">
+                            <tr>
+                                <td colspan="5" class="table-message">
+                                    No employees yet. Click "+ Add Employee" to create one.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ======================================
+         EMPLOYEE MODAL
+    ====================================== -->
+    <div
+        class="employee-modal"
+        id="employeeModal"
+        aria-hidden="true"
+    >
+        <div
+            class="employee-modal-backdrop"
+            id="employeeModalBackdrop"
+        ></div>
+
+        <div
+            class="employee-modal-box"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="employeeModalTitle"
+        >
+            <div class="employee-modal-header">
+                <div>
+                    <h2 id="employeeModalTitle">Add Employee</h2>
+                    <p>Create a staff account for this shop.</p>
+                </div>
+
+                <button
+                    class="employee-modal-close"
+                    id="closeEmployeeModal"
+                    type="button"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+            </div>
+
+            <form id="employeeForm">
+                <input
+                    type="hidden"
+                    id="employeeId"
+                >
+
+                <div class="employee-form-grid">
+
+                    <div class="employee-form-field full">
+                        <label for="employeeNameInput">
+                            Employee Name *
+                        </label>
+                        <input
+                            id="employeeNameInput"
+                            required
+                            maxlength="80"
+                            autocomplete="name"
+                            placeholder="Enter employee name"
+                        >
+                    </div>
+
+                    <div class="employee-form-field">
+                        <label for="employeeEmailInput">
+                            Email *
+                        </label>
+                        <input
+                            id="employeeEmailInput"
+                            type="email"
+                            required
+                            autocomplete="email"
+                            placeholder="employee@example.com"
+                        >
+                    </div>
+
+                    <div class="employee-form-field">
+                        <label for="employeeRoleInput">
+                            Role *
+                        </label>
+                        <select
+                            id="employeeRoleInput"
+                            required
+                        >
+                            <option value="cashier">Cashier</option>
+                            <option value="manager">Manager</option>
+                        </select>
+                    </div>
+
+                    <div
+                        class="employee-form-field full"
+                        id="employeePasswordField"
+                    >
+                        <label for="employeePasswordInput">
+                            Password *
+                        </label>
+                        <input
+                            id="employeePasswordInput"
+                            type="password"
+                            minlength="6"
+                            autocomplete="new-password"
+                            placeholder="At least 6 characters"
+                        >
+                    </div>
+
+                </div>
+
+                <div class="employee-modal-actions">
+                    <button
+                        class="secondary-btn"
+                        id="cancelEmployeeBtn"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        class="primary-btn"
+                        id="saveEmployeeBtn"
+                        type="submit"
+                    >
+                        Create Employee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================
+         PRODUCTS
+    ====================================== -->
+
+    <section
+        class="page-section"
+        id="section-products"
+    >
+
+        <div class="products-toolbar">
+            <div class="product-search-wrap">
+                <span class="product-search-icon">⌕</span>
+                <input id="productSearch" class="product-search" type="search" placeholder="Search product name or barcode..." autocomplete="off">
+            </div>
+            <button class="primary-btn" id="addProductBtn" type="button">+ Add Product</button>
+        </div>
+
+        <div class="card products-card">
+            <div class="card-header">
+                <h2>Product List</h2>
+                <span id="productListInfo">0 products</span>
+            </div>
+            <div class="table-wrap">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Barcode</th>
+                            <th>Category</th>
+                            <th>Sale Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                        <tr><td colspan="7" class="table-message">Loading products...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="product-modal" id="productModal" aria-hidden="true">
+            <div class="product-modal-backdrop" id="productModalBackdrop"></div>
+            <div class="product-modal-box" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+                <div class="product-modal-header">
+                    <div>
+                        <h2 id="productModalTitle">Add Product</h2>
+                        <p>Save this product to your shop inventory.</p>
+                    </div>
+                    <button class="modal-close" id="closeProductModal" type="button" aria-label="Close">×</button>
+                </div>
+
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="product-form-grid">
+                        <label class="form-field form-field-full">
+                            <span>Product Name *</span>
+                            <input id="productNameInput" type="text" maxlength="120" required placeholder="e.g. Coca Cola 330ml">
+                        </label>
+
+                        <label class="form-field">
+                            <span>Barcode</span>
+                            <input id="productBarcodeInput" type="text" maxlength="80" placeholder="Scan or enter barcode">
+                        </label>
+
+                        <label class="form-field">
+                            <span>Category</span>
+                            <input id="productCategoryInput" type="text" maxlength="80" placeholder="e.g. Drinks">
+                        </label>
+
+                        <label class="form-field">
+                            <span>Buy Price</span>
+                            <input id="productBuyPriceInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0">
+                        </label>
+
+                        <label class="form-field">
+                            <span>Sale Price *</span>
+                            <input id="productSalePriceInput" type="number" min="0" step="0.01" inputmode="decimal" required placeholder="0">
+                        </label>
+
+                        <label class="form-field">
+                            <span>Stock Quantity *</span>
+                            <input id="productStockInput" type="number" min="0" step="1" inputmode="numeric" required placeholder="0">
+                        </label>
+
+                        <label class="form-field">
+                            <span>Low Stock Alert</span>
+                            <input id="productLowStockInput" type="number" min="0" step="1" inputmode="numeric" value="5" placeholder="5">
+                        </label>
+                    </div>
+
+                    <div class="product-form-actions">
+                        <button class="secondary-btn" id="cancelProductBtn" type="button">Cancel</button>
+                        <button class="primary-btn" id="saveProductBtn" type="submit">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         SALES
+    ====================================== -->
+
+    <section
+        class="page-section"
+        id="section-sales"
+    >
+
+        <div class="sales-layout">
+
+            <div class="sales-products-card">
+
+                <div class="card-header">
+                    <h2>New Sale</h2>
+                    <span>Select products to add to cart</span>
+                </div>
+
+                <div class="sales-toolbar">
+                    <div class="sales-search-wrap">
+                        <span class="sales-search-icon">⌕</span>
+                        <input
+                            id="salesSearch"
+                            class="sales-search"
+                            type="search"
+                            placeholder="Search product name or barcode..."
+                            autocomplete="off"
+                        >
+                    </div>
+                </div>
+
+                <div
+                    class="sales-product-grid"
+                    id="salesProductGrid"
+                >
+                    <div class="sales-message">Loading products...</div>
+                </div>
+
+            </div>
+
+
+            <div class="sales-cart-card">
+
+                <div class="sales-cart-header">
+                    <div>
+                        <h2>Cart</h2>
+                        <span class="sales-cart-count" id="cartCount">0 items</span>
+                    </div>
+
+                    <button
+                        class="sales-clear-btn"
+                        id="clearCartBtn"
+                        type="button"
+                    >
+                        Clear
+                    </button>
+                </div>
+
+                <div
+                    class="cart-list"
+                    id="cartList"
+                >
+                    <div class="cart-empty">
+                        Add a product to start a sale.
+                    </div>
+                </div>
+
+                <div class="sale-summary">
+                    <div class="summary-row">
+                        <span>Items</span>
+                        <strong id="cartItemsTotal">0</strong>
+                    </div>
+
+                    <div class="summary-row summary-total">
+                        <span>Total</span>
+                        <span id="cartGrandTotal">0</span>
+                    </div>
+                </div>
+
+                <div class="payment-box">
+                    <label for="cashReceived">Cash Received</label>
+                    <input
+                        id="cashReceived"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        inputmode="decimal"
+                        placeholder="0"
+                    >
+
+                    <div
+                        class="change-row"
+                        id="changeRow"
+                    >
+                        <span>Change</span>
+                        <strong id="changeAmount">0</strong>
+                    </div>
+                </div>
+
+                <button
+                    class="primary-btn complete-sale-btn"
+                    id="completeSaleBtn"
+                    type="button"
+                    disabled
+                >
+                    Complete Sale
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+
+    </section>
+
+
+    <!-- ======================================
+         SALES HISTORY
+    ====================================== -->
+
+    <section
+        class="page-section"
+        id="section-sales-history"
+    >
+
+        <div class="sales-history-card">
+
+            <div class="card-header">
+                <h2>Sales History</h2>
+                <span id="salesHistoryInfo">Recent sales</span>
+            </div>
+
+            <div class="sales-history-toolbar">
+                <input
+                    id="salesHistorySearch"
+                    class="sales-history-search"
+                    type="search"
+                    placeholder="Search invoice, cashier, or product..."
+                    autocomplete="off"
+                >
+            </div>
+
+            <div class="sales-history-table-wrap">
+                <table class="sales-history-table">
+                    <thead>
+                        <tr>
+                            <th>Invoice</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Cashier</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesHistoryBody">
+                        <tr><td colspan="6" class="table-message">Loading sales...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- ======================================
+         REPORTS
+    ====================================== -->
+
+    <section
+        class="page-section"
+        id="section-reports"
+    >
+
+        <div class="empty-card">
+
+            <div>
+
+                <div class="empty-icon">
+                    ▤
+                </div>
+
+                <h2>
+                    Reports
+                </h2>
+
+                <p>
+                    Sales and business reports will be added here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         MY SHOP
+    ====================================== -->
+
+    <section
+        class="page-section"
+        id="section-shop"
+    >
+
+        <div class="card">
+
+
+            <div class="card-header">
+
+                <h2>
+                    My Shop
+                </h2>
+
+                <span>
+                    Shop details
+                </span>
+
+            </div>
+
+
+
+            <div class="shop-details">
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Shop Name
+                    </span>
+
+                    <span id="detailShopName">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Owner
+                    </span>
+
+                    <span id="detailOwnerName">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Email
+                    </span>
+
+                    <span id="detailOwnerEmail">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Phone
+                    </span>
+
+                    <span id="detailPhone">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Address
+                    </span>
+
+                    <span id="detailAddress">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Currency
+                    </span>
+
+                    <span id="detailCurrency">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Plan
+                    </span>
+
+                    <span id="detailPlan">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Expiry Date
+                    </span>
+
+                    <span id="detailExpiry">
+                        -
+                    </span>
+
+                </div>
+
+
+
+                <div class="detail-row">
+
+                    <span>
+                        Status
+                    </span>
+
+                    <span>
+
+                        <span
+                            class="status"
+                            id="detailStatus"
+                        >
+                            Active
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         SETTINGS
+    ====================================== -->
+
+    <section
+        class="page-section"
+        id="section-settings"
+    >
+
+        <div class="empty-card">
+
+            <div>
+
+                <div class="empty-icon">
+                    ⚙
+                </div>
+
+                <h2>
+                    Settings
+                </h2>
+
+                <p>
+                    Shop settings will be added here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================================
+         RECEIPT MODAL
+    ====================================== -->
+    <div class="receipt-modal" id="receiptModal" aria-hidden="true">
+        <div class="receipt-backdrop" id="receiptBackdrop"></div>
+        <div class="receipt-modal-box" role="dialog" aria-modal="true" aria-labelledby="receiptTitle">
+            <div class="receipt-modal-actions">
+                <button class="receipt-action-btn close" id="closeReceiptBtn" type="button">Close</button>
+                <button class="receipt-action-btn print" id="printReceiptBtn" type="button">Print Receipt</button>
+            </div>
+            <div class="receipt-paper" id="receiptPaper">
+                <div class="receipt-shop">
+                    <h2 id="receiptTitle">Shop</h2>
+                    <p id="receiptAddress"></p>
+                    <p id="receiptPhone"></p>
+                </div>
+                <div class="receipt-meta">
+                    <p><strong>Invoice:</strong> <span id="receiptInvoice">-</span></p>
+                    <p><strong>Date:</strong> <span id="receiptDate">-</span></p>
+                    <p><strong>Cashier:</strong> <span id="receiptCashier">-</span></p>
+                </div>
+                <div class="receipt-items" id="receiptItems"></div>
+                <div class="receipt-total">
+                    <div class="receipt-total-row"><span>Subtotal</span><strong id="receiptSubtotal">0</strong></div>
+                    <div class="receipt-total-row grand"><span>Total</span><strong id="receiptTotal">0</strong></div>
+                    <div class="receipt-total-row"><span>Cash</span><strong id="receiptCash">0</strong></div>
+                    <div class="receipt-total-row"><span>Change</span><strong id="receiptChange">0</strong></div>
+                </div>
+                <div class="receipt-footer">Thank you for your purchase.</div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+
+
+<!-- ==========================================
+     TOAST
+========================================== -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+
+<script type="module">
+
+
+    // ==========================================
+    // FIREBASE IMPORTS
+    // ==========================================
+
+    import {
+        initializeApp
+    } from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+        createUserWithEmailAndPassword
+    } from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    import {
+        getFirestore,
+        doc,
+        getDoc,
+        collection,
+        query,
+        where,
+        getDocs,
+        addDoc,
+        setDoc,
+        updateDoc,
+        deleteDoc,
+        runTransaction,
+        serverTimestamp
+    } from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyDucU3FiUUiBS50P9FSrKPxXSAja3FI-MU",
+
+        authDomain:
+            "zee-pos.firebaseapp.com",
+
+        projectId:
+            "zee-pos",
+
+        storageBucket:
+            "zee-pos.firebasestorage.app",
+
+        messagingSenderId:
+            "508353450616",
+
+        appId:
+            "1:508353450616:web:9cb13fa3256e8637ef938d"
+
+    };
+
+
+
+    // ==========================================
+    // INITIALIZE FIREBASE
+    // ==========================================
+
+    const app =
+        initializeApp(firebaseConfig);
+
+
+    const auth =
+        getAuth(app);
+
+
+    const db =
+        getFirestore(app);
+
+    const employeeAuthApp = initializeApp(firebaseConfig, "EmployeeAccountCreationApp");
+    const employeeAuth = getAuth(employeeAuthApp);
+
+
+
+    // ==========================================
+    // DOM
+    // ==========================================
+
+    const loadingScreen =
+        document.getElementById(
+            "loadingScreen"
+        );
+
+
+    const ownerNameElement =
+        document.getElementById(
+            "ownerName"
+        );
+
+
+    const ownerAvatar =
+        document.getElementById(
+            "ownerAvatar"
+        );
+
+
+    const shopNameElement =
+        document.getElementById(
+            "shopName"
+        );
+
+
+    const shopOwnerElement =
+        document.getElementById(
+            "shopOwner"
+        );
+
+
+    const shopLogo =
+        document.getElementById(
+            "shopLogo"
+        );
+
+
+    const shopPhone =
+        document.getElementById(
+            "shopPhone"
+        );
+
+
+    const shopCurrency =
+        document.getElementById(
+            "shopCurrency"
+        );
+
+
+    const shopPlan =
+        document.getElementById(
+            "shopPlan"
+        );
+
+
+    const shopExpiry =
+        document.getElementById(
+            "shopExpiry"
+        );
+
+
+    const shopStatus =
+        document.getElementById(
+            "shopStatus"
+        );
+
+
+    const shopStatusBadge =
+        document.getElementById(
+            "shopStatusBadge"
+        );
+
+
+    const employeeCount =
+        document.getElementById(
+            "employeeCount"
+        );
+
+    const employeeSearch = document.getElementById("employeeSearch");
+    const employeesTableBody = document.getElementById("employeesTableBody");
+    const employeeListInfo = document.getElementById("employeeListInfo");
+    const employeeModal = document.getElementById("employeeModal");
+    const employeeModalTitle = document.getElementById("employeeModalTitle");
+    const employeeForm = document.getElementById("employeeForm");
+    const employeeId = document.getElementById("employeeId");
+    const employeeNameInput = document.getElementById("employeeNameInput");
+    const employeeEmailInput = document.getElementById("employeeEmailInput");
+    const employeeRoleInput = document.getElementById("employeeRoleInput");
+    const employeePasswordInput = document.getElementById("employeePasswordInput");
+    const employeePasswordField = document.getElementById("employeePasswordField");
+    const addEmployeeBtn = document.getElementById("addEmployeeBtn");
+    const closeEmployeeModal = document.getElementById("closeEmployeeModal");
+    const cancelEmployeeBtn = document.getElementById("cancelEmployeeBtn");
+    const saveEmployeeBtn = document.getElementById("saveEmployeeBtn");
+
+
+    const productCount =
+        document.getElementById(
+            "productCount"
+        );
+
+    const productSearch =
+        document.getElementById(
+            "productSearch"
+        );
+
+    const productsTableBody =
+        document.getElementById(
+            "productsTableBody"
+        );
+
+    const productListInfo =
+        document.getElementById(
+            "productListInfo"
+        );
+
+    const productModal =
+        document.getElementById(
+            "productModal"
+        );
+
+    const productModalTitle =
+        document.getElementById(
+            "productModalTitle"
+        );
+
+    const productForm =
+        document.getElementById(
+            "productForm"
+        );
+
+    const productId =
+        document.getElementById(
+            "productId"
+        );
+
+    const productNameInput =
+        document.getElementById(
+            "productNameInput"
+        );
+
+    const productBarcodeInput =
+        document.getElementById(
+            "productBarcodeInput"
+        );
+
+    const productCategoryInput =
+        document.getElementById(
+            "productCategoryInput"
+        );
+
+    const productBuyPriceInput =
+        document.getElementById(
+            "productBuyPriceInput"
+        );
+
+    const productSalePriceInput =
+        document.getElementById(
+            "productSalePriceInput"
+        );
+
+    const productStockInput =
+        document.getElementById(
+            "productStockInput"
+        );
+
+    const productLowStockInput =
+        document.getElementById(
+            "productLowStockInput"
+        );
+
+    const addProductBtn =
+        document.getElementById(
+            "addProductBtn"
+        );
+
+    const closeProductModal =
+        document.getElementById(
+            "closeProductModal"
+        );
+
+    const cancelProductBtn =
+        document.getElementById(
+            "cancelProductBtn"
+        );
+
+    const productModalBackdrop =
+        document.getElementById(
+            "productModalBackdrop"
+        );
+
+    const saveProductBtn =
+        document.getElementById(
+            "saveProductBtn"
+        );
+
+
+    const salesSearch =
+        document.getElementById(
+            "salesSearch"
+        );
+
+
+    const salesProductGrid =
+        document.getElementById(
+            "salesProductGrid"
+        );
+
+
+    const cartList =
+        document.getElementById(
+            "cartList"
+        );
+
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    const cartItemsTotal =
+        document.getElementById(
+            "cartItemsTotal"
+        );
+
+
+    const cartGrandTotal =
+        document.getElementById(
+            "cartGrandTotal"
+        );
+
+
+    const cashReceived =
+        document.getElementById(
+            "cashReceived"
+        );
+
+
+    const changeRow =
+        document.getElementById(
+            "changeRow"
+        );
+
+
+    const changeAmount =
+        document.getElementById(
+            "changeAmount"
+        );
+
+
+    const completeSaleBtn =
+        document.getElementById(
+            "completeSaleBtn"
+        );
+
+
+    const clearCartBtn =
+        document.getElementById(
+            "clearCartBtn"
+        );
+
+
+    const salesHistorySearch =
+        document.getElementById(
+            "salesHistorySearch"
+        );
+
+    const salesHistoryBody =
+        document.getElementById(
+            "salesHistoryBody"
+        );
+
+    const salesHistoryInfo =
+        document.getElementById(
+            "salesHistoryInfo"
+        );
+
+    const receiptModal =
+        document.getElementById(
+            "receiptModal"
+        );
+
+    const receiptBackdrop =
+        document.getElementById(
+            "receiptBackdrop"
+        );
+
+    const closeReceiptBtn =
+        document.getElementById(
+            "closeReceiptBtn"
+        );
+
+    const printReceiptBtn =
+        document.getElementById(
+            "printReceiptBtn"
+        );
+
+    const receiptTitle =
+        document.getElementById(
+            "receiptTitle"
+        );
+
+    const receiptAddress =
+        document.getElementById(
+            "receiptAddress"
+        );
+
+    const receiptPhone =
+        document.getElementById(
+            "receiptPhone"
+        );
+
+    const receiptInvoice =
+        document.getElementById(
+            "receiptInvoice"
+        );
+
+    const receiptDate =
+        document.getElementById(
+            "receiptDate"
+        );
+
+    const receiptCashier =
+        document.getElementById(
+            "receiptCashier"
+        );
+
+    const receiptItems =
+        document.getElementById(
+            "receiptItems"
+        );
+
+    const receiptSubtotal =
+        document.getElementById(
+            "receiptSubtotal"
+        );
+
+    const receiptTotal =
+        document.getElementById(
+            "receiptTotal"
+        );
+
+    const receiptCash =
+        document.getElementById(
+            "receiptCash"
+        );
+
+    const receiptChange =
+        document.getElementById(
+            "receiptChange"
+        );
+
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+
+    const logoutBtn =
+        document.getElementById(
+            "logoutBtn"
+        );
+
+
+    const pageTitle =
+        document.getElementById(
+            "pageTitle"
+        );
+
+
+    const pageSubtitle =
+        document.getElementById(
+            "pageSubtitle"
+        );
+
+
+    const themeToggle =
+        document.getElementById(
+            "themeToggle"
+        );
+
+
+
+    // ==========================================
+    // THEME SYSTEM
+    // ==========================================
+
+    function applyTheme(theme) {
+
+        if (theme === "light") {
+
+            document.body.classList.add(
+                "light-mode"
+            );
+
+            themeToggle.textContent =
+                "🌙";
+
+            themeToggle.title =
+                "Switch to Dark Mode";
+
+        } else {
+
+            document.body.classList.remove(
+                "light-mode"
+            );
+
+            themeToggle.textContent =
+                "☀️";
+
+            themeToggle.title =
+                "Switch to Light Mode";
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // LOAD SAVED THEME
+    // ==========================================
+
+    const savedTheme =
+        localStorage.getItem(
+            "zee_pos_theme"
+        );
+
+
+    if (savedTheme === "light") {
+
+        applyTheme("light");
+
+    } else {
+
+        applyTheme("dark");
+
+    }
+
+
+
+    // ==========================================
+    // THEME TOGGLE
+    // ==========================================
+
+    themeToggle.addEventListener(
+        "click",
+        () => {
+
+            const isLight =
+                document.body.classList.contains(
+                    "light-mode"
+                );
+
+
+            if (isLight) {
+
+                localStorage.setItem(
+                    "zee_pos_theme",
+                    "dark"
+                );
+
+                applyTheme("dark");
+
+            } else {
+
+                localStorage.setItem(
+                    "zee_pos_theme",
+                    "light"
+                );
+
+                applyTheme("light");
+
+            }
+
+        }
+    );
+
+
+
+    // ==========================================
+    // SHOP DATA
+    // ==========================================
+
+    let currentUser = null;
+
+    let currentUserData = null;
+
+    let currentShopData = null;
+
+    let currentShopId = null;
+
+    let products = [];
+
+    let salesHistory = [];
+
+    let cart = [];
+
+    let employees = [];
+
+
+
+    // ==========================================
+    // TOAST
+    // ==========================================
+
+    function showToast(text) {
+
+        toast.textContent =
+            text;
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        setTimeout(() => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        }, 2500);
+
+    }
+
+
+
+    // ==========================================
+    // GET INITIALS
+    // ==========================================
+
+    function getInitials(name) {
+
+        if (!name) {
+            return "O";
+        }
+
+
+        const words =
+            name.trim().split(/\s+/);
+
+
+        if (words.length === 1) {
+
+            return words[0]
+                .substring(0, 2)
+                .toUpperCase();
+
+        }
+
+
+        return (
+
+            words[0][0] +
+
+            words[words.length - 1][0]
+
+        ).toUpperCase();
+
+    }
+
+
+
+    // ==========================================
+    // FORMAT DATE
+    // ==========================================
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "-";
+        }
+
+
+        try {
+
+            let date;
+
+
+            if (
+                value &&
+                typeof value.toDate ===
+                "function"
+            ) {
+
+                date =
+                    value.toDate();
+
+            } else if (
+                value instanceof Date
+            ) {
+
+                date =
+                    value;
+
+            } else {
+
+                date =
+                    new Date(value);
+
+            }
+
+
+            if (
+                isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return "-";
+
+            }
+
+
+            return date.toLocaleDateString(
+                "en-US",
+                {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+                }
+            );
+
+        } catch (error) {
+
+            return "-";
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // LOAD EMPLOYEE COUNT
+    // ==========================================
+
+    async function loadEmployeeCount() {
+
+        if (!currentShopId) {
+            return;
+        }
+
+
+        try {
+
+            const usersRef =
+                collection(
+                    db,
+                    "users"
+                );
+
+
+            const employeeQuery =
+                query(
+                    usersRef,
+
+                    where(
+                        "shopId",
+                        "==",
+                        currentShopId
+                    )
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    employeeQuery
+                );
+
+
+            let count = 0;
+
+
+            snapshot.forEach(
+                (docSnap) => {
+
+                    const data =
+                        docSnap.data();
+
+
+                    if (
+                        data.role !==
+                        "owner"
+                    ) {
+
+                        count++;
+
+                    }
+
+                }
+            );
+
+
+            employeeCount.textContent =
+                count;
+
+
+        } catch (error) {
+
+            console.error(
+                "Employee count error:",
+                error
+            );
+
+
+            employeeCount.textContent =
+                "0";
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // LOAD SHOP
+    // ==========================================
+
+    async function loadShop(shopId) {
+
+        const shopRef =
+            doc(
+                db,
+                "shops",
+                shopId
+            );
+
+
+        const shopSnap =
+            await getDoc(
+                shopRef
+            );
+
+
+        if (!shopSnap.exists()) {
+
+            throw new Error(
+                "Shop not found."
+            );
+
+        }
+
+
+        currentShopData =
+            shopSnap.data();
+
+
+        const data =
+            currentShopData;
+
+
+
+        // ======================================
+        // SHOP INFORMATION
+        // ======================================
+
+        shopNameElement.textContent =
+            data.shopName ||
+            "My Shop";
+
+
+        shopOwnerElement.textContent =
+            data.ownerName ||
+            "-";
+
+
+        shopPhone.textContent =
+            data.phone ||
+            "-";
+
+
+        shopCurrency.textContent =
+            data.currency ||
+            "-";
+
+
+        shopPlan.textContent =
+            data.plan ||
+            "-";
+
+
+        shopExpiry.textContent =
+            formatDate(
+                data.expiryDate
+            );
+
+
+
+        // ======================================
+        // LOGO / INITIALS
+        // ======================================
+
+        shopLogo.textContent =
+            data.initials ||
+            getInitials(
+                data.shopName
+            );
+
+
+
+        // ======================================
+        // STATUS
+        // ======================================
+
+        let status =
+            data.status ||
+            "active";
+
+
+        let expired =
+            false;
+
+
+        if (data.expiryDate) {
+
+            let expiry;
+
+
+            if (
+                typeof
+                data.expiryDate.toDate ===
+                "function"
+            ) {
+
+                expiry =
+                    data.expiryDate.toDate();
+
+            } else {
+
+                expiry =
+                    new Date(
+                        data.expiryDate
+                    );
+
+            }
+
+
+            if (
+                !isNaN(
+                    expiry.getTime()
+                ) &&
+                expiry < new Date()
+            ) {
+
+                expired =
+                    true;
+
+            }
+
+        }
+
+
+
+        if (
+            status ===
+            "suspended"
+        ) {
+
+            shopStatus.textContent =
+                "Suspended";
+
+
+            shopStatusBadge.textContent =
+                "Suspended";
+
+
+            shopStatusBadge.style.background =
+                "rgba(255,70,70,.10)";
+
+
+            shopStatusBadge.style.color =
+                "#ff8c8c";
+
+
+        } else if (expired) {
+
+            shopStatus.textContent =
+                "Expired";
+
+
+            shopStatusBadge.textContent =
+                "Expired";
+
+
+            shopStatusBadge.style.background =
+                "rgba(255,180,0,.10)";
+
+
+            shopStatusBadge.style.color =
+                "#ffc45c";
+
+
+        } else {
+
+            shopStatus.textContent =
+                "Active";
+
+
+            shopStatusBadge.textContent =
+                "Active";
+
+
+            shopStatusBadge.style.background =
+                "rgba(32,199,122,.10)";
+
+
+            shopStatusBadge.style.color =
+                "#5ee5a2";
+
+        }
+
+
+
+        // ======================================
+        // MY SHOP DETAILS
+        // ======================================
+
+        document.getElementById(
+            "detailShopName"
+        ).textContent =
+            data.shopName ||
+            "-";
+
+
+        document.getElementById(
+            "detailOwnerName"
+        ).textContent =
+            data.ownerName ||
+            "-";
+
+
+        document.getElementById(
+            "detailOwnerEmail"
+        ).textContent =
+            data.ownerEmail ||
+            currentUser.email ||
+            "-";
+
+
+        document.getElementById(
+            "detailPhone"
+        ).textContent =
+            data.phone ||
+            "-";
+
+
+        document.getElementById(
+            "detailAddress"
+        ).textContent =
+            data.address ||
+            "-";
+
+
+        document.getElementById(
+            "detailCurrency"
+        ).textContent =
+            data.currency ||
+            "-";
+
+
+        document.getElementById(
+            "detailPlan"
+        ).textContent =
+            data.plan ||
+            "-";
+
+
+        document.getElementById(
+            "detailExpiry"
+        ).textContent =
+            formatDate(
+                data.expiryDate
+            );
+
+
+
+        // ======================================
+        // DETAIL STATUS
+        // ======================================
+
+        const detailStatus =
+            document.getElementById(
+                "detailStatus"
+            );
+
+
+        if (
+            status ===
+            "suspended"
+        ) {
+
+            detailStatus.textContent =
+                "Suspended";
+
+            detailStatus.style.background =
+                "rgba(255,70,70,.10)";
+
+            detailStatus.style.color =
+                "#ff8c8c";
+
+
+        } else if (expired) {
+
+            detailStatus.textContent =
+                "Expired";
+
+            detailStatus.style.background =
+                "rgba(255,180,0,.10)";
+
+            detailStatus.style.color =
+                "#ffc45c";
+
+
+        } else {
+
+            detailStatus.textContent =
+                "Active";
+
+            detailStatus.style.background =
+                "rgba(32,199,122,.10)";
+
+            detailStatus.style.color =
+                "#5ee5a2";
+
+        }
+
+    }
+
+
+
+    // ==========================================
+    // LOAD USER
+    // ==========================================
+
+    async function loadUser(user) {
+
+        currentUser =
+            user;
+
+
+        const userRef =
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
+
+        const userSnap =
+            await getDoc(
+                userRef
+            );
+
+
+        if (!userSnap.exists()) {
+
+            throw new Error(
+                "User profile not found."
+            );
+
+        }
+
+
+        currentUserData =
+            userSnap.data();
+
+
+
+        // ======================================
+        // ROLE CHECK
+        // ======================================
+
+        if (
+            currentUserData.role !==
+            "owner"
+        ) {
+
+            throw new Error(
+                "This page is for Shop Owners only."
+            );
+
+        }
+
+
+
+        // ======================================
+        // STATUS CHECK
+        // ======================================
+
+        if (
+            currentUserData.status !==
+            "active"
+        ) {
+
+            throw new Error(
+                "Your account is not active."
+            );
+
+        }
+
+
+
+        // ======================================
+        // SHOP ID CHECK
+        // ======================================
+
+        if (
+            !currentUserData.shopId
+        ) {
+
+            throw new Error(
+                "Shop ID was not found."
+            );
+
+        }
+
+
+        currentShopId =
+            currentUserData.shopId;
+
+
+
+        // ======================================
+        // OWNER UI
+        // ======================================
+
+        const name =
+            currentUserData.name ||
+            currentUserData.email ||
+            "Owner";
+
+
+        ownerNameElement.textContent =
+            name;
+
+
+        ownerAvatar.textContent =
+            getInitials(
+                name
+            );
+
+
+
+        // ======================================
+        // LOAD SHOP
+        // ======================================
+
+        await loadShop(
+            currentShopId
+        );
+
+
+
+        // ======================================
+        // EMPLOYEE COUNT
+        // ======================================
+
+        await loadEmployeeCount();
+        await loadEmployees();
+
+        await loadProducts();
+        await loadSalesHistory();
+
+    }
+
+
+
+    // ==========================================
+    // PRODUCTS
+    // ==========================================
+
+    function productCollection() {
+        return collection(
+            db,
+            "shops",
+            currentShopId,
+            "products"
+        );
+    }
+
+
+    function formatMoney(value) {
+        const number = Number(value || 0);
+        const currency = currentShopData?.currency || "";
+        return `${currency ? currency + " " : ""}${number.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    }
+
+
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    function productStatus(product) {
+        const stock = Number(product.stock || 0);
+        const lowStock = Number(product.lowStock || 0);
+
+        if (stock <= 0) {
+            return '<span class="stock-out">Out of stock</span>';
+        }
+
+        if (stock <= lowStock) {
+            return '<span class="stock-low">Low stock</span>';
+        }
+
+        return '<span class="stock-ok">In stock</span>';
+    }
+
+
+    function renderProducts() {
+        const search = productSearch.value.trim().toLowerCase();
+
+        const filtered = products.filter(product => {
+            const name = String(product.name || "").toLowerCase();
+            const barcode = String(product.barcode || "").toLowerCase();
+            return !search || name.includes(search) || barcode.includes(search);
+        });
+
+        productListInfo.textContent = `${filtered.length} product${filtered.length === 1 ? "" : "s"}`;
+        productCount.textContent = products.length;
+
+        if (!filtered.length) {
+            productsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="table-message">
+                        ${products.length ? "No matching products found." : "No products yet. Click + Add Product to create your first product."}
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        productsTableBody.innerHTML = filtered.map(product => `
+            <tr>
+                <td class="product-name-cell">${escapeHtml(product.name || "-")}</td>
+                <td class="product-muted">${escapeHtml(product.barcode || "-")}</td>
+                <td>${escapeHtml(product.category || "-")}</td>
+                <td>${escapeHtml(formatMoney(product.salePrice))}</td>
+                <td>${Number(product.stock || 0).toLocaleString()}</td>
+                <td>${productStatus(product)}</td>
+                <td>
+                    <div class="row-actions">
+                        <button class="table-action" type="button" data-product-action="edit" data-product-id="${escapeHtml(product.id)}">Edit</button>
+                        <button class="table-action delete" type="button" data-product-action="delete" data-product-id="${escapeHtml(product.id)}">Delete</button>
+                    </div>
+                </td>
+            </tr>`).join("");
+    }
+
+
+    async function loadProducts() {
+        if (!currentShopId) return;
+
+        productsTableBody.innerHTML = `
+            <tr><td colspan="7" class="table-message">Loading products...</td></tr>`;
+
+        try {
+            const snapshot = await getDocs(productCollection());
+            products = [];
+
+            snapshot.forEach(docSnap => {
+                products.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            products.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+            renderProducts();
+            renderSalesProducts();
+            renderCart();
+        } catch (error) {
+            console.error("Product load error:", error);
+            products = [];
+            productCount.textContent = "0";
+            productListInfo.textContent = "Unable to load";
+            productsTableBody.innerHTML = `
+                <tr><td colspan="7" class="table-message">Unable to load products. Check your Firestore rules.</td></tr>`;
+        }
+    }
+
+
+    // ==========================================
+    // SALES HISTORY / RECEIPT
+    // ==========================================
+
+    function salesCollection() {
+        return collection(
+            db,
+            "shops",
+            currentShopId,
+            "sales"
+        );
+    }
+
+
+    function saleDateText(timestamp) {
+        if (!timestamp) return "-";
+
+        const date = typeof timestamp.toDate === "function"
+            ? timestamp.toDate()
+            : new Date(timestamp);
+
+        if (Number.isNaN(date.getTime())) return "-";
+
+        return date.toLocaleString();
+    }
+
+
+    function shortInvoiceId(id) {
+        return String(id || "").slice(-8).toUpperCase();
+    }
+
+
+    function renderSalesHistory() {
+        const search = salesHistorySearch.value.trim().toLowerCase();
+
+        const filtered = salesHistory.filter(sale => {
+            const invoice = String(sale.id || "").toLowerCase();
+            const cashier = String(sale.cashierName || "").toLowerCase();
+            const items = (sale.items || [])
+                .map(item => `${item.name || ""} ${item.barcode || ""}`)
+                .join(" ")
+                .toLowerCase();
+
+            return !search
+                || invoice.includes(search)
+                || cashier.includes(search)
+                || items.includes(search);
+        });
+
+        salesHistoryInfo.textContent = `${filtered.length} sale${filtered.length === 1 ? "" : "s"}`;
+
+        if (!filtered.length) {
+            salesHistoryBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="table-message">
+                        ${salesHistory.length ? "No matching sales found." : "No sales yet."}
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        salesHistoryBody.innerHTML = filtered.map(sale => `
+            <tr>
+                <td class="sale-id-cell">#${escapeHtml(shortInvoiceId(sale.id))}</td>
+                <td class="sale-muted">${escapeHtml(saleDateText(sale.createdAt))}</td>
+                <td>${Number(sale.itemCount || 0).toLocaleString()}</td>
+                <td>${escapeHtml(formatMoney(sale.total))}</td>
+                <td>${escapeHtml(sale.cashierName || "Owner")}</td>
+                <td>
+                    <button class="receipt-btn" type="button" data-receipt-id="${escapeHtml(sale.id)}">View Receipt</button>
+                </td>
+            </tr>`).join("");
+    }
+
+
+    async function loadSalesHistory() {
+        if (!currentShopId) return;
+
+        salesHistoryBody.innerHTML = `
+            <tr><td colspan="6" class="table-message">Loading sales...</td></tr>`;
+
+        try {
+            const snapshot = await getDocs(salesCollection());
+
+            salesHistory = [];
+            snapshot.forEach(docSnap => {
+                salesHistory.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            salesHistory.sort((a, b) => {
+                const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+                const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+                return bTime - aTime;
+            });
+
+            // Keep the first 100 records in the UI for V1.
+            salesHistory = salesHistory.slice(0, 100);
+            renderSalesHistory();
+        } catch (error) {
+            console.error("Sales history load error:", error);
+            salesHistory = [];
+            salesHistoryInfo.textContent = "Unable to load";
+            salesHistoryBody.innerHTML = `
+                <tr><td colspan="6" class="table-message">Unable to load sales. Check your Firestore rules.</td></tr>`;
+        }
+    }
+
+
+    function openReceipt(sale) {
+        const shop = currentShopData || {};
+
+        receiptTitle.textContent = shop.name || "Shop";
+        receiptAddress.textContent = shop.address || "";
+        receiptPhone.textContent = shop.phone || "";
+        receiptInvoice.textContent = `#${shortInvoiceId(sale.id)}`;
+        receiptDate.textContent = saleDateText(sale.createdAt);
+        receiptCashier.textContent = sale.cashierName || "Owner";
+
+        receiptItems.innerHTML = (sale.items || []).map(item => `
+            <div class="receipt-item">
+                <div>
+                    <div class="receipt-item-name">${escapeHtml(item.name || "Product")}</div>
+                    <div class="receipt-item-detail">${Number(item.quantity || 0)} × ${escapeHtml(formatMoney(item.salePrice || 0))}</div>
+                </div>
+                <strong>${escapeHtml(formatMoney(item.lineTotal || 0))}</strong>
+            </div>`).join("");
+
+        receiptSubtotal.textContent = formatMoney(sale.subtotal || sale.total || 0);
+        receiptTotal.textContent = formatMoney(sale.total || 0);
+        receiptCash.textContent = formatMoney(sale.cashReceived || 0);
+        receiptChange.textContent = formatMoney(sale.change || 0);
+
+        receiptModal.classList.add("show");
+        receiptModal.setAttribute("aria-hidden", "false");
+    }
+
+
+    function closeReceipt() {
+        receiptModal.classList.remove("show");
+        receiptModal.setAttribute("aria-hidden", "true");
+    }
+
+
+    function openProductModal(product = null) {
+        productForm.reset();
+        productId.value = product?.id || "";
+        productModalTitle.textContent = product ? "Edit Product" : "Add Product";
+        saveProductBtn.textContent = product ? "Save Changes" : "Save Product";
+
+        productNameInput.value = product?.name || "";
+        productBarcodeInput.value = product?.barcode || "";
+        productCategoryInput.value = product?.category || "";
+        productBuyPriceInput.value = product?.buyPrice ?? "";
+        productSalePriceInput.value = product?.salePrice ?? "";
+        productStockInput.value = product?.stock ?? "";
+        productLowStockInput.value = product?.lowStock ?? 5;
+
+        productModal.classList.add("show");
+        productModal.setAttribute("aria-hidden", "false");
+        setTimeout(() => productNameInput.focus(), 50);
+    }
+
+
+    function closeProductModalFn() {
+        productModal.classList.remove("show");
+        productModal.setAttribute("aria-hidden", "true");
+        productForm.reset();
+        productId.value = "";
+    }
+
+
+    async function saveProduct(event) {
+        event.preventDefault();
+
+        if (!currentShopId || !currentUser) {
+            showToast("Your shop session is not ready.");
+            return;
+        }
+
+        const name = productNameInput.value.trim();
+        const barcode = productBarcodeInput.value.trim();
+        const category = productCategoryInput.value.trim();
+        const buyPrice = Number(productBuyPriceInput.value || 0);
+        const salePrice = Number(productSalePriceInput.value || 0);
+        const stock = Number(productStockInput.value || 0);
+        const lowStock = Number(productLowStockInput.value || 0);
+
+        if (!name) {
+            showToast("Please enter a product name.");
+            productNameInput.focus();
+            return;
+        }
+
+        if (!Number.isFinite(salePrice) || salePrice < 0) {
+            showToast("Please enter a valid sale price.");
+            productSalePriceInput.focus();
+            return;
+        }
+
+        if (!Number.isFinite(stock) || stock < 0) {
+            showToast("Please enter a valid stock quantity.");
+            productStockInput.focus();
+            return;
+        }
+
+        if (!Number.isFinite(lowStock) || lowStock < 0) {
+            showToast("Please enter a valid low stock level.");
+            productLowStockInput.focus();
+            return;
+        }
+
+        saveProductBtn.disabled = true;
+        saveProductBtn.textContent = "Saving...";
+
+        const data = {
+            name,
+            barcode,
+            category,
+            buyPrice,
+            salePrice,
+            stock,
+            lowStock,
+            shopId: currentShopId,
+            updatedAt: serverTimestamp()
+        };
+
+        try {
+            if (productId.value) {
+                await updateDoc(
+                    doc(db, "shops", currentShopId, "products", productId.value),
+                    data
+                );
+                showToast("Product updated successfully.");
+            } else {
+                await addDoc(productCollection(), {
+                    ...data,
+                    createdAt: serverTimestamp()
+                });
+                showToast("Product added successfully.");
+            }
+
+            closeProductModalFn();
+            await loadProducts();
+        } catch (error) {
+            console.error("Product save error:", error);
+            showToast(error?.code === "permission-denied" ? "Permission denied. Please update Firestore rules." : "Unable to save product.");
+        } finally {
+            saveProductBtn.disabled = false;
+            saveProductBtn.textContent = productId.value ? "Save Changes" : "Save Product";
+        }
+    }
+
+
+    async function deleteProduct(product) {
+        const name = product.name || "this product";
+        if (!window.confirm(`Delete "${name}"?\n\nThis action cannot be undone.`)) return;
+
+        try {
+            await deleteDoc(
+                doc(db, "shops", currentShopId, "products", product.id)
+            );
+            showToast("Product deleted successfully.");
+            await loadProducts();
+        } catch (error) {
+            console.error("Product delete error:", error);
+            showToast(error?.code === "permission-denied" ? "Permission denied. Please update Firestore rules." : "Unable to delete product.");
+        }
+    }
+
+
+    addProductBtn.addEventListener("click", () => openProductModal());
+    closeProductModal.addEventListener("click", closeProductModalFn);
+    cancelProductBtn.addEventListener("click", closeProductModalFn);
+    productModalBackdrop.addEventListener("click", closeProductModalFn);
+    productForm.addEventListener("submit", saveProduct);
+    productSearch.addEventListener("input", renderProducts);
+
+    productsTableBody.addEventListener("click", event => {
+        const button = event.target.closest("[data-product-action]");
+        if (!button) return;
+
+        const product = products.find(item => item.id === button.dataset.productId);
+        if (!product) return;
+
+        if (button.dataset.productAction === "edit") {
+            openProductModal(product);
+        } else if (button.dataset.productAction === "delete") {
+            deleteProduct(product);
+        }
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && productModal.classList.contains("show")) {
+            closeProductModalFn();
+        }
+    });
+
+
+    // ==========================================
+    // SALES / POS V1
+    // ==========================================
+
+    function salesProducts() {
+        const search = salesSearch.value.trim().toLowerCase();
+
+        return products.filter(product => {
+            const name = String(product.name || "").toLowerCase();
+            const barcode = String(product.barcode || "").toLowerCase();
+            return !search || name.includes(search) || barcode.includes(search);
+        });
+    }
+
+
+    function cartQuantity(productId) {
+        const item = cart.find(item => item.id === productId);
+        return item ? item.quantity : 0;
+    }
+
+
+    function cartSubtotal() {
+        return cart.reduce(
+            (total, item) => total + (Number(item.salePrice || 0) * item.quantity),
+            0
+        );
+    }
+
+
+    function renderSalesProducts() {
+        const list = salesProducts();
+
+        if (!list.length) {
+            salesProductGrid.innerHTML = `
+                <div class="sales-message">
+                    ${products.length ? "No matching products found." : "No products available. Add products first."}
+                </div>`;
+            return;
+        }
+
+        salesProductGrid.innerHTML = list.map(product => {
+            const stock = Math.max(0, Number(product.stock || 0));
+            const inCart = cartQuantity(product.id);
+            const remaining = Math.max(0, stock - inCart);
+
+            return `
+                <button
+                    class="sale-product-card"
+                    type="button"
+                    data-sale-product-id="${escapeHtml(product.id)}"
+                    ${remaining <= 0 ? "disabled" : ""}
+                >
+                    <div class="sale-product-name">${escapeHtml(product.name || "-")}</div>
+                    <div class="sale-product-category">${escapeHtml(product.category || "No category")}</div>
+                    <div class="sale-product-bottom">
+                        <span class="sale-product-price">${escapeHtml(formatMoney(product.salePrice))}</span>
+                        <span class="sale-product-stock">${remaining} left</span>
+                    </div>
+                </button>`;
+        }).join("");
+    }
+
+
+    function renderCart() {
+        const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const total = cartSubtotal();
+        const cash = Number(cashReceived.value || 0);
+        const change = cash - total;
+
+        cartCount.textContent = `${itemCount} item${itemCount === 1 ? "" : "s"}`;
+        cartItemsTotal.textContent = itemCount.toLocaleString();
+        cartGrandTotal.textContent = formatMoney(total);
+        changeAmount.textContent = formatMoney(Math.max(0, change));
+        changeRow.classList.toggle("insufficient", itemCount > 0 && cash < total);
+        completeSaleBtn.disabled = cart.length === 0 || cash < total;
+
+        if (!cart.length) {
+            cartList.innerHTML = `
+                <div class="cart-empty">
+                    Add a product to start a sale.
+                </div>`;
+            renderSalesProducts();
+            return;
+        }
+
+        cartList.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-top">
+                    <span class="cart-item-name">${escapeHtml(item.name || "-")}</span>
+                    <span class="cart-item-price">${escapeHtml(formatMoney(item.salePrice))}</span>
+                </div>
+                <div class="cart-item-bottom">
+                    <div class="cart-qty">
+                        <button type="button" data-cart-action="decrease" data-product-id="${escapeHtml(item.id)}">−</button>
+                        <span>${item.quantity}</span>
+                        <button type="button" data-cart-action="increase" data-product-id="${escapeHtml(item.id)}">+</button>
+                    </div>
+                    <span class="cart-item-total">${escapeHtml(formatMoney(Number(item.salePrice || 0) * item.quantity))}</span>
+                    <button class="cart-remove" type="button" title="Remove" data-cart-action="remove" data-product-id="${escapeHtml(item.id)}">×</button>
+                </div>
+            </div>`).join("");
+
+        renderSalesProducts();
+    }
+
+
+    function addToCart(product) {
+        const stock = Math.max(0, Number(product.stock || 0));
+        const existing = cart.find(item => item.id === product.id);
+        const currentQuantity = existing ? existing.quantity : 0;
+
+        if (stock <= currentQuantity) {
+            showToast("Not enough stock available.");
+            return;
+        }
+
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+            cart.push({
+                id: product.id,
+                name: product.name || "",
+                barcode: product.barcode || "",
+                salePrice: Number(product.salePrice || 0),
+                quantity: 1
+            });
+        }
+
+        renderCart();
+    }
+
+
+    function changeCartQuantity(productId, amount) {
+        const item = cart.find(item => item.id === productId);
+        const product = products.find(product => product.id === productId);
+
+        if (!item || !product) return;
+
+        const stock = Math.max(0, Number(product.stock || 0));
+        const nextQuantity = item.quantity + amount;
+
+        if (nextQuantity <= 0) {
+            cart = cart.filter(item => item.id !== productId);
+        } else if (nextQuantity <= stock) {
+            item.quantity = nextQuantity;
+        } else {
+            showToast("Not enough stock available.");
+        }
+
+        renderCart();
+    }
+
+
+    function clearCart() {
+        cart = [];
+        cashReceived.value = "";
+        renderCart();
+    }
+
+
+    async function completeSale() {
+        if (!currentShopId || !currentUser || !cart.length) return;
+
+        const total = cartSubtotal();
+        const cash = Number(cashReceived.value || 0);
+
+        if (!Number.isFinite(cash) || cash < total) {
+            showToast("Cash received is not enough.");
+            cashReceived.focus();
+            return;
+        }
+
+        completeSaleBtn.disabled = true;
+        completeSaleBtn.textContent = "Processing...";
+
+        try {
+            const saleRef = doc(collection(db, "shops", currentShopId, "sales"));
+
+            await runTransaction(db, async transaction => {
+                const saleItems = [];
+                const productReads = [];
+
+                // Firestore requires every transaction read to happen before any write.
+                for (const cartItem of cart) {
+                    const productRef = doc(
+                        db,
+                        "shops",
+                        currentShopId,
+                        "products",
+                        cartItem.id
+                    );
+
+                    const productSnap = await transaction.get(productRef);
+                    productReads.push({ cartItem, productRef, productSnap });
+                }
+
+                // Validate all products and build the sale snapshot.
+                for (const { cartItem, productSnap } of productReads) {
+                    if (!productSnap.exists()) {
+                        throw new Error(`${cartItem.name} no longer exists.`);
+                    }
+
+                    const productData = productSnap.data();
+                    const currentStock = Number(productData.stock || 0);
+
+                    if (currentStock < cartItem.quantity) {
+                        throw new Error(`${productData.name || cartItem.name} does not have enough stock.`);
+                    }
+
+                    saleItems.push({
+                        productId: cartItem.id,
+                        name: productData.name || cartItem.name,
+                        barcode: productData.barcode || cartItem.barcode || "",
+                        quantity: cartItem.quantity,
+                        salePrice: Number(productData.salePrice || cartItem.salePrice || 0),
+                        lineTotal: Number(productData.salePrice || cartItem.salePrice || 0) * cartItem.quantity
+                    });
+                }
+
+                // All reads are finished. Perform writes only now.
+                for (const { cartItem, productSnap, productRef } of productReads) {
+                    const productData = productSnap.data();
+                    const currentStock = Number(productData.stock || 0);
+
+                    transaction.update(productRef, {
+                        stock: currentStock - cartItem.quantity,
+                        updatedAt: serverTimestamp()
+                    });
+                }
+
+                transaction.set(saleRef, {
+                    shopId: currentShopId,
+                    items: saleItems,
+                    itemCount: saleItems.reduce((sum, item) => sum + item.quantity, 0),
+                    subtotal: total,
+                    total,
+                    paymentMethod: "cash",
+                    cashReceived: cash,
+                    change: cash - total,
+                    cashierId: currentUser.uid,
+                    cashierName: currentUserData?.name || currentUser.email || "Owner",
+                    createdAt: serverTimestamp()
+                });
+            });
+
+            showToast("Sale completed successfully.");
+            clearCart();
+            await loadProducts();
+            await loadSalesHistory();
+
+        } catch (error) {
+            console.error("Complete sale error:", error);
+            showToast(error?.message || "Unable to complete sale.");
+            renderCart();
+        } finally {
+            completeSaleBtn.textContent = "Complete Sale";
+            renderCart();
+        }
+    }
+
+
+    salesSearch.addEventListener("input", renderSalesProducts);
+
+
+    salesProductGrid.addEventListener("click", event => {
+        const button = event.target.closest("[data-sale-product-id]");
+        if (!button) return;
+
+        const product = products.find(item => item.id === button.dataset.saleProductId);
+        if (!product) return;
+
+        addToCart(product);
+    });
+
+
+    cartList.addEventListener("click", event => {
+        const button = event.target.closest("[data-cart-action]");
+        if (!button) return;
+
+        const productId = button.dataset.productId;
+        const action = button.dataset.cartAction;
+
+        if (action === "increase") {
+            changeCartQuantity(productId, 1);
+        } else if (action === "decrease") {
+            changeCartQuantity(productId, -1);
+        } else if (action === "remove") {
+            cart = cart.filter(item => item.id !== productId);
+            renderCart();
+        }
+    });
+
+
+    cashReceived.addEventListener("input", renderCart);
+
+
+    clearCartBtn.addEventListener("click", () => {
+        if (!cart.length) return;
+
+        if (window.confirm("Clear all items from the cart?")) {
+            clearCart();
+        }
+    });
+
+
+    completeSaleBtn.addEventListener("click", completeSale);
+
+
+    salesHistorySearch.addEventListener("input", renderSalesHistory);
+
+
+    salesHistoryBody.addEventListener("click", event => {
+        const button = event.target.closest("[data-receipt-id]");
+        if (!button) return;
+
+        const sale = salesHistory.find(item => item.id === button.dataset.receiptId);
+        if (sale) openReceipt(sale);
+    });
+
+
+    closeReceiptBtn.addEventListener("click", closeReceipt);
+    receiptBackdrop.addEventListener("click", closeReceipt);
+    printReceiptBtn.addEventListener("click", () => window.print());
+
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && receiptModal.classList.contains("show")) {
+            closeReceipt();
+        }
+    });
+
+
+    renderCart();
+
+
+    // ==========================================
+    // AUTH STATE
+    // ==========================================
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            try {
+
+                if (!user) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                await loadUser(
+                    user
+                );
+
+
+                loadingScreen.style.display =
+                    "none";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Dashboard Error:",
+                    error
+                );
+
+
+                await signOut(
+                    auth
+                );
+
+
+                window.location.href =
+                    "login.html";
+
+            }
+
+        }
+    );
+
+
+
+    // ==========================================
+    // EMPLOYEES V1
+    // ==========================================
+
+    function renderEmployees() {
+        const search = (employeeSearch?.value || "").trim().toLowerCase();
+        const filtered = employees.filter(employee => `${employee.name || ""} ${employee.email || ""} ${employee.role || ""}`.toLowerCase().includes(search));
+        employeeListInfo.textContent = `${filtered.length} employee${filtered.length === 1 ? "" : "s"}`;
+        employeeCount.textContent = employees.length.toLocaleString();
+        if (!filtered.length) {
+            employeesTableBody.innerHTML = `<tr><td colspan="5" class="table-message">${employees.length ? "No matching employees found." : "No employees yet."}</td></tr>`;
+            return;
+        }
+        employeesTableBody.innerHTML = filtered.map(employee => {
+            const name = employee.name || "Unnamed";
+            const initials = getInitials(name);
+            const role = employee.role === "manager" ? "Manager" : "Cashier";
+            const isActive = employee.status === "active";
+
+            return `
+                <tr>
+                    <td>
+                        <div class="employee-cell">
+                            <div class="employee-avatar">${escapeHtml(initials)}</div>
+                            <div>
+                                <div class="employee-name">${escapeHtml(name)}</div>
+                                <div class="employee-email">${escapeHtml(employee.email || "")}</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td>
+                        <span class="employee-role">${role}</span>
+                    </td>
+
+                    <td>
+                        <span class="employee-status ${isActive ? "active" : "inactive"}">
+                            ${isActive ? "Active" : "Inactive"}
+                        </span>
+                    </td>
+
+                    <td class="sale-muted">
+                        ${escapeHtml(formatDate(employee.createdAt))}
+                    </td>
+
+                    <td>
+                        <div class="employee-actions">
+                            <button
+                                class="employee-table-action"
+                                type="button"
+                                data-employee-action="edit"
+                                data-employee-id="${escapeHtml(employee.id)}"
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                class="employee-table-action"
+                                type="button"
+                                data-employee-action="toggle"
+                                data-employee-id="${escapeHtml(employee.id)}"
+                            >
+                                ${isActive ? "Deactivate" : "Activate"}
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    async function loadEmployees() {
+        if (!currentShopId) return;
+        employeesTableBody.innerHTML = `<tr><td colspan="5" class="table-message">Loading employees...</td></tr>`;
+        try {
+            const snapshot = await getDocs(query(collection(db, "users"), where("shopId", "==", currentShopId)));
+            employees = [];
+            snapshot.forEach(docSnap => {
+                const data = docSnap.data();
+                if (data.role === "cashier" || data.role === "manager") employees.push({ id: docSnap.id, ...data });
+            });
+            employees.sort((a,b) => String(a.name || "").localeCompare(String(b.name || "")));
+            renderEmployees();
+        } catch (error) {
+            console.error("Employees load error:", error);
+            employees = [];
+            employeeCount.textContent = "0";
+            employeeListInfo.textContent = "Unable to load";
+            employeesTableBody.innerHTML = `<tr><td colspan="5" class="table-message">Unable to load employees. Check your Firestore rules.</td></tr>`;
+        }
+    }
+
+    function openEmployeeModal(employee = null) {
+        employeeForm.reset();
+        employeeId.value = employee?.id || "";
+        employeeModalTitle.textContent = employee ? "Edit Employee" : "Add Employee";
+        employeeNameInput.value = employee?.name || "";
+        employeeEmailInput.value = employee?.email || "";
+        employeeRoleInput.value = employee?.role || "cashier";
+        employeeEmailInput.disabled = Boolean(employee);
+        employeePasswordField.style.display = employee ? "none" : "block";
+        employeePasswordInput.required = !employee;
+        saveEmployeeBtn.textContent = employee ? "Save Changes" : "Create Employee";
+        employeeModal.classList.add("show");
+        employeeModal.setAttribute("aria-hidden", "false");
+        employeeNameInput.focus();
+    }
+
+    function closeEmployeeModalFn() {
+        employeeModal.classList.remove("show");
+        employeeModal.setAttribute("aria-hidden", "true");
+        employeeEmailInput.disabled = false;
+    }
+
+    addEmployeeBtn.addEventListener("click", () => openEmployeeModal());
+    closeEmployeeModal.addEventListener("click", closeEmployeeModalFn);
+    cancelEmployeeBtn.addEventListener("click", closeEmployeeModalFn);
+    document.getElementById("employeeModalBackdrop").addEventListener("click", closeEmployeeModalFn);
+    employeeSearch.addEventListener("input", renderEmployees);
+
+    employeeForm.addEventListener("submit", async event => {
+        event.preventDefault();
+        if (!currentShopId) return showToast("Shop information is not ready yet.");
+        const id = employeeId.value.trim();
+        const name = employeeNameInput.value.trim();
+        const email = employeeEmailInput.value.trim().toLowerCase();
+        const role = employeeRoleInput.value;
+        const password = employeePasswordInput.value;
+        saveEmployeeBtn.disabled = true;
+        saveEmployeeBtn.textContent = id ? "Saving..." : "Creating...";
+        try {
+            if (id) {
+                await updateDoc(doc(db, "users", id), { name, role, updatedAt: serverTimestamp() });
+                showToast("Employee updated successfully.");
+            } else {
+                const credential = await createUserWithEmailAndPassword(employeeAuth, email, password);
+                const employeeUid = credential.user.uid;
+                await setDoc(doc(db, "users", employeeUid), { name, email, role, status: "active", shopId: currentShopId, createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+                await signOut(employeeAuth);
+                showToast("Employee created successfully.");
+            }
+            closeEmployeeModalFn();
+            await loadEmployees();
+        } catch (error) {
+            console.error("Employee save error:", error);
+            const code = error?.code || "";
+            if (code === "auth/email-already-in-use") showToast("This email is already in use.");
+            else if (code === "auth/weak-password") showToast("Password must be at least 6 characters.");
+            else if (code.includes("permission-denied")) showToast("Permission denied. Update Firestore rules for employees.");
+            else showToast(error?.message || "Unable to save employee.");
+        } finally {
+            saveEmployeeBtn.disabled = false;
+            saveEmployeeBtn.textContent = id ? "Save Changes" : "Create Employee";
+        }
+    });
+
+    employeesTableBody.addEventListener("click", async event => {
+        const button = event.target.closest("button[data-employee-action]");
+        if (!button) return;
+        const id = button.dataset.employeeId;
+        const employee = employees.find(item => item.id === id);
+        if (!employee) return;
+        if (button.dataset.employeeAction === "edit") return openEmployeeModal(employee);
+        button.disabled = true;
+        try {
+            await updateDoc(doc(db, "users", id), { status: employee.status === "active" ? "inactive" : "active", updatedAt: serverTimestamp() });
+            showToast(employee.status === "active" ? "Employee deactivated." : "Employee activated.");
+            await loadEmployees();
+        } catch (error) {
+            console.error("Employee status error:", error);
+            showToast("Unable to change employee status.");
+            button.disabled = false;
+        }
+    });
+
+    // ==========================================
+    // NAVIGATION
+    // ==========================================
+
+    const navButtons =
+        document.querySelectorAll(
+            ".nav-btn"
+        );
+
+
+    const sections =
+        document.querySelectorAll(
+            ".page-section"
+        );
+
+
+    const sectionInfo = {
+
+        dashboard: {
+
+            title:
+                "Dashboard",
+
+            subtitle:
+                "Manage your shop from one place."
+
+        },
+
+
+        employees: {
+
+            title:
+                "Employees",
+
+            subtitle:
+                "Manage your shop employees."
+
+        },
+
+
+        products: {
+
+            title:
+                "Products",
+
+            subtitle:
+                "Manage products and inventory."
+
+        },
+
+
+        sales: {
+
+            title:
+                "Sales",
+
+            subtitle:
+                "Create a new sale and process payments."
+
+        },
+
+
+        "sales-history": {
+
+            title:
+                "Sales History",
+
+            subtitle:
+                "View previous sales and print receipts."
+
+        },
+
+
+        reports: {
+
+            title:
+                "Reports",
+
+            subtitle:
+                "View your business reports."
+
+        },
+
+
+        shop: {
+
+            title:
+                "My Shop",
+
+            subtitle:
+                "View your shop information."
+
+        },
+
+
+        settings: {
+
+            title:
+                "Settings",
+
+            subtitle:
+                "Manage your shop settings."
+
+        }
+
+    };
+
+
+
+    // ==========================================
+    // OPEN SECTION
+    // ==========================================
+
+    function openSection(
+        sectionName
+    ) {
+
+
+        navButtons.forEach(
+            (button) => {
+
+                button.classList.toggle(
+
+                    "active",
+
+                    button.dataset.section ===
+                    sectionName
+
+                );
+
+            }
+        );
+
+
+
+        sections.forEach(
+            (section) => {
+
+                section.classList.toggle(
+
+                    "active",
+
+                    section.id ===
+                    "section-" +
+                    sectionName
+
+                );
+
+            }
+        );
+
+
+
+        if (
+            sectionInfo[
+                sectionName
+            ]
+        ) {
+
+            pageTitle.textContent =
+                sectionInfo[
+                    sectionName
+                ].title;
+
+
+            pageSubtitle.textContent =
+                sectionInfo[
+                    sectionName
+                ].subtitle;
+
+        }
+
+
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+    }
+
+
+
+    // ==========================================
+    // NAV BUTTON EVENTS
+    // ==========================================
+
+    navButtons.forEach(
+        (button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    openSection(
+                        button.dataset.section
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    // ==========================================
+    // QUICK ACTIONS
+    // ==========================================
+
+    document
+        .querySelectorAll(
+            ".quick-btn"
+        )
+        .forEach(
+            (button) => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        openSection(
+                            button.dataset.action
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+
+    // ==========================================
+    // MOBILE MENU
+    // ==========================================
+
+    mobileMenu.addEventListener(
+        "click",
+        () => {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    logoutBtn.addEventListener(
+        "click",
+        async () => {
+
+            try {
+
+                await signOut(
+                    auth
+                );
+
+
+                window.location.href =
+                    "login.html";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Logout Error:",
+                    error
+                );
+
+
+                showToast(
+                    "Unable to logout. Please try again."
+                );
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

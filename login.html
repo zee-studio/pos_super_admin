@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ZEE POS - Login</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(255, 126, 0, 0.18),
+                    transparent 35%
+                ),
+
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(183, 0, 0, 0.18),
+                    transparent 35%
+                ),
+
+                #090909;
+
+            color: #fff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+        }
+
+
+        .login-container {
+
+            width: 100%;
+
+            max-width: 420px;
+
+        }
+
+
+        .login-card {
+
+            background:
+                rgba(20, 20, 20, 0.88);
+
+            border:
+                1px solid
+                rgba(255, 126, 0, 0.18);
+
+            border-radius: 24px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 25px 70px
+                rgba(0, 0, 0, 0.55),
+
+                0 0 50px
+                rgba(255, 126, 0, 0.06);
+
+            backdrop-filter: blur(18px);
+
+        }
+
+
+        .logo {
+
+            width: 70px;
+
+            height: 70px;
+
+            margin:
+                0 auto 20px;
+
+            border-radius: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 28px;
+
+            font-weight: 900;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff7e00,
+                    #b70000
+                );
+
+            box-shadow:
+                0 12px 35px
+                rgba(255, 126, 0, 0.2);
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            font-size: 28px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #999;
+
+            font-size: 14px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 18px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            font-size: 13px;
+
+            color: #bbb;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            height: 52px;
+
+            padding: 0 15px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid
+                #303030;
+
+            background: #111;
+
+            color: #fff;
+
+            outline: none;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+
+        }
+
+
+        input:focus {
+
+            border-color: #ff7e00;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 126, 0, 0.08);
+
+        }
+
+
+        .password-wrapper {
+
+            position: relative;
+
+        }
+
+
+        .password-wrapper input {
+
+            padding-right: 55px;
+
+        }
+
+
+        .show-password {
+
+            position: absolute;
+
+            right: 15px;
+
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            background: none;
+
+            border: none;
+
+            color: #888;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+        }
+
+
+        .show-password:hover {
+
+            color: #ff7e00;
+
+        }
+
+
+        .login-btn {
+
+            width: 100%;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff7e00,
+                    #b70000
+                );
+
+            color: #fff;
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 8px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .login-btn:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(255, 126, 0, 0.18);
+
+        }
+
+
+        .login-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+            box-shadow: none;
+
+        }
+
+
+        .message {
+
+            display: none;
+
+            padding: 12px 14px;
+
+            border-radius: 10px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .message.error {
+
+            display: block;
+
+            background:
+                rgba(255, 60, 60, 0.08);
+
+            border:
+                1px solid
+                rgba(255, 60, 60, 0.2);
+
+            color: #ff8b8b;
+
+        }
+
+
+        .message.success {
+
+            display: block;
+
+            background:
+                rgba(0, 200, 100, 0.08);
+
+            border:
+                1px solid
+                rgba(0, 200, 100, 0.2);
+
+            color: #72e0a5;
+
+        }
+
+
+        .forgot {
+
+            text-align: right;
+
+            margin-top: 12px;
+
+        }
+
+
+        .forgot button {
+
+            background: none;
+
+            border: none;
+
+            color: #ff9a3c;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+        }
+
+
+        .forgot button:hover {
+
+            color: #ff7e00;
+
+        }
+
+
+        .footer {
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #666;
+
+            font-size: 12px;
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .login-card {
+
+                padding:
+                    25px 20px;
+
+            }
+
+
+            h1 {
+
+                font-size: 24px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <div class="login-card">
+
+
+        <div class="logo">
+            Z
+        </div>
+
+
+        <h1>
+            Welcome Back
+        </h1>
+
+
+        <div class="subtitle">
+            Sign in to your account
+        </div>
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <form id="loginForm">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="password-wrapper">
+
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        id="togglePassword"
+                    >
+                        Show
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginBtn"
+            >
+                Login
+            </button>
+
+
+        </form>
+
+
+        <!-- FORGOT PASSWORD -->
+
+        <div class="forgot">
+
+            <button
+                type="button"
+                id="forgotBtn"
+            >
+                Forgot Password?
+            </button>
+
+        </div>
+
+
+        <div class="footer">
+            ZEE POS • Shop Management System
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script type="module">
+
+
+    // =====================================================
+    // FIREBASE IMPORTS
+    // =====================================================
+
+    import {
+        initializeApp
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+    import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        sendPasswordResetEmail,
+        signOut
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    import {
+        getFirestore,
+        doc,
+        getDoc
+    }
+    from
+        "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+
+    // =====================================================
+    // FIREBASE CONFIG
+    // =====================================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "AIzaSyDucU3FiUUiBS50P9FSrKPxXSAja3FI-MU",
+
+        authDomain:
+            "zee-pos.firebaseapp.com",
+
+        projectId:
+            "zee-pos",
+
+        storageBucket:
+            "zee-pos.firebasestorage.app",
+
+        messagingSenderId:
+            "508353450616",
+
+        appId:
+            "1:508353450616:web:9cb13fa3256e8637ef938d"
+
+    };
+
+
+
+    // =====================================================
+    // FIREBASE INITIALIZATION
+    //
+    // Auth + Firestore use THE SAME Firebase APP.
+    // =====================================================
+
+    const app =
+        initializeApp(
+            firebaseConfig
+        );
+
+
+    const auth =
+        getAuth(
+            app
+        );
+
+
+    const db =
+        getFirestore(
+            app
+        );
+
+
+
+    // =====================================================
+    // ALLOWED ROLES
+    //
+    // These users can use the same login page.
+    // =====================================================
+
+    const allowedRoles = [
+        "owner",
+        "manager",
+        "cashier"
+    ];
+
+
+
+    // =====================================================
+    // DOM ELEMENTS
+    // =====================================================
+
+    const loginForm =
+        document.getElementById(
+            "loginForm"
+        );
+
+
+    const emailInput =
+        document.getElementById(
+            "email"
+        );
+
+
+    const passwordInput =
+        document.getElementById(
+            "password"
+        );
+
+
+    const loginBtn =
+        document.getElementById(
+            "loginBtn"
+        );
+
+
+    const togglePassword =
+        document.getElementById(
+            "togglePassword"
+        );
+
+
+    const forgotBtn =
+        document.getElementById(
+            "forgotBtn"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+
+    // =====================================================
+    // MESSAGE
+    // =====================================================
+
+    function showMessage(
+        text,
+        type = "error"
+    ) {
+
+        message.textContent =
+            text;
+
+        message.className =
+            "message " + type;
+
+    }
+
+
+    function clearMessage() {
+
+        message.textContent =
+            "";
+
+        message.className =
+            "message";
+
+    }
+
+
+
+    // =====================================================
+    // SHOW / HIDE PASSWORD
+    // =====================================================
+
+    togglePassword.addEventListener(
+        "click",
+        () => {
+
+            if (
+                passwordInput.type ===
+                "password"
+            ) {
+
+                passwordInput.type =
+                    "text";
+
+                togglePassword.textContent =
+                    "Hide";
+
+            } else {
+
+                passwordInput.type =
+                    "password";
+
+                togglePassword.textContent =
+                    "Show";
+
+            }
+
+        }
+    );
+
+
+
+    // =====================================================
+    // GET USER PROFILE
+    //
+    // Reads users/{uid} from Firestore.
+    // Works for Owner / Manager / Cashier.
+    // =====================================================
+
+    async function getUserProfile(
+        user
+    ) {
+
+        const userRef =
+            doc(
+                db,
+                "users",
+                user.uid
+            );
+
+
+        const userSnap =
+            await getDoc(
+                userRef
+            );
+
+
+        if (
+            !userSnap.exists()
+        ) {
+
+            return null;
+
+        }
+
+
+        return userSnap.data();
+
+    }
+
+
+
+    // =====================================================
+    // VALIDATE USER
+    //
+    // Checks:
+    // 1. Profile exists
+    // 2. Role is allowed
+    // 3. Account is active
+    // 4. User belongs to a shop
+    // =====================================================
+
+    async function validateUser(
+        user
+    ) {
+
+        const userData =
+            await getUserProfile(
+                user
+            );
+
+
+        // -----------------------------------------
+        // PROFILE NOT FOUND
+        // -----------------------------------------
+
+        if (!userData) {
+
+            await signOut(
+                auth
+            );
+
+            showMessage(
+                "Your account profile was not found."
+            );
+
+            return false;
+
+        }
+
+
+        // -----------------------------------------
+        // ROLE CHECK
+        // -----------------------------------------
+
+        if (
+            !allowedRoles.includes(
+                userData.role
+            )
+        ) {
+
+            await signOut(
+                auth
+            );
+
+            showMessage(
+                "This account does not have permission to access the POS."
+            );
+
+            return false;
+
+        }
+
+
+        // -----------------------------------------
+        // STATUS CHECK
+        // -----------------------------------------
+
+        if (
+            userData.status !==
+            "active"
+        ) {
+
+            await signOut(
+                auth
+            );
+
+            showMessage(
+                "Your account is currently inactive."
+            );
+
+            return false;
+
+        }
+
+
+        // -----------------------------------------
+        // SHOP ID CHECK
+        // -----------------------------------------
+
+        if (
+            !userData.shopId
+        ) {
+
+            await signOut(
+                auth
+            );
+
+            showMessage(
+                "Your shop account is not configured correctly."
+            );
+
+            return false;
+
+        }
+
+
+        // -----------------------------------------
+        // USER IS VALID
+        // -----------------------------------------
+
+        return true;
+
+    }
+
+
+
+    // =====================================================
+    // CHECK EXISTING SESSION
+    //
+    // Owner / Manager / Cashier can all continue
+    // from the same login page.
+    // =====================================================
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (!user) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const isValid =
+                    await validateUser(
+                        user
+                    );
+
+
+                if (!isValid) {
+
+                    return;
+
+                }
+
+
+                // -----------------------------------------
+                // VALID USER
+                // -----------------------------------------
+
+                window.location.replace(
+                    "owner-dashboard.html"
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Auth State Error:",
+                    error
+                );
+
+
+                try {
+
+                    await signOut(
+                        auth
+                    );
+
+                } catch (
+                    signOutError
+                ) {
+
+                    console.error(
+                        "Sign out error:",
+                        signOutError
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+
+    // =====================================================
+    // LOGIN
+    //
+    // Owner / Manager / Cashier
+    // =====================================================
+
+    loginForm.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            clearMessage();
+
+
+            const email =
+                emailInput.value.trim();
+
+
+            const password =
+                passwordInput.value;
+
+
+            // -----------------------------------------
+            // VALIDATION
+            // -----------------------------------------
+
+            if (
+                !email ||
+                !password
+            ) {
+
+                showMessage(
+                    "Please enter your email and password."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                password.length < 6
+            ) {
+
+                showMessage(
+                    "Password must contain at least 6 characters."
+                );
+
+                return;
+
+            }
+
+
+            // -----------------------------------------
+            // BUTTON LOADING
+            // -----------------------------------------
+
+            loginBtn.disabled =
+                true;
+
+            loginBtn.textContent =
+                "Signing in...";
+
+
+            try {
+
+                // =====================================
+                // FIREBASE AUTHENTICATION
+                // =====================================
+
+                const credential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+
+                // =====================================
+                // GET USER PROFILE
+                // =====================================
+
+                const userData =
+                    await getUserProfile(
+                        user
+                    );
+
+
+                // =====================================
+                // PROFILE NOT FOUND
+                // =====================================
+
+                if (!userData) {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    showMessage(
+                        "Your account profile was not found."
+                    );
+
+                    return;
+
+                }
+
+
+
+                // =====================================
+                // ROLE CHECK
+                // =====================================
+
+                if (
+                    !allowedRoles.includes(
+                        userData.role
+                    )
+                ) {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    showMessage(
+                        "This account does not have permission to access the POS."
+                    );
+
+                    return;
+
+                }
+
+
+
+                // =====================================
+                // STATUS CHECK
+                // =====================================
+
+                if (
+                    userData.status !==
+                    "active"
+                ) {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    showMessage(
+                        "Your account is currently inactive."
+                    );
+
+                    return;
+
+                }
+
+
+
+                // =====================================
+                // SHOP ID CHECK
+                // =====================================
+
+                if (
+                    !userData.shopId
+                ) {
+
+                    await signOut(
+                        auth
+                    );
+
+
+                    showMessage(
+                        "Your shop account is not configured correctly."
+                    );
+
+                    return;
+
+                }
+
+
+
+                // =====================================
+                // LOGIN SUCCESS
+                // =====================================
+
+                showMessage(
+                    "Login successful. Opening your dashboard...",
+                    "success"
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.replace(
+                            "owner-dashboard.html"
+                        );
+
+                    },
+                    400
+                );
+
+
+            } catch (error) {
+
+
+                // =====================================
+                // CONSOLE DEBUG
+                // =====================================
+
+                console.error(
+                    "========== POS LOGIN ERROR =========="
+                );
+
+                console.error(
+                    "Error code:",
+                    error.code
+                );
+
+                console.error(
+                    "Error message:",
+                    error.message
+                );
+
+                console.error(
+                    "Full error:",
+                    error
+                );
+
+                console.error(
+                    "====================================="
+                );
+
+
+
+                // =====================================
+                // FIREBASE AUTH ERRORS
+                // =====================================
+
+                if (
+                    error.code ===
+                    "auth/invalid-credential"
+                ) {
+
+                    showMessage(
+                        "Incorrect email or password."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/user-not-found"
+                ) {
+
+                    showMessage(
+                        "No account was found with this email."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/wrong-password"
+                ) {
+
+                    showMessage(
+                        "Incorrect password."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    showMessage(
+                        "Please enter a valid email address."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/user-disabled"
+                ) {
+
+                    showMessage(
+                        "This Firebase account has been disabled."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/too-many-requests"
+                ) {
+
+                    showMessage(
+                        "Too many login attempts. Please try again later."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/network-request-failed"
+                ) {
+
+                    showMessage(
+                        "Network error. Please check your internet connection."
+                    );
+
+                }
+
+
+                // =====================================
+                // FIRESTORE ERRORS
+                // =====================================
+
+                else if (
+                    error.code ===
+                    "permission-denied"
+                ) {
+
+                    showMessage(
+                        "Firestore permission denied. Please check your Firestore Rules."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "failed-precondition"
+                ) {
+
+                    showMessage(
+                        "Firebase or Firestore configuration problem."
+                    );
+
+                }
+
+
+                // =====================================
+                // UNKNOWN ERROR
+                // =====================================
+
+                else {
+
+                    showMessage(
+                        "Login failed: " +
+                        (
+                            error.code ||
+                            error.message ||
+                            "Unknown error"
+                        )
+                    );
+
+                }
+
+            }
+
+
+            finally {
+
+                loginBtn.disabled =
+                    false;
+
+                loginBtn.textContent =
+                    "Login";
+
+            }
+
+        }
+    );
+
+
+
+    // =====================================================
+    // FORGOT PASSWORD
+    // =====================================================
+
+    forgotBtn.addEventListener(
+        "click",
+        async () => {
+
+            clearMessage();
+
+
+            const email =
+                emailInput.value.trim();
+
+
+            if (!email) {
+
+                showMessage(
+                    "Please enter your email address first."
+                );
+
+                emailInput.focus();
+
+                return;
+
+            }
+
+
+            try {
+
+                await sendPasswordResetEmail(
+                    auth,
+                    email
+                );
+
+
+                showMessage(
+                    "Password reset email sent. Please check your inbox.",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Password Reset Error:",
+                    error
+                );
+
+
+                if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    showMessage(
+                        "Please enter a valid email address."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/user-not-found"
+                ) {
+
+                    showMessage(
+                        "No account was found with this email."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/network-request-failed"
+                ) {
+
+                    showMessage(
+                        "Network error. Please check your internet connection."
+                    );
+
+                }
+
+
+                else if (
+                    error.code ===
+                    "auth/too-many-requests"
+                ) {
+
+                    showMessage(
+                        "Too many requests. Please try again later."
+                    );
+
+                }
+
+
+                else {
+
+                    showMessage(
+                        "Unable to send password reset email."
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
