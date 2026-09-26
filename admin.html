@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -936,7 +936,31 @@
             }
         }
 
-    </style>
+    
+        /* ADMIN MANAGEMENT EXTENSIONS */
+        .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.admin-input{min-height:38px;padding:0 11px;color:#e9edf2;background:#11151c;border:1px solid var(--border);border-radius:9px;font:inherit;font-size:11px;outline:none}.admin-input:focus{border-color:rgba(255,122,0,.55);box-shadow:0 0 0 3px rgba(255,122,0,.08)}.toolbar .admin-input[type=search]{min-width:220px;flex:1}.toolbar select{min-width:145px}.secondary-button{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;color:#dfe4eb;background:#151a22;border:1px solid var(--border);border-radius:9px;font-size:11px;font-weight:700;cursor:pointer}.secondary-button:hover{background:#1b212b}.action-buttons{display:flex;gap:6px}.mini-button{padding:6px 8px;color:#dce1e8;background:#171c24;border:1px solid var(--border);border-radius:7px;font-size:9px;cursor:pointer}.mini-button:hover{border-color:#4b5360}.mini-button.danger{color:#ff9d9d}.role-badge{display:inline-flex;padding:4px 7px;border-radius:20px;background:rgba(255,122,0,.08);color:#ffb26e;font-size:9px;font-weight:700;text-transform:capitalize}.settings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.settings-card{padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}.settings-card h3{font-size:13px;margin-bottom:15px}.settings-card label{display:block;color:var(--muted);font-size:10px;margin-bottom:12px}.settings-card .admin-input{width:100%;margin-top:6px}.settings-note{color:var(--muted);font-size:10px;line-height:1.6}.modal-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.modal-form-grid label{display:block;color:var(--muted);font-size:10px}.modal-form-grid .admin-input{width:100%;margin-top:6px}.modal-form-grid .full{grid-column:1/-1}@media(max-width:900px){.settings-grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.settings-grid,.modal-form-grid{grid-template-columns:1fr}.modal-form-grid .full{grid-column:auto}}
+
+
+        /* USERS GROUPED BY SHOP */
+        .user-shop-group td{padding:0;border-top:12px solid var(--bg);background:#0e1219}
+        .user-shop-group:first-child td{border-top:0}
+        .user-shop-group-header{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 18px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(255,122,0,.08),rgba(255,255,255,.015))}
+        .user-shop-heading{display:flex;align-items:center;gap:11px;min-width:0}
+        .user-shop-heading>div:last-child{min-width:0}
+        .user-shop-heading strong{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .user-shop-heading span{display:block;margin-top:4px;color:var(--muted);font-size:9px}
+        .user-shop-avatar{width:36px;height:36px;display:grid;place-items:center;overflow:hidden;flex:none;border-radius:10px;background:#202631;color:#ff9b42;font-size:12px;font-weight:800}
+        .user-shop-avatar img{width:100%;height:100%;object-fit:cover}
+        .user-shop-counts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+        .user-shop-counts span{padding:5px 8px;color:#aeb5c0;background:#171c25;border:1px solid var(--border);border-radius:20px;font-size:8px;font-weight:600}
+        .user-role-divider td{padding:8px 18px;border-top:1px solid var(--border);background:#0c1016}
+        .user-role-divider span{display:inline-flex;padding:4px 8px;color:#8f97a3;background:#171c24;border-radius:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+        .user-member-row td{background:var(--surface)}
+        .user-name-cell{display:flex;align-items:center;gap:9px}
+        .user-avatar{width:30px;height:30px;display:grid;place-items:center;flex:none;border-radius:8px;background:#202631;color:#dce2ea;font-size:10px;font-weight:700}
+        @media(max-width:650px){.user-shop-group-header{align-items:flex-start;flex-direction:column}.user-shop-counts{justify-content:flex-start}}
+
+</style>
 </head>
 
 <body>
@@ -1276,127 +1300,42 @@
 
             </section>
 
-            <section
-                class="page-section"
-                id="usersSection"
-            >
-
+            <section class="page-section" id="usersSection">
                 <div class="section-header">
-
                     <div>
                         <h2>Users</h2>
-
-                        <p>Manage ZEE POS users</p>
+                        <p>Manage Owners, Managers and Cashiers</p>
                     </div>
-
+                    <button class="primary-button" id="addUserButton" type="button">+ Add User</button>
                 </div>
-
-                <div class="empty-section">
-
-                    <div class="empty-icon">♙</div>
-
-                    <h2>User Management</h2>
-
-                    <p>
-                        User management will be connected
-                        to Firestore in the next step.
-                    </p>
-
+                <div class="toolbar">
+                    <input class="admin-input" id="userSearch" type="search" placeholder="Search name or email...">
+                    <select class="admin-input" id="userRoleFilter"><option value="all">All Roles</option><option value="owner">Owner</option><option value="manager">Manager</option><option value="cashier">Cashier</option></select>
+                    <select class="admin-input" id="userStatusFilter"><option value="all">All Status</option><option value="active">Active</option><option value="suspended">Suspended</option></select>
+                    <button class="secondary-button" id="refreshUsersButton" type="button">Refresh</button>
                 </div>
-
+                <div class="table-container"><div class="table-scroll"><table><thead><tr><th>USER</th><th>SHOP</th><th>ROLE</th><th>STATUS</th><th>CREATED</th><th>ACTION</th></tr></thead><tbody id="usersTable"><tr><td colspan="6" class="table-message">Loading users...</td></tr></tbody></table></div></div>
             </section>
 
-            <section
-                class="page-section"
-                id="subscriptionsSection"
-            >
-
-                <div class="section-header">
-
-                    <div>
-                        <h2>Subscriptions</h2>
-
-                        <p>
-                            Manage shop subscriptions and plans
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="empty-section">
-
-                    <div class="empty-icon">◈</div>
-
-                    <h2>Subscription Management</h2>
-
-                    <p>
-                        Subscription management will be connected
-                        to Firestore in the next step.
-                    </p>
-
-                </div>
-
+            <section class="page-section" id="subscriptionsSection">
+                <div class="section-header"><div><h2>Subscriptions</h2><p>Manage plans, dates and shop subscription status</p></div><button class="secondary-button" id="refreshSubscriptionsButton" type="button">Refresh</button></div>
+                <div class="toolbar"><input class="admin-input" id="subscriptionSearch" type="search" placeholder="Search shop or owner..."><select class="admin-input" id="subscriptionFilter"><option value="all">All</option><option value="active">Active</option><option value="expired">Expired</option><option value="suspended">Suspended</option></select></div>
+                <div class="table-container"><div class="table-scroll"><table><thead><tr><th>SHOP</th><th>PLAN</th><th>START</th><th>EXPIRES</th><th>STATUS</th><th>ACTION</th></tr></thead><tbody id="subscriptionsTable"><tr><td colspan="6" class="table-message">Loading subscriptions...</td></tr></tbody></table></div></div>
             </section>
 
-            <section
-                class="page-section"
-                id="paymentsSection"
-            >
-
-                <div class="section-header">
-
-                    <div>
-                        <h2>Payments</h2>
-
-                        <p>Manage platform payments</p>
-                    </div>
-
-                </div>
-
-                <div class="empty-section">
-
-                    <div class="empty-icon">▤</div>
-
-                    <h2>Payment Management</h2>
-
-                    <p>
-                        Payment management will be connected
-                        to Firestore in the next step.
-                    </p>
-
-                </div>
-
+            <section class="page-section" id="paymentsSection">
+                <div class="section-header"><div><h2>Payments</h2><p>Record and track subscription payments</p></div><button class="primary-button" id="addPaymentButton" type="button">+ Add Payment</button></div>
+                <div class="toolbar"><input class="admin-input" id="paymentSearch" type="search" placeholder="Search shop or reference..."><select class="admin-input" id="paymentStatusFilter"><option value="all">All Status</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select><button class="secondary-button" id="refreshPaymentsButton" type="button">Refresh</button></div>
+                <div class="table-container"><div class="table-scroll"><table><thead><tr><th>DATE</th><th>SHOP</th><th>AMOUNT</th><th>METHOD</th><th>STATUS</th><th>REFERENCE</th><th>ACTION</th></tr></thead><tbody id="paymentsTable"><tr><td colspan="7" class="table-message">Loading payments...</td></tr></tbody></table></div></div>
             </section>
 
-            <section
-                class="page-section"
-                id="settingsSection"
-            >
-
-                <div class="section-header">
-
-                    <div>
-                        <h2>Settings</h2>
-
-                        <p>
-                            Manage ZEE POS system settings
-                        </p>
-                    </div>
-
+            <section class="page-section" id="settingsSection">
+                <div class="section-header"><div><h2>Settings</h2><p>Manage ZEE POS platform defaults</p></div><button class="primary-button" id="saveSettingsButton" type="button">Save Settings</button></div>
+                <div class="settings-grid">
+                    <div class="settings-card"><h3>General</h3><label>System Name<input class="admin-input" id="settingSystemName" value="ZEE POS"></label><label>Default Currency<select class="admin-input" id="settingCurrency"><option value="MMK">MMK — Myanmar Kyat</option><option value="USD">USD — US Dollar</option><option value="THB">THB — Thai Baht</option></select></label></div>
+                    <div class="settings-card"><h3>Subscription Prices</h3><label>1 Month<input class="admin-input" id="price1Month" type="number" min="0"></label><label>3 Months<input class="admin-input" id="price3Months" type="number" min="0"></label><label>6 Months<input class="admin-input" id="price6Months" type="number" min="0"></label><label>1 Year<input class="admin-input" id="price1Year" type="number" min="0"></label></div>
+                    <div class="settings-card"><h3>System</h3><label>Maintenance Mode <select class="admin-input" id="settingMaintenance"><option value="false">Off</option><option value="true">On</option></select></label><p class="settings-note">Maintenance mode is stored as a platform setting. Your POS pages can read this later to show a maintenance screen.</p></div>
                 </div>
-
-                <div class="empty-section">
-
-                    <div class="empty-icon">⚙</div>
-
-                    <h2>System Settings</h2>
-
-                    <p>
-                        System settings will be added here.
-                    </p>
-
-                </div>
-
             </section>
 
         </div>
@@ -1405,6 +1344,16 @@
 
 </div>
 
+
+<!-- =============================================================
+     USER MODAL
+============================================================== -->
+<div class="modal" id="userModal" aria-hidden="true"><div class="modal-box"><div class="modal-header"><h2 id="userModalTitle">Add User</h2><button class="modal-close" id="closeUserModal" type="button">×</button></div><div class="modal-body"><form id="userForm"><div class="modal-form-grid"><label>Name<input class="admin-input" id="userName" required></label><label>Email<input class="admin-input" id="userEmail" type="email" required></label><label>Password<input class="admin-input" id="userPassword" type="password" minlength="6"></label><label>Role<select class="admin-input" id="userRole" required><option value="owner">Owner</option><option value="manager">Manager</option><option value="cashier">Cashier</option></select></label><label>Shop<select class="admin-input" id="userShop" required></select></label><label>Status<select class="admin-input" id="userStatus"><option value="active">Active</option><option value="suspended">Suspended</option></select></label></div></form></div><div class="modal-footer"><button class="secondary-button" id="cancelUserModal" type="button">Cancel</button><button class="primary-button" id="saveUserButton" type="submit" form="userForm">Save User</button></div></div></div>
+
+<!-- =============================================================
+     PAYMENT MODAL
+============================================================== -->
+<div class="modal" id="paymentModal" aria-hidden="true"><div class="modal-box"><div class="modal-header"><h2>Add Payment</h2><button class="modal-close" id="closePaymentModal" type="button">×</button></div><div class="modal-body"><form id="paymentForm"><div class="modal-form-grid"><label>Shop<select class="admin-input" id="paymentShop" required></select></label><label>Amount<input class="admin-input" id="paymentAmount" type="number" min="0" required></label><label>Date<input class="admin-input" id="paymentDate" type="date" required></label><label>Method<select class="admin-input" id="paymentMethod"><option value="KBZPay">KBZPay</option><option value="WavePay">WavePay</option><option value="Cash">Cash</option><option value="Bank Transfer">Bank Transfer</option><option value="Other">Other</option></select></label><label>Status<select class="admin-input" id="paymentStatus"><option value="approved">Approved</option><option value="pending">Pending</option><option value="rejected">Rejected</option></select></label><label>Plan<select class="admin-input" id="paymentPlan"><option value="1 Month">1 Month</option><option value="3 Months">3 Months</option><option value="6 Months">6 Months</option><option value="1 Year">1 Year</option></select></label><label class="full">Reference / Note<input class="admin-input" id="paymentReference"></label></div></form></div><div class="modal-footer"><button class="secondary-button" id="cancelPaymentModal" type="button">Cancel</button><button class="primary-button" type="submit" form="paymentForm">Save Payment</button></div></div></div>
 
 <!-- =============================================================
      SHOP FORM MODAL
@@ -1924,7 +1873,8 @@
         doc,
         updateDoc,
         deleteDoc,
-        setDoc
+        setDoc,
+        getDoc
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
@@ -2169,6 +2119,9 @@
 
 
             await loadShops();
+            await loadUsers();
+            await loadPayments();
+            await loadSettings();
 
         }
     );
@@ -2253,13 +2206,12 @@
                 }
 
 
-                if (
-                    section === "shops"
-                ) {
-
-                    loadShops();
-
-                }
+                if (section === "shops") loadShops();
+                if (section === "users") loadUsers();
+                if (section === "subscriptions") loadSubscriptions();
+                if (section === "payments") loadPayments();
+                if (section === "settings") loadSettings();
+                if (section === "dashboard") refreshDashboard();
 
             }
         );
@@ -2293,10 +2245,8 @@
             "click",
             () => {
 
-                showToast(
-                    "No new notifications.",
-                    "success"
-                );
+                refreshDashboard();
+                showToast("Notifications refreshed.", "success");
 
             }
         );
@@ -4066,11 +4016,7 @@
             );
 
 
-            updateStats(
-                snapshot.size,
-                activeCount,
-                subscriptionCount
-            );
+            updateStats(snapshot.size, activeCount, subscriptionCount, Number(monthlyRevenue.textContent.replace(/,/g,"")||0));
 
 
         } catch (error) {
@@ -4434,27 +4380,11 @@
        STATS
     ========================================================= */
 
-    function updateStats(
-        total,
-        active,
-        subscriptionTotal
-    ) {
-
-        totalShops.textContent =
-            total;
-
-
-        activeShops.textContent =
-            active;
-
-
-        subscriptions.textContent =
-            subscriptionTotal;
-
-
-        monthlyRevenue.textContent =
-            "0";
-
+    function updateStats(total, active, subscriptionTotal, revenue = 0) {
+        totalShops.textContent = total;
+        activeShops.textContent = active;
+        subscriptions.textContent = subscriptionTotal;
+        monthlyRevenue.textContent = Number(revenue || 0).toLocaleString();
     }
 
 
@@ -5040,6 +4970,308 @@
 
 
     /* =========================================================
+       ADMIN MANAGEMENT: USERS / SUBSCRIPTIONS / PAYMENTS / SETTINGS
+    ========================================================= */
+
+    const userModal = document.getElementById("userModal");
+    const userForm = document.getElementById("userForm");
+    const usersTable = document.getElementById("usersTable");
+    const userSearch = document.getElementById("userSearch");
+    const userRoleFilter = document.getElementById("userRoleFilter");
+    const userStatusFilter = document.getElementById("userStatusFilter");
+    const userShop = document.getElementById("userShop");
+    const userPassword = document.getElementById("userPassword");
+    const userModalTitle = document.getElementById("userModalTitle");
+    const paymentModal = document.getElementById("paymentModal");
+    const paymentForm = document.getElementById("paymentForm");
+    const paymentsTable = document.getElementById("paymentsTable");
+    const paymentShop = document.getElementById("paymentShop");
+    const paymentDate = document.getElementById("paymentDate");
+    let editingUserId = null;
+    let cachedUsers = [];
+    let cachedPayments = [];
+    let cachedShops = [];
+
+    function todayString(){
+        const d=new Date();
+        return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
+    }
+
+    async function getShopsArray(){
+        const snap=await getDocs(query(collection(db,"shops"),orderBy("createdAt","desc")));
+        cachedShops=snap.docs.map(d=>({id:d.id,...d.data()}));
+        return cachedShops;
+    }
+
+    function fillShopSelect(select, includeAll=false){
+        if(!select) return;
+        const first=includeAll ? '<option value="all">All Shops</option>' : '<option value="">Select shop</option>';
+        select.innerHTML=first+cachedShops.map(s=>`<option value="${escapeHtml(s.id)}">${escapeHtml(s.shopName||s.id)}</option>`).join("");
+    }
+
+    async function loadUsers(){
+        if(!usersTable) return;
+        usersTable.innerHTML='<tr><td colspan="6" class="table-message">Loading users...</td></tr>';
+        try{
+            await getShopsArray();
+            const snap=await getDocs(collection(db,"users"));
+            cachedUsers=snap.docs.map(d=>({id:d.id,...d.data()}));
+            renderUsers();
+        }catch(e){
+            usersTable.innerHTML=`<tr><td colspan="6" class="table-message">${escapeHtml(getFirestoreErrorMessage(e))}</td></tr>`;
+        }
+    }
+
+    function renderUsers(){
+        const q=(userSearch?.value||"").trim().toLowerCase();
+        const role=userRoleFilter?.value||"all";
+        const status=userStatusFilter?.value||"all";
+
+        /*
+         * Users are displayed GROUPED BY SHOP.
+         * Each shop gets its own block, then Owner / Manager / Cashier
+         * users are shown under that shop. This keeps the Super Admin
+         * view easy to understand when many shops exist.
+         */
+        const filtered=cachedUsers.filter(u=>{
+            const shop=cachedShops.find(s=>s.id===u.shopId);
+            const hay=`${u.name||""} ${u.email||""} ${shop?.shopName||""}`.toLowerCase();
+            const userStatus=u.status||"active";
+            const userRole=u.role||"";
+            return (!q||hay.includes(q))
+                && (role==="all"||userRole===role)
+                && (status==="all"||userStatus===status)
+                && ["owner","manager","cashier"].includes(userRole);
+        });
+
+        if(!filtered.length){
+            usersTable.innerHTML='<tr><td colspan="6" class="table-message">No users found.</td></tr>';
+            return;
+        }
+
+        const grouped=new Map();
+        filtered.forEach(u=>{
+            const shop=cachedShops.find(s=>s.id===u.shopId);
+            const key=u.shopId||"__unassigned__";
+            if(!grouped.has(key)){
+                grouped.set(key,{
+                    id:key,
+                    name:shop?.shopName||"Unassigned Shop",
+                    logo:shop?.logo||shop?.logoUrl||"",
+                    users:[]
+                });
+            }
+            grouped.get(key).users.push(u);
+        });
+
+        const roleOrder={owner:0,manager:1,cashier:2};
+        const groups=[...grouped.values()].sort((a,b)=>{
+            if(a.id==="__unassigned__") return 1;
+            if(b.id==="__unassigned__") return -1;
+            return a.name.localeCompare(b.name);
+        });
+
+        let html="";
+
+        groups.forEach(group=>{
+            group.users.sort((a,b)=>{
+                const r=(roleOrder[a.role]??99)-(roleOrder[b.role]??99);
+                if(r!==0) return r;
+                return String(a.name||a.email||"").localeCompare(String(b.name||b.email||""));
+            });
+
+            const ownerCount=group.users.filter(u=>u.role==="owner").length;
+            const managerCount=group.users.filter(u=>u.role==="manager").length;
+            const cashierCount=group.users.filter(u=>u.role==="cashier").length;
+            const initials=(group.name||"Z").trim().charAt(0).toUpperCase();
+
+            html+=`
+                <tr class="user-shop-group">
+                    <td colspan="6">
+                        <div class="user-shop-group-header">
+                            <div class="user-shop-heading">
+                                <div class="user-shop-avatar">
+                                    ${group.logo?`<img src="${escapeHtml(group.logo)}" alt="">`:escapeHtml(initials)}
+                                </div>
+                                <div>
+                                    <strong>${escapeHtml(group.name)}</strong>
+                                    <span>${group.users.length} user${group.users.length===1?"":"s"}</span>
+                                </div>
+                            </div>
+                            <div class="user-shop-counts">
+                                <span>Owner ${ownerCount}</span>
+                                <span>Manager ${managerCount}</span>
+                                <span>Cashier ${cashierCount}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
+
+            ["owner","manager","cashier"].forEach(currentRole=>{
+                const users=group.users.filter(u=>u.role===currentRole);
+                if(!users.length) return;
+
+                html+=`
+                    <tr class="user-role-divider">
+                        <td colspan="6"><span>${currentRole.charAt(0).toUpperCase()+currentRole.slice(1)}${users.length>1?` (${users.length})`:""}</span></td>
+                    </tr>`;
+
+                users.forEach(u=>{
+                    const st=u.status||"active";
+                    html+=`
+                        <tr class="user-member-row">
+                            <td>
+                                <div class="user-name-cell">
+                                    <div class="user-avatar">${escapeHtml((u.name||u.email||"U").trim().charAt(0).toUpperCase())}</div>
+                                    <div>
+                                        <strong>${escapeHtml(u.name||"Unnamed")}</strong>
+                                        <div class="shop-owner">${escapeHtml(u.email||"—")}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${escapeHtml(group.name)}</td>
+                            <td><span class="role-badge">${escapeHtml(u.role||"user")}</span></td>
+                            <td><span class="status ${st==="suspended"?"suspended":"active"}">${escapeHtml(st)}</span></td>
+                            <td>${formatDate(u.createdDate||u.createdAtDate||"")}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="mini-button" data-user-edit="${escapeHtml(u.id)}">Edit</button>
+                                    <button class="mini-button ${st==="suspended"?"":"danger"}" data-user-toggle="${escapeHtml(u.id)}">${st==="suspended"?"Activate":"Suspend"}</button>
+                                </div>
+                            </td>
+                        </tr>`;
+                });
+            });
+        });
+
+        usersTable.innerHTML=html;
+        usersTable.querySelectorAll("[data-user-edit]").forEach(b=>b.addEventListener("click",()=>openUserModal(b.dataset.userEdit)));
+        usersTable.querySelectorAll("[data-user-toggle]").forEach(b=>b.addEventListener("click",()=>toggleUserStatus(b.dataset.userToggle)));
+    }
+
+    function openUserModal(uid=null){
+        editingUserId=uid;
+        const u=uid?cachedUsers.find(x=>x.id===uid):null;
+        userModalTitle.textContent=u?"Edit User":"Add User";
+        document.getElementById("userName").value=u?.name||"";
+        document.getElementById("userEmail").value=u?.email||"";
+        document.getElementById("userRole").value=u?.role||"cashier";
+        document.getElementById("userStatus").value=u?.status||"active";
+        userPassword.value="";
+        fillShopSelect(userShop);
+        userShop.value=u?.shopId||"";
+        document.getElementById("userEmail").disabled=!!u;
+        userPassword.required=!u;
+        userModal.classList.add("open"); userModal.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden";
+    }
+
+    function closeUserModal(){userModal.classList.remove("open");userModal.setAttribute("aria-hidden","true");document.body.style.overflow="";editingUserId=null;}
+
+    async function toggleUserStatus(uid){
+        const u=cachedUsers.find(x=>x.id===uid); if(!u) return;
+        try{await updateDoc(doc(db,"users",uid),{status:(u.status||"active")==="suspended"?"active":"suspended",updatedAt:serverTimestamp()});showToast("User status updated.");await loadUsers();}catch(e){showToast(getFirestoreErrorMessage(e),"error");}
+    }
+
+    userForm?.addEventListener("submit",async e=>{
+        e.preventDefault();
+        const name=document.getElementById("userName").value.trim();
+        const email=document.getElementById("userEmail").value.trim();
+        const password=userPassword.value;
+        const role=document.getElementById("userRole").value;
+        const shopId=userShop.value;
+        const status=document.getElementById("userStatus").value;
+        if(!shopId){showToast("Please select a shop.","error");return;}
+        try{
+            const saveBtn=document.getElementById("saveUserButton");saveBtn.disabled=true;
+            if(editingUserId){
+                await updateDoc(doc(db,"users",editingUserId),{name,role,shopId,status,updatedAt:serverTimestamp()});
+                showToast("User updated successfully.");
+            }else{
+                if(!password||password.length<6){showToast("Password must be at least 6 characters.","error");return;}
+                const cred=await createUserWithEmailAndPassword(ownerAuth,email,password);
+                await setDoc(doc(db,"users",cred.user.uid),{uid:cred.user.uid,name,email,shopId,role,status,createdBy:auth.currentUser.uid,createdAt:serverTimestamp(),createdDate:todayString()});
+                await signOut(ownerAuth);
+                showToast("User account created successfully.");
+            }
+            closeUserModal();await loadUsers();
+        }catch(e){console.error(e);showToast(e.code?.startsWith("auth/")?(e.message||"Authentication error."):getFirestoreErrorMessage(e),"error");}
+        finally{document.getElementById("saveUserButton").disabled=false;}
+    });
+
+    async function loadSubscriptions(){
+        const table=document.getElementById("subscriptionsTable"); if(!table)return;
+        table.innerHTML='<tr><td colspan="6" class="table-message">Loading subscriptions...</td></tr>';
+        try{await getShopsArray();renderSubscriptions();}catch(e){table.innerHTML=`<tr><td colspan="6" class="table-message">${escapeHtml(getFirestoreErrorMessage(e))}</td></tr>`;}
+    }
+
+    function renderSubscriptions(){
+        const q=(document.getElementById("subscriptionSearch")?.value||"").toLowerCase();
+        const filter=document.getElementById("subscriptionFilter")?.value||"all";
+        const rows=cachedShops.filter(s=>{const st=getShopStatus(s);const hay=`${s.shopName||""} ${s.ownerName||""}`.toLowerCase();return(!q||hay.includes(q))&&(filter==="all"||st===filter);});
+        const table=document.getElementById("subscriptionsTable");
+        if(!rows.length){table.innerHTML='<tr><td colspan="6" class="table-message">No subscriptions found.</td></tr>';return;}
+        table.innerHTML=rows.map(s=>{const st=getShopStatus(s);return `<tr><td><strong>${escapeHtml(s.shopName||"—")}</strong><div class="shop-owner">${escapeHtml(s.ownerName||s.ownerEmail||"—")}</div></td><td>${escapeHtml(s.plan||"—")}</td><td>${formatDate(s.startDate)}</td><td>${formatDate(s.expiryDate)}</td><td><span class="status ${st}">${st}</span></td><td><div class="action-buttons"><button class="mini-button" data-sub-extend="${s.id}">+1 Month</button><button class="mini-button" data-sub-save="${s.id}">Renew</button></div></td></tr>`;}).join("");
+        table.querySelectorAll("[data-sub-extend]").forEach(b=>b.addEventListener("click",()=>extendSubscription(b.dataset.subExtend,1)));
+        table.querySelectorAll("[data-sub-save]").forEach(b=>b.addEventListener("click",()=>renewSubscription(b.dataset.subSave)));
+    }
+
+    async function extendSubscription(id,months){
+        const s=cachedShops.find(x=>x.id===id);if(!s)return;
+        const base=new Date(`${s.expiryDate||todayString()}T00:00:00`);if(base<new Date())base.setTime(Date.now());base.setMonth(base.getMonth()+months);
+        const expiry=base.toISOString().slice(0,10);
+        try{await updateDoc(doc(db,"shops",id),{expiryDate:expiry,status:"active",updatedAt:serverTimestamp()});showToast("Subscription extended.");await loadShops();await loadSubscriptions();}catch(e){showToast(getFirestoreErrorMessage(e),"error");}
+    }
+
+    async function renewSubscription(id){
+        const s=cachedShops.find(x=>x.id===id);if(!s)return;
+        const start=todayString();const expiry=calculateExpiryDate(start,s.plan||"1 Month");
+        try{await updateDoc(doc(db,"shops",id),{startDate:start,expiryDate:expiry,status:"active",updatedAt:serverTimestamp()});showToast("Subscription renewed.");await loadShops();await loadSubscriptions();}catch(e){showToast(getFirestoreErrorMessage(e),"error");}
+    }
+
+    async function loadPayments(){
+        if(!paymentsTable)return;
+        paymentsTable.innerHTML='<tr><td colspan="7" class="table-message">Loading payments...</td></tr>';
+        try{await getShopsArray();const snap=await getDocs(query(collection(db,"payments"),orderBy("createdAt","desc")));cachedPayments=snap.docs.map(d=>({id:d.id,...d.data()}));renderPayments();}catch(e){paymentsTable.innerHTML=`<tr><td colspan="7" class="table-message">${escapeHtml(getFirestoreErrorMessage(e))}</td></tr>`;}
+    }
+
+    function renderPayments(){
+        const q=(document.getElementById("paymentSearch")?.value||"").toLowerCase();const filter=document.getElementById("paymentStatusFilter")?.value||"all";
+        const rows=cachedPayments.filter(p=>{const s=cachedShops.find(x=>x.id===p.shopId);const hay=`${s?.shopName||""} ${p.reference||""} ${p.method||""}`.toLowerCase();return(!q||hay.includes(q))&&(filter==="all"||p.status===filter);});
+        if(!rows.length){paymentsTable.innerHTML='<tr><td colspan="7" class="table-message">No payments found.</td></tr>';return;}
+        paymentsTable.innerHTML=rows.map(p=>{const s=cachedShops.find(x=>x.id===p.shopId);const st=p.status||"pending";return `<tr><td>${formatDate(p.date)}</td><td>${escapeHtml(s?.shopName||"—")}</td><td>${Number(p.amount||0).toLocaleString()}</td><td>${escapeHtml(p.method||"—")}</td><td><span class="status ${st==="approved"?"active":st=== "rejected"?"expired":"suspended"}">${escapeHtml(st)}</span></td><td>${escapeHtml(p.reference||"—")}</td><td><button class="mini-button danger" data-payment-delete="${p.id}">Delete</button></td></tr>`;}).join("");
+        paymentsTable.querySelectorAll("[data-payment-delete]").forEach(b=>b.addEventListener("click",()=>deletePayment(b.dataset.paymentDelete)));
+    }
+
+    function openPaymentModal(){fillShopSelect(paymentShop);paymentDate.value=todayString();paymentForm.reset();paymentDate.value=todayString();paymentModal.classList.add("open");paymentModal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
+    function closePaymentModal(){paymentModal.classList.remove("open");paymentModal.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+    async function deletePayment(id){if(!confirm("Delete this payment record?"))return;try{await deleteDoc(doc(db,"payments",id));showToast("Payment deleted.");await loadPayments();}catch(e){showToast(getFirestoreErrorMessage(e),"error");}}
+
+    paymentForm?.addEventListener("submit",async e=>{e.preventDefault();try{await addDoc(collection(db,"payments"),{shopId:paymentShop.value,amount:Number(document.getElementById("paymentAmount").value||0),date:document.getElementById("paymentDate").value,method:document.getElementById("paymentMethod").value,status:document.getElementById("paymentStatus").value,plan:document.getElementById("paymentPlan").value,reference:document.getElementById("paymentReference").value.trim(),createdBy:auth.currentUser.uid,createdAt:serverTimestamp()});closePaymentModal();showToast("Payment saved successfully.");await loadPayments();await refreshDashboard();}catch(e){showToast(getFirestoreErrorMessage(e),"error");}});
+
+    async function loadSettings(){
+        try{const snap=await getDoc(doc(db,"settings","system"));const d=snap.exists()?snap.data():{};document.getElementById("settingSystemName").value=d.systemName||"ZEE POS";document.getElementById("settingCurrency").value=d.currency||"MMK";document.getElementById("price1Month").value=d.prices?.["1 Month"]??0;document.getElementById("price3Months").value=d.prices?.["3 Months"]??0;document.getElementById("price6Months").value=d.prices?.["6 Months"]??0;document.getElementById("price1Year").value=d.prices?.["1 Year"]??0;document.getElementById("settingMaintenance").value=String(d.maintenance||false);}catch(e){showToast(getFirestoreErrorMessage(e),"error");}
+    }
+
+    document.getElementById("saveSettingsButton")?.addEventListener("click",async()=>{try{await setDoc(doc(db,"settings","system"),{systemName:document.getElementById("settingSystemName").value.trim()||"ZEE POS",currency:document.getElementById("settingCurrency").value,prices:{"1 Month":Number(document.getElementById("price1Month").value||0),"3 Months":Number(document.getElementById("price3Months").value||0),"6 Months":Number(document.getElementById("price6Months").value||0),"1 Year":Number(document.getElementById("price1Year").value||0)},maintenance:document.getElementById("settingMaintenance").value==="true",updatedBy:auth.currentUser.uid,updatedAt:serverTimestamp()},{merge:true});showToast("Settings saved successfully.");}catch(e){showToast(getFirestoreErrorMessage(e),"error");}});
+
+    async function refreshDashboard(){
+        try{await getShopsArray();const usersSnap=await getDocs(collection(db,"users"));const paymentsSnap=await getDocs(collection(db,"payments"));const active=cachedShops.filter(s=>getShopStatus(s)==="active").length;const subs=cachedShops.filter(s=>getShopStatus(s)==="active").length;let revenue=0;const month=new Date().toISOString().slice(0,7);paymentsSnap.forEach(d=>{const p=d.data();if(p.status==="approved"&&(p.date||"").startsWith(month))revenue+=Number(p.amount||0);});updateStats(cachedShops.length,active,subs,revenue);const dot=document.querySelector(".notification-dot");const expiring=cachedShops.filter(s=>{if(!s.expiryDate)return false;const days=(new Date(`${s.expiryDate}T23:59:59`)-new Date())/86400000;return days>=0&&days<=7;}).length;dot.style.display=expiring?"block":"none";}catch(e){console.warn("Dashboard refresh failed",e);}
+    }
+
+    document.getElementById("addUserButton")?.addEventListener("click",()=>openUserModal());
+    document.getElementById("closeUserModal")?.addEventListener("click",closeUserModal);
+    document.getElementById("cancelUserModal")?.addEventListener("click",closeUserModal);
+    document.getElementById("addPaymentButton")?.addEventListener("click",openPaymentModal);
+    document.getElementById("closePaymentModal")?.addEventListener("click",closePaymentModal);
+    document.getElementById("cancelPaymentModal")?.addEventListener("click",closePaymentModal);
+    document.getElementById("refreshUsersButton")?.addEventListener("click",loadUsers);
+    document.getElementById("refreshSubscriptionsButton")?.addEventListener("click",loadSubscriptions);
+    document.getElementById("refreshPaymentsButton")?.addEventListener("click",loadPayments);
+    [userSearch,userRoleFilter,userStatusFilter].forEach(x=>x?.addEventListener("input",renderUsers));
+    [document.getElementById("subscriptionSearch"),document.getElementById("subscriptionFilter")].forEach(x=>x?.addEventListener("input",renderSubscriptions));
+    [document.getElementById("paymentSearch"),document.getElementById("paymentStatusFilter")].forEach(x=>x?.addEventListener("input",renderPayments));
+
+    /* =========================================================
        ESCAPE KEY
     ========================================================= */
 
@@ -5078,6 +5310,9 @@
 
             }
 
+            if (userModal?.classList.contains("open")) closeUserModal();
+            if (paymentModal?.classList.contains("open")) closePaymentModal();
+
         }
     );
 
@@ -5087,9 +5322,9 @@
     ========================================================= */
 
     setTodayDate();
+    refreshDashboard();
 
 </script>
 
 </body>
 </html>
-```
